@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Features"
+      name = "Features">
+      <FileRef
+         location = "group:Home/Home.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Login/Login.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Onboarding/Onboarding.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Projects"
+      name = "Projects">
+      <FileRef
+         location = "group:App/App.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Core/Core.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:DesignSystem/DesignSystem.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Dependencies">
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/SnapKit/SnapKit.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Tuist/.build/tuist-derived/Then/Then.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>
