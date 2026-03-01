@@ -1,0 +1,8 @@
+//
+//  {{ name }}TestingPlaceholder.swift
+//  {{ name }}Testing
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+public enum {{ name }}TestingPlaceholder {}

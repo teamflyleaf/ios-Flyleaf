@@ -1,0 +1,20 @@
+//
+//  Project.swift
+//  {{ name }}
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project(
+  name: "{{ name }}",
+  targets: [
+    .microFeature(.{{ case }}),
+    .microInterface(.{{ case }}),
+    .microTests(.{{ case }}),
+    .microTesting(.{{ case }}),
+    .microExample(.{{ case }})
+  ]
+)

@@ -1,0 +1,26 @@
+//
+//  {{ name }}RootViewController.swift
+//  {{ name }}Feature
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+import UIKit
+
+public final class {{ name }}RootViewController: UIViewController {
+
+  public override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .systemBackground
+
+    let label = UILabel()
+    label.text = "{{ name }}"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(label)
+
+    NSLayoutConstraint.activate([
+      label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+    ])
+  }
+}
