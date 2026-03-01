@@ -1,0 +1,47 @@
+name: 🧰 Infra
+description: Tuist, CI/CD, Fastlane 등 인프라/자동화 작업 Issue Template 입니다.
+title: "🧰 Infra: "
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 작업 영역
+      description: 어떤 인프라 작업인가요?
+      options:
+        - 🧩 Tuist
+        - 🔧 CI/CD
+        - 🚀 Fastlane
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 작업 요약
+      description: 무엇을 변경/추가하나요?
+      placeholder: 예) Tuist scaffold 템플릿 개선, CI에서 selective testing 적용 등
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: 배경 / 문제
+      description: 왜 필요한가요? 어떤 문제가 있었나요?
+      placeholder: 예) 로컬과 CI에서 Tuist 버전 불일치로 generate 실패
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 작업 목록
+      description: 해야 할 작업을 체크박스로 작성해주세요.
+      value: |
+        - [ ] UI 구현
+    validations:
+      required: true
+      
+  - type: textarea
+    id: notes
+    attributes:
+      label: 참고 / 링크
+      description: 관련 문서, 이슈, PR, 로그 링크 등

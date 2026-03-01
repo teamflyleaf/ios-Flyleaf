@@ -1,0 +1,31 @@
+name: ♻️ Refactor
+description: Refactor Issue Template 입니다.
+title: "♻️ Refactor: "
+labels: ["♻️ Refactor"]
+body:
+  - type: textarea
+    id: target
+    attributes:
+      label: 리팩토링 대상
+      description: 어떤 부분을 개선하나요?
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 이유
+      description: 왜 필요한가요?
+
+  - type: textarea
+    id: changes
+    attributes:
+      label: 변경 내용
+      
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 작업 목록
+      description: 구현해야 할 작업을 체크박스로 작성해주세요.
+      value: |
+        - [ ] 구조 개선
+    validations:
+      required: true

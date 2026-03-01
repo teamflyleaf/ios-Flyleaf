@@ -1,0 +1,31 @@
+name: 🔖 Etc
+description: Etc Issue Template 입니다.
+title: "🔖 ETC: "
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 설명
+      description: 작업 내용을 설명해주세요.
+      placeholder: 예) 필요없는 파일 삭제합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: 이유
+      description: 작업 이유를 설명해주세요.
+      placeholder: 예) 불필요한 파일이 너무 많습니다.
+    validations:
+      required: false
+      
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 작업 목록
+      description: 작업을 체크박스로 작성해주세요.
+      value: |
+        - [ ] 파일 삭제
+    validations:
+      required: true

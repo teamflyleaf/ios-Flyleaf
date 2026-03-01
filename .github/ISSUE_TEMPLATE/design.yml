@@ -1,0 +1,29 @@
+name: 🎨 UI
+description: UI Issue Template 입니다.
+title: "🎨 UI: "
+labels: ["🎨 UI"]
+body:
+  - type: textarea
+    id: design-goal
+    attributes:
+      label: 반영 내용
+      description: 반영할 디자인 내용을 입력해주세요.
+      placeholder: 예) 폰트 추가
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 작업 목록
+      description: 구현해야 할 작업을 체크박스로 작성해주세요.
+      value: |
+        - [ ] 폰트 파일 추가
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 스크린샷
+      description: 가능하면 첨부
