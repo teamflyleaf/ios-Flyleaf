@@ -137,6 +137,7 @@ Tuist/.build
 
 ### Tuist cache ###
 .tuist-cache
+.tuist-generated
 **/.tuist-cache
 
 ### Firebase ###
