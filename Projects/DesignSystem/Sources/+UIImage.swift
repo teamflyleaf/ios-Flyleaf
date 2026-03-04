@@ -26,7 +26,8 @@ public extension UIImage {
   static let landing = DesignSystemAsset.landing.image.withRenderingMode(.alwaysTemplate)
   static let takeOff = DesignSystemAsset.takeOff.image.withRenderingMode(.alwaysTemplate)
   
-  func resized(to size: CGSize) -> UIImage {
+  func resized(_ width: Int, _ height: Int) -> UIImage {
+    let size = CGSize(width: width, height: height)
     let rendered = UIGraphicsImageRenderer(size: size).image { _ in
       draw(in: CGRect(origin: .zero, size: size))
     }
