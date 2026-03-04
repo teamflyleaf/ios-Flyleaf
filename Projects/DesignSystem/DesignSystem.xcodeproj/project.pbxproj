@@ -3,15 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00522A8E007699B8A14B751B /* Placeholder.swift in Resources */ = {isa = PBXBuildFile; fileRef = 01647794CC36E2B926505510 /* Placeholder.swift */; };
+		2C2A6F1B0843699ACFE53D23 /* TuistFonts+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489E7809DA4DADA471C2CDC /* TuistFonts+DesignSystem.swift */; };
 		32E85901F7A04A4096C803EB /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9005F43599E3AE2CCB247B4F /* SnapKit.framework */; };
+		6B010027885263BBEF2D63B9 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1E2101586C72A907C08D23CC /* Pretendard-Medium.otf */; };
 		75D59D988B809DC9F5F41AFF /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D234C180C51415AE999740 /* Placeholder.swift */; };
+		82DA92E7335A59FAFE9B1FBB /* +UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528D49ED59B7B04686F7E5F3 /* +UIImage.swift */; };
 		865AEA410E403D593140BC25 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D3E20D4CF49B640DF83248 /* Core.framework */; };
+		92F8C676912653938ABC0B42 /* +UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB4A0CF5215C8B6106CE817 /* +UIFont.swift */; };
+		962C35F39902EE3EB7C747F4 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F442253F65C691EFBB3256B9 /* Pretendard-Bold.otf */; };
+		971952FE2DB9726A4E00D28A /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3CE31A5833CC64B9C9A508 /* Pretendard-Regular.otf */; };
+		9E6AD1F42F58A8F20066F4B2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */; };
+		9E6AD1F62F58AD730066F4B2 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */; };
+		A3864A83D2236DBDE99ADF73 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70E110181D1F34D662BC5D59 /* Pretendard-SemiBold.otf */; };
+		A65BD264FBC8B3DB52C0EB5A /* +UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */; };
+		ABB14811E13F7B1ECCF8B086 /* TuistAssets+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */; };
 		BE0F5A2B3AF50CB37CD5A453 /* Then.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EBE5C8B9025ED26BAA85BB /* Then.framework */; };
+		D2E21543F5B3B63472BE98A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F6AF114A38FDBD9663A6B1B /* Assets.xcassets */; };
 		F6018B5F7748E322214C52D6 /* TuistBundle+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4AD9735556ECA8C8008FEC /* TuistBundle+DesignSystem.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,14 +40,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		01647794CC36E2B926505510 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		1489E7809DA4DADA471C2CDC /* TuistFonts+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistFonts+DesignSystem.swift"; sourceTree = "<group>"; };
+		1C3CE31A5833CC64B9C9A508 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		1E2101586C72A907C08D23CC /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		1EB4A0CF5215C8B6106CE817 /* +UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+UIFont.swift"; sourceTree = "<group>"; };
+		4F6AF114A38FDBD9663A6B1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		528D49ED59B7B04686F7E5F3 /* +UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+UIImage.swift"; sourceTree = "<group>"; };
 		68EBE5C8B9025ED26BAA85BB /* Then.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Then.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B7BBEAD5472C7195924AC8 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70E110181D1F34D662BC5D59 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+UIColor.swift"; sourceTree = "<group>"; };
 		8937FA9427EEA938B58C5B3E /* DesignSystem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "DesignSystem-Info.plist"; sourceTree = "<group>"; };
 		9005F43599E3AE2CCB247B4F /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistAssets+DesignSystem.swift"; sourceTree = "<group>"; };
 		BE4AD9735556ECA8C8008FEC /* TuistBundle+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+DesignSystem.swift"; sourceTree = "<group>"; };
 		D3D3E20D4CF49B640DF83248 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D234C180C51415AE999740 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		F442253F65C691EFBB3256B9 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +78,23 @@
 		0E1288659896D0CFF98DA5AA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */,
+				1EB4A0CF5215C8B6106CE817 /* +UIFont.swift */,
+				528D49ED59B7B04686F7E5F3 /* +UIImage.swift */,
 				D5D234C180C51415AE999740 /* Placeholder.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		1AC66E6767016E7C72081D81 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F442253F65C691EFBB3256B9 /* Pretendard-Bold.otf */,
+				1E2101586C72A907C08D23CC /* Pretendard-Medium.otf */,
+				1C3CE31A5833CC64B9C9A508 /* Pretendard-Regular.otf */,
+				70E110181D1F34D662BC5D59 /* Pretendard-SemiBold.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		2BB59E843B58BD9FFF395FEA /* Project */ = {
@@ -94,15 +130,28 @@
 		9C29548CCBEAF62FB7951500 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				01647794CC36E2B926505510 /* Placeholder.swift */,
+				1AC66E6767016E7C72081D81 /* Fonts */,
+				4F6AF114A38FDBD9663A6B1B /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		9E6AD1F22F58A8E80066F4B2 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */,
+				9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		D5FD3537E28AE857DC09D214 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD1F22F58A8E80066F4B2 /* Base */,
+				A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */,
 				BE4AD9735556ECA8C8008FEC /* TuistBundle+DesignSystem.swift */,
+				1489E7809DA4DADA471C2CDC /* TuistFonts+DesignSystem.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -153,8 +202,6 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 5C0CBBA2BFE0CEE21375AF0A /* Build configuration list for PBXProject "DesignSystem" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -179,7 +226,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00522A8E007699B8A14B751B /* Placeholder.swift in Resources */,
+				D2E21543F5B3B63472BE98A1 /* Assets.xcassets in Resources */,
+				962C35F39902EE3EB7C747F4 /* Pretendard-Bold.otf in Resources */,
+				6B010027885263BBEF2D63B9 /* Pretendard-Medium.otf in Resources */,
+				971952FE2DB9726A4E00D28A /* Pretendard-Regular.otf in Resources */,
+				A3864A83D2236DBDE99ADF73 /* Pretendard-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +241,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABB14811E13F7B1ECCF8B086 /* TuistAssets+DesignSystem.swift in Sources */,
 				F6018B5F7748E322214C52D6 /* TuistBundle+DesignSystem.swift in Sources */,
+				2C2A6F1B0843699ACFE53D23 /* TuistFonts+DesignSystem.swift in Sources */,
+				A65BD264FBC8B3DB52C0EB5A /* +UIColor.swift in Sources */,
+				92F8C676912653938ABC0B42 /* +UIFont.swift in Sources */,
+				9E6AD1F42F58A8F20066F4B2 /* BaseViewController.swift in Sources */,
+				9E6AD1F62F58AD730066F4B2 /* BaseView.swift in Sources */,
+				82DA92E7335A59FAFE9B1FBB /* +UIImage.swift in Sources */,
 				75D59D988B809DC9F5F41AFF /* Placeholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,10 +279,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
