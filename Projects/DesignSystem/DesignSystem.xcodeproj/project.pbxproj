@@ -17,6 +17,7 @@
 		962C35F39902EE3EB7C747F4 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F442253F65C691EFBB3256B9 /* Pretendard-Bold.otf */; };
 		971952FE2DB9726A4E00D28A /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3CE31A5833CC64B9C9A508 /* Pretendard-Regular.otf */; };
 		9E6AD1F42F58A8F20066F4B2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */; };
+		9E6AD1F62F58AD730066F4B2 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */; };
 		A3864A83D2236DBDE99ADF73 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70E110181D1F34D662BC5D59 /* Pretendard-SemiBold.otf */; };
 		A65BD264FBC8B3DB52C0EB5A /* +UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */; };
 		ABB14811E13F7B1ECCF8B086 /* TuistAssets+DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */; };
@@ -52,6 +53,7 @@
 		8937FA9427EEA938B58C5B3E /* DesignSystem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "DesignSystem-Info.plist"; sourceTree = "<group>"; };
 		9005F43599E3AE2CCB247B4F /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistAssets+DesignSystem.swift"; sourceTree = "<group>"; };
 		BE4AD9735556ECA8C8008FEC /* TuistBundle+DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+DesignSystem.swift"; sourceTree = "<group>"; };
 		D3D3E20D4CF49B640DF83248 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +139,7 @@
 		9E6AD1F22F58A8E80066F4B2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD1F52F58AD6F0066F4B2 /* BaseView.swift */,
 				9E6AD1F32F58A8F00066F4B2 /* BaseViewController.swift */,
 			);
 			path = Base;
@@ -244,6 +247,7 @@
 				A65BD264FBC8B3DB52C0EB5A /* +UIColor.swift in Sources */,
 				92F8C676912653938ABC0B42 /* +UIFont.swift in Sources */,
 				9E6AD1F42F58A8F20066F4B2 /* BaseViewController.swift in Sources */,
+				9E6AD1F62F58AD730066F4B2 /* BaseView.swift in Sources */,
 				82DA92E7335A59FAFE9B1FBB /* +UIImage.swift in Sources */,
 				75D59D988B809DC9F5F41AFF /* Placeholder.swift in Sources */,
 			);
