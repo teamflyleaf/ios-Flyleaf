@@ -15,6 +15,8 @@ public extension UIColor {
   static let n30: UIColor = DesignSystemAsset.n30.color
   static let n40: UIColor = DesignSystemAsset.n40.color
   static let n50: UIColor = DesignSystemAsset.n50.color
+  static let n60: UIColor = DesignSystemAsset.n60.color
+  static let n70: UIColor = DesignSystemAsset.n70.color
   
   // MARK: - Background
   static let bg0: UIColor = DesignSystemAsset.bg0.color
