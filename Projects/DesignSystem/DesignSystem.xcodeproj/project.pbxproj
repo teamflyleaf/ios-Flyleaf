@@ -78,9 +78,8 @@
 		0E1288659896D0CFF98DA5AA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */,
-				1EB4A0CF5215C8B6106CE817 /* +UIFont.swift */,
-				528D49ED59B7B04686F7E5F3 /* +UIImage.swift */,
+				9E6AD1F22F58A8E80066F4B2 /* Base */,
+				9E6AD1FF2F58B7100066F4B2 /* DesignSystem */,
 				D5D234C180C51415AE999740 /* Placeholder.swift */,
 			);
 			path = Sources;
@@ -145,10 +144,19 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		9E6AD1FF2F58B7100066F4B2 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				88B6E67BE523ED6E11B49EB6 /* +UIColor.swift */,
+				1EB4A0CF5215C8B6106CE817 /* +UIFont.swift */,
+				528D49ED59B7B04686F7E5F3 /* +UIImage.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
 		D5FD3537E28AE857DC09D214 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9E6AD1F22F58A8E80066F4B2 /* Base */,
 				A5263BC75B281154AC0B5A7B /* TuistAssets+DesignSystem.swift */,
 				BE4AD9735556ECA8C8008FEC /* TuistBundle+DesignSystem.swift */,
 				1489E7809DA4DADA471C2CDC /* TuistFonts+DesignSystem.swift */,
