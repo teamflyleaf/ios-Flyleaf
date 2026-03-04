@@ -25,4 +25,11 @@ public extension UIImage {
   static let airplane = DesignSystemAsset.airplane.image.withRenderingMode(.alwaysTemplate)
   static let landing = DesignSystemAsset.landing.image.withRenderingMode(.alwaysTemplate)
   static let takeOff = DesignSystemAsset.takeOff.image.withRenderingMode(.alwaysTemplate)
+  
+  func resized(to size: CGSize) -> UIImage {
+    let rendered = UIGraphicsImageRenderer(size: size).image { _ in
+      draw(in: CGRect(origin: .zero, size: size))
+    }
+    return rendered.withRenderingMode(renderingMode)
+  }
 }
