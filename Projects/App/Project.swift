@@ -35,6 +35,7 @@ let project = Project(
       ]),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
+      entitlements: .file(path: "Flyleaf.entitlements"),
       dependencies: [
         .core(),
         .designSystem(),
