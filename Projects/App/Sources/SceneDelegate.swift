@@ -7,6 +7,7 @@
 
 import UIKit
 import HomeFeature
+import LoginFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -21,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = scene as? UIWindowScene else { return }
     
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = HomeRootViewController()
+    window.rootViewController = LoginViewController()
     window.makeKeyAndVisible()
     
     self.window = window

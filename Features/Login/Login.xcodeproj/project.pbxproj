@@ -18,6 +18,7 @@
 		5C22A8E31318E407CE0ACAC8 /* LoginInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FBD0E3955244E07BE153F0 /* LoginInterface.framework */; };
 		63C11B62EDECCAF0C4735537 /* Then.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9C214589834256AC9DD6AB /* Then.framework */; };
 		69337A8A3B7030BE875B5AD5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220D760F57ACC2FF207269C /* AppDelegate.swift */; };
+		6E0924FD86C66FC1AD55BFB4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52F93D38579CC8C09E110A70 /* LoginViewController.swift */; };
 		70E33EC433348CAF199B839B /* Then.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9C214589834256AC9DD6AB /* Then.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CD96E75B4ED5EE8F591D120 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
 		83E425E99AD9610A4CA860C8 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
@@ -149,6 +150,7 @@
 		0220D760F57ACC2FF207269C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11FBD0E3955244E07BE153F0 /* LoginInterface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginInterface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4814F912DE8AB00326B217C3 /* LoginExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoginExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52F93D38579CC8C09E110A70 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		672078D2E829523D8CBFE44A /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A193EB673C2D8098D25701 /* LoginFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeatureTests.swift; sourceTree = "<group>"; };
 		71DB5668793C3D10DD34AB2C /* LoginInterfacePlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInterfacePlaceholder.swift; sourceTree = "<group>"; };
@@ -234,6 +236,14 @@
 				71DB5668793C3D10DD34AB2C /* LoginInterfacePlaceholder.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		189846B2CFBAC599B4C2AC45 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				52F93D38579CC8C09E110A70 /* LoginViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		212E49CF4F45A085BC2440DF /* Derived */ = {
@@ -337,6 +347,7 @@
 		D344FF0AA4E0F63A413B7551 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				189846B2CFBAC599B4C2AC45 /* Views */,
 				B8CBFA5CB73840E677C77B60 /* LoginRootViewController.swift */,
 			);
 			path = Sources;
@@ -553,6 +564,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4603F421F5BF4FDE966A0FC /* LoginRootViewController.swift in Sources */,
+				6E0924FD86C66FC1AD55BFB4 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

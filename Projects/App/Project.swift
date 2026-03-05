@@ -40,7 +40,9 @@ let project = Project(
         .core(),
         .designSystem(),
         .feature(.home, .feature),
-        .feature(.home, .interface)
+        .feature(.home, .interface),
+        .feature(.login, .feature),
+        .feature(.login, .interface),
       ],
       settings: .settings(
         base: [

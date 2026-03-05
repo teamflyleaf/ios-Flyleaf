@@ -13,10 +13,14 @@
 		3724F0D1C132F43A418CCEEB /* HomeInterface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3378AADEC52D5A8AE2261C5D /* HomeInterface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3D1E9E9FDF3410B609C4FFAC /* HomeInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3378AADEC52D5A8AE2261C5D /* HomeInterface.framework */; };
 		436F3C72FC5BF280CEE4819A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7210F22777D23AD1713BCADE /* AppDelegate.swift */; };
+		5AD5612813424CB1346C054F /* LoginFeature.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DC1FED34715BFF8FB1DD176A /* LoginFeature.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68AE46A2747FD3D5DE7DCDA2 /* LoginFeature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1FED34715BFF8FB1DD176A /* LoginFeature.framework */; };
 		6C97FA3775E7F39AAC540A57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED69542D699D2104EE8BFC4 /* SceneDelegate.swift */; };
 		7A4AE866C071D87015C3E2D4 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9369BFA2C65412102538303 /* DesignSystem.framework */; };
 		7A9B70D61D9FBF7FD10A0641 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514C6A786251DDEC6B3DFF77 /* Core.framework */; };
 		82281E66DE9A62C6D5110C51 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514C6A786251DDEC6B3DFF77 /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8E5B41AB576E6B1EE8E805D3 /* LoginInterface.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E12891B392AFA0E4F9F9E5CC /* LoginInterface.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A8C238FA879104881E46B5B4 /* LoginInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12891B392AFA0E4F9F9E5CC /* LoginInterface.framework */; };
 		A973789BCDC97B3BC1986FE3 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9369BFA2C65412102538303 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA79A1F750E3B19A812A495A /* Placeholder.swift in Resources */ = {isa = PBXBuildFile; fileRef = 9F04D7C8BDD2921211F16C21 /* Placeholder.swift */; };
 		C4697C40306EB1ACEBB4A16A /* HomeFeature.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D6C67D77406D385F61826962 /* HomeFeature.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -34,6 +38,8 @@
 				A973789BCDC97B3BC1986FE3 /* DesignSystem.framework in Embed Frameworks */,
 				C4697C40306EB1ACEBB4A16A /* HomeFeature.framework in Embed Frameworks */,
 				3724F0D1C132F43A418CCEEB /* HomeInterface.framework in Embed Frameworks */,
+				5AD5612813424CB1346C054F /* LoginFeature.framework in Embed Frameworks */,
+				8E5B41AB576E6B1EE8E805D3 /* LoginInterface.framework in Embed Frameworks */,
 				DCD37A6D1A91C72785D1E954 /* SnapKit.framework in Embed Frameworks */,
 				10D7D2F3522D9DF5811E5DD3 /* Then.framework in Embed Frameworks */,
 			);
@@ -55,6 +61,8 @@
 		9F04D7C8BDD2921211F16C21 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		CC93844F0C73FE26C02E3ABA /* Flyleaf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flyleaf.entitlements; sourceTree = "<group>"; };
 		D6C67D77406D385F61826962 /* HomeFeature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HomeFeature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC1FED34715BFF8FB1DD176A /* LoginFeature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginFeature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E12891B392AFA0E4F9F9E5CC /* LoginInterface.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginInterface.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9369BFA2C65412102538303 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -67,6 +75,8 @@
 				7A4AE866C071D87015C3E2D4 /* DesignSystem.framework in Frameworks */,
 				1DDE04C546CDAF2454144BDE /* HomeFeature.framework in Frameworks */,
 				3D1E9E9FDF3410B609C4FFAC /* HomeInterface.framework in Frameworks */,
+				68AE46A2747FD3D5DE7DCDA2 /* LoginFeature.framework in Frameworks */,
+				A8C238FA879104881E46B5B4 /* LoginInterface.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +152,8 @@
 				09A83BD4E307F1EFFEA9358B /* FlyleafDev.app */,
 				D6C67D77406D385F61826962 /* HomeFeature.framework */,
 				3378AADEC52D5A8AE2261C5D /* HomeInterface.framework */,
+				DC1FED34715BFF8FB1DD176A /* LoginFeature.framework */,
+				E12891B392AFA0E4F9F9E5CC /* LoginInterface.framework */,
 				0DE442BA1C87E9CF5D190ED8 /* SnapKit.framework */,
 				7703DB5539953F38792597A5 /* Then.framework */,
 			);
