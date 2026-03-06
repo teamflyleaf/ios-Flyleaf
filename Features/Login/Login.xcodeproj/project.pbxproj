@@ -28,6 +28,7 @@
 		9227FEEAB41D8C995C77E263 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
 		9E2D78E7D0E47A1DBEA020A5 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9E6AD2212F5B227C0066F4B2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2202F5B227A0066F4B2 /* LoginViewModel.swift */; };
+		9E6AD2282F5B309E0066F4B2 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2272F5B309A0066F4B2 /* LoginViewModelTests.swift */; };
 		AE0D8FC7E63ED465DB3DF3DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CE6565134B39D4CAB37FD6 /* SceneDelegate.swift */; };
 		B18C761FAF79561E121A280D /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 916D5885EC6AA033A601DAFD /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C86A3DB76C9C4ABE7CE55794 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */; };
@@ -162,6 +163,7 @@
 		994492FA3C9FAAC9617B73A7 /* LoginTesting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginTesting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9C214589834256AC9DD6AB /* Then.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Then.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6AD2202F5B227A0066F4B2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		9E6AD2272F5B309A0066F4B2 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A6D197429DF4204F655968BA /* LoginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C651B0D0EFD01000DA87826A /* LoginExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoginExample-Info.plist"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		0D1C156EBDDF9D8B6E600D3D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD2272F5B309A0066F4B2 /* LoginViewModelTests.swift */,
 				71A193EB673C2D8098D25701 /* LoginFeatureTests.swift */,
 			);
 			path = Tests;
@@ -586,6 +589,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E6AD2282F5B309E0066F4B2 /* LoginViewModelTests.swift in Sources */,
 				5A34942EA90EE080CC93F2B8 /* LoginFeatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
