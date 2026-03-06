@@ -35,11 +35,14 @@ let project = Project(
       ]),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
+      entitlements: .file(path: "Flyleaf.entitlements"),
       dependencies: [
         .core(),
         .designSystem(),
         .feature(.home, .feature),
-        .feature(.home, .interface)
+        .feature(.home, .interface),
+        .feature(.login, .feature),
+        .feature(.login, .interface),
       ],
       settings: .settings(
         base: [
