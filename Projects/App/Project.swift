@@ -43,6 +43,7 @@ let project = Project(
         .feature(.home, .interface),
         .feature(.login, .feature),
         .feature(.login, .interface),
+        .firebaseCore()
       ],
       settings: .settings(
         base: [
