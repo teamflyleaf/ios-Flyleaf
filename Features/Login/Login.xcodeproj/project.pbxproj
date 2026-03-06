@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,9 +27,9 @@
 		903A57D4B891742740F67ADD /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9227FEEAB41D8C995C77E263 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
 		9E2D78E7D0E47A1DBEA020A5 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9E6AD2212F5B227C0066F4B2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2202F5B227A0066F4B2 /* LoginViewModel.swift */; };
 		AE0D8FC7E63ED465DB3DF3DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CE6565134B39D4CAB37FD6 /* SceneDelegate.swift */; };
 		B18C761FAF79561E121A280D /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 916D5885EC6AA033A601DAFD /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C4603F421F5BF4FDE966A0FC /* LoginRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CBFA5CB73840E677C77B60 /* LoginRootViewController.swift */; };
 		C86A3DB76C9C4ABE7CE55794 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */; };
 		EF418BB234A03544CFC8E554 /* LoginInterfacePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB5668793C3D10DD34AB2C /* LoginInterfacePlaceholder.swift */; };
 		F7427F5BCF1FAD5ED2DFF490 /* LoginTesting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 994492FA3C9FAAC9617B73A7 /* LoginTesting.framework */; };
@@ -161,9 +161,9 @@
 		916D5885EC6AA033A601DAFD /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		994492FA3C9FAAC9617B73A7 /* LoginTesting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginTesting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9C214589834256AC9DD6AB /* Then.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Then.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E6AD2202F5B227A0066F4B2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A6D197429DF4204F655968BA /* LoginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B8CBFA5CB73840E677C77B60 /* LoginRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRootViewController.swift; sourceTree = "<group>"; };
 		C651B0D0EFD01000DA87826A /* LoginExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoginExample-Info.plist"; sourceTree = "<group>"; };
 		CAF3DF1EDA82C7396A558135 /* LoginTestingPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTestingPlaceholder.swift; sourceTree = "<group>"; };
 		D0CE6565134B39D4CAB37FD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -323,6 +323,14 @@
 			path = LoginTests;
 			sourceTree = "<group>";
 		};
+		9E6AD21F2F5B22760066F4B2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9E6AD2202F5B227A0066F4B2 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		A19BD00EC1C84FD92121B04F /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,8 +355,8 @@
 		D344FF0AA4E0F63A413B7551 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD21F2F5B22760066F4B2 /* ViewModel */,
 				189846B2CFBAC599B4C2AC45 /* Views */,
-				B8CBFA5CB73840E677C77B60 /* LoginRootViewController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -486,8 +494,6 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 6C10079AF94881EFE73379E4 /* Build configuration list for PBXProject "Login" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -563,8 +569,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4603F421F5BF4FDE966A0FC /* LoginRootViewController.swift in Sources */,
 				6E0924FD86C66FC1AD55BFB4 /* LoginViewController.swift in Sources */,
+				9E6AD2212F5B227C0066F4B2 /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,10 +662,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -772,10 +775,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -899,10 +899,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -985,10 +982,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1019,10 +1013,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-					"$(inherited)",
-					DEBUG,
-				);
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;

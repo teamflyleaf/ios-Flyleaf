@@ -12,6 +12,19 @@ import SnapKit
 import Then
 
 public final class LoginViewController: BaseViewController {
+  private let viewModel: LoginViewModel
+  
+  public var onLoginSuccess: (() -> Void)?
+  
+  public init(viewModel: LoginViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  public required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   // MARK: - UI
   private let captionLabel = UILabel().then {
     $0.font = .h1
@@ -63,6 +76,13 @@ public final class LoginViewController: BaseViewController {
     }
   }
   
+  // MARK: - Binding
+  public override func bind() {
+    viewModel.onLoginSuccess = { [weak self] in
+      self?.onLoginSuccess?()
+    }
+  }
+  
   // MARK: - Action
   @objc func didTapSignIn() {
     print("tap")
@@ -75,6 +95,22 @@ public final class LoginViewController: BaseViewController {
     controller.delegate = self
     controller.presentationContextProvider = self
     controller.performRequests()
+  }
+}
+
+// MARK: - Method
+extension LoginViewController {
+  private func presentErrorAlert(message: String) {
+    let alert = UIAlertController(
+      title: "로그인 실패",
+      message: message,
+      preferredStyle: .alert
+    )
+
+    let confirmAction = UIAlertAction(title: "확인", style: .default)
+    alert.addAction(confirmAction)
+
+    present(alert, animated: true)
   }
 }
 
@@ -93,25 +129,20 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
     controller: ASAuthorizationController,
     didCompleteWithError error: any Error
   ) {
-    // TODO: - 로그인 실패 에러처리
     let nsError = error as NSError
     
     if nsError.domain == ASAuthorizationError.errorDomain,
        let code = ASAuthorizationError.Code(rawValue: nsError.code) {
       switch code {
       case .canceled:
-        print("user canceled")
-      case .failed:
-        print("Auth failed")
-      case .invalidResponse:
-        print("invalidResponse")
-      case .notHandled:
-        print("notHandled")
-      case .unknown:
-        print("unknown")
-      default:
-        print("unknown default")
+        break
+      case .failed, .invalidResponse, .notHandled, .unknown:
+        presentErrorAlert(message: "로그인에 실패했어요. 다시 시도해주세요.")
+      @unknown default:
+        presentErrorAlert(message: "알 수 없는 오류가 발생했어요")
       }
+    } else {
+      presentErrorAlert(message: "알 수 없는 오류가 발생했어요")
     }
   }
   
@@ -141,5 +172,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
     } else {
       print("identityToken: nil")
     }
+    
+    viewModel.handleLoginSuccess()
   }
 }
