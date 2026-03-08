@@ -6,6 +6,7 @@
 //
 
 import AuthenticationServices
+import Core
 import UIKit
 import DesignSystem
 import SnapKit
@@ -13,7 +14,7 @@ import Then
 
 public final class LoginViewController: BaseViewController {
   private let viewModel: LoginViewModel
-  
+  private var currentNonce: String?
   public var onLoginSuccess: (() -> Void)?
   
   public init(viewModel: LoginViewModel) {
@@ -78,18 +79,25 @@ public final class LoginViewController: BaseViewController {
   
   // MARK: - Binding
   public override func bind() {
-    viewModel.onLoginSuccess = { [weak self] in
+    viewModel.onLoginSuccess = { [weak self] user in
       self?.onLoginSuccess?()
+      print(user)
+    }
+    
+    viewModel.onLoginFailure = { [weak self] message in
+      self?.presentErrorAlert(message: message)
     }
   }
   
   // MARK: - Action
   @objc func didTapSignIn() {
-    print("tap")
+    let nonce = Nonce.randomNonceString()
+    currentNonce = nonce
     let provider = ASAuthorizationAppleIDProvider()
     let request = provider.createRequest()
     
     request.requestedScopes = [.fullName, .email]
+    request.nonce = Nonce.sha256(nonce)
     
     let controller = ASAuthorizationController(authorizationRequests: [request])
     controller.delegate = self
@@ -150,29 +158,35 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
     controller: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
-    guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
-      print("Unexpected Credential")
+    guard let nonce = currentNonce else {
+      presentErrorAlert(message: "로그인 요청 정보가 유실되었어요. 다시 시도해주세요.")
       return
     }
     
-    let userId = credential.user
-    let email = credential.email ?? "(nil: only on first sign-in)"
+    guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+      presentErrorAlert(message: "로그인 정보가 올바르지 않아요.")
+      return
+    }
+    
+    guard let tokenData = credential.identityToken,
+          let idToken = String(data: tokenData, encoding: .utf8) else {
+      presentErrorAlert(message: "토큰 정보를 불러오지 못했어요.")
+      return
+    }
+    
     let fullName = [credential.fullName?.familyName, credential.fullName?.givenName]
       .compactMap { $0 }
       .joined()
     
-    print("Apple Login Success")
-    print("userId: \(userId)")
-    print("Email: \(email)")
-    print("FullName: \(fullName)")
+    let payload = AppleLoginPayload(
+      idToken: idToken,
+      rawNonce: nonce,
+      name: fullName.isEmpty ? nil : fullName,
+      email: credential.email
+    )
     
-    if let tokenData = credential.identityToken,
-       let token = String(data: tokenData, encoding: .utf8) {
-      print("identityToken: \(token)")
-    } else {
-      print("identityToken: nil")
+    Task {
+      await viewModel.handleAppleAuthorization(payload: payload)
     }
-    
-    viewModel.handleLoginSuccess()
   }
 }

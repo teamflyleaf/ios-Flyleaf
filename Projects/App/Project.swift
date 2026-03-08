@@ -47,7 +47,7 @@ let project = Project(
       settings: .settings(
         base: [
           "DEVELOPMENT_TEAM": "X67DB976UU",
-          "CODE_SIGN_STYLE": "Automatic"
+          "CODE_SIGN_STYLE": "Automatic",
         ]
       )
     )

@@ -17,7 +17,15 @@ let project = Project(
       product: .framework,
       bundleId: "com.yeo.flyleaf.core",
       sources: ["Sources/**"],
-      dependencies: []
+      dependencies: [
+        .firebaseAuth(),
+        .firebaseCore(),
+      ],
+      settings: .settings(
+        base: [
+          "OTHER_LDFLAGS": "$(inherited) -ObjC"
+        ]
+      )
     )
   ]
 )

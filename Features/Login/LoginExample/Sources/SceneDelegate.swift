@@ -5,8 +5,9 @@
 //  Created by 여성일 on now.
 //
 
-import UIKit
 import LoginFeature
+import LoginInterface
+import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,12 +20,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
 
     guard let windowScene = scene as? UIWindowScene else { return }
-    
+
     let window = UIWindow(windowScene: windowScene)
-    let viewModel = LoginViewModel()
-    window.rootViewController = LoginViewController(viewModel: viewModel)
+
+    let loginBuilder: LoginBuildable = LoginBuilder()
+
+    let loginVC = loginBuilder.build {
+      print("Login Success")
+    }
+
+    window.rootViewController = UINavigationController(rootViewController: loginVC)
     window.makeKeyAndVisible()
-    
+
     self.window = window
   }
 }

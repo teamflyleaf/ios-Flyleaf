@@ -5,36 +5,55 @@
 //  Created by 여성일 on 3/6/26.
 //
 
+import Core
+import HomeInterface
+import LoginInterface
 import UIKit
-import LoginFeature
-import HomeFeature
 
+@MainActor
 final class AppCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
   
-  init(navigationController: UINavigationController) {
+  private let authService: AuthServicing
+  private let homeBuilder: HomeBuildable
+  private let loginBuilder: LoginBuildable
+  
+  init(
+    navigationController: UINavigationController,
+    authService: AuthServicing,
+    homeBuilder: HomeBuildable,
+    loginBuilder: LoginBuildable
+  ) {
     self.navigationController = navigationController
+    self.authService = authService
+    self.homeBuilder = homeBuilder
+    self.loginBuilder = loginBuilder
   }
   
   func start() {
-    showLogin()
+    routeInitialFlow()
+  }
+  
+  private func routeInitialFlow() {
+    if authService.isSignedIn {
+      showHome()
+    } else {
+      showLogin()
+    }
   }
   
   private func showLogin() {
-    let viewModel = LoginViewModel()
-    let loginVC = LoginViewController(viewModel: viewModel)
-    
-    loginVC.onLoginSuccess = { [weak self] in
+    let loginVC = loginBuilder.build { [weak self] in
       self?.showHome()
     }
+    
     navigationController.setViewControllers([loginVC], animated: true)
   }
   
   private func showHome() {
-    let viewModel = HomeViewModel()
-    let homeVC = HomeViewController(viewModel: viewModel)
+    let homeVC = homeBuilder.build()
     
     navigationController.setViewControllers([homeVC], animated: true)
   }
