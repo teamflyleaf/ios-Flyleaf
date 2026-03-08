@@ -5,12 +5,30 @@
 //  Created by 여성일 on 3/6/26.
 //
 
+import AuthenticationServices
+import Core
+
 public final class LoginViewModel {
-  public init() {}
+  private let authService: AuthServiceProtocol
   
-  var onLoginSuccess: (() -> Void)?
+  public init(authService: AuthServiceProtocol) {
+    self.authService = authService
+  }
   
-  func handleLoginSuccess() {
-    onLoginSuccess?()
+  var onLoginSuccess: ((User) -> Void)?
+  var onLoginFailure: ((String) -> Void)?
+  
+  func handleAppleAuthorization(
+    _ credential: ASAuthorizationAppleIDCredential,
+    rawNonce: String
+  ) {
+    Task {
+      do {
+        let user = try await authService.signInWithApple(credential: credential, rawNonce: rawNonce)
+        onLoginSuccess?(user)
+      } catch {
+        onLoginFailure?("로그인에 실패했어요.")
+      }
+    }
   }
 }

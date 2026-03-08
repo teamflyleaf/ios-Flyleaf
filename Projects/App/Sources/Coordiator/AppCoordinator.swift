@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Core
 import LoginFeature
 import HomeFeature
 
@@ -23,11 +24,14 @@ final class AppCoordinator: Coordinator {
   }
   
   private func showLogin() {
-    let viewModel = LoginViewModel()
+    let authService = FirebaseAuthService()
+    let viewModel = LoginViewModel(authService: authService)
     let loginVC = LoginViewController(viewModel: viewModel)
     
     loginVC.onLoginSuccess = { [weak self] in
-      self?.showHome()
+      DispatchQueue.main.async {
+        self?.showHome()
+      }
     }
     navigationController.setViewControllers([loginVC], animated: true)
   }
