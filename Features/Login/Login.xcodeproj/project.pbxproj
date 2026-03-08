@@ -43,7 +43,6 @@
 		7CD96E75B4ED5EE8F591D120 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
 		828E646CA0F7CBFF65D5EF83 /* GoogleUtilities_GoogleUtilities_AppDelegateSwizzler.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BD9E8015A9AF1781D2203D60 /* GoogleUtilities_GoogleUtilities_AppDelegateSwizzler.bundle */; };
 		83E425E99AD9610A4CA860C8 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; };
-		83F4B25DA7A8372B93E09540 /* LoginTestingPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3DF1EDA82C7396A558135 /* LoginTestingPlaceholder.swift */; };
 		872EDE3131FBDF351AF5C107 /* Firebase_FirebaseCoreExtension.bundle in Dependencies */ = {isa = PBXBuildFile; fileRef = 1A2D19C04A3AAFDFD75B1F29 /* Firebase_FirebaseCoreExtension.bundle */; };
 		889AD62CE6214E1A27BA60B9 /* LoginInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11FBD0E3955244E07BE153F0 /* LoginInterface.framework */; };
 		903A57D4B891742740F67ADD /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 672078D2E829523D8CBFE44A /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -53,6 +52,8 @@
 		9E2D78E7D0E47A1DBEA020A5 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9E6AD2462F5DB5A50066F4B2 /* LoginBuildable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2452F5DB5A00066F4B2 /* LoginBuildable.swift */; };
 		9E6AD2492F5DB65B0066F4B2 /* LoginBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2482F5DB6560066F4B2 /* LoginBuilder.swift */; };
+		9E6AD2502F5DC0390066F4B2 /* MockAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD24F2F5DC0340066F4B2 /* MockAuthService.swift */; };
+		9E6AD2552F5DC7B00066F4B2 /* MockAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2542F5DC7AD0066F4B2 /* MockAuthError.swift */; };
 		9ECAC7571BEE2B54A97DC6DD /* GoogleUtilities_GoogleUtilities_NSData.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1D171DE5AAA5EE80D0E08312 /* GoogleUtilities_GoogleUtilities_NSData.bundle */; };
 		A1B64DF1DD18B212B048EC73 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095A96CE453E8ED800C9DF64 /* LoginViewModelTests.swift */; };
 		A5E7842BD3CB29CB4FF81D22 /* GoogleUtilities_GoogleUtilities_Environment.bundle in Dependencies */ = {isa = PBXBuildFile; fileRef = 3CF050880A0F6D83AA2DE9D7 /* GoogleUtilities_GoogleUtilities_Environment.bundle */; };
@@ -259,13 +260,14 @@
 		9A9C214589834256AC9DD6AB /* Then.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Then.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6AD2452F5DB5A00066F4B2 /* LoginBuildable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBuildable.swift; sourceTree = "<group>"; };
 		9E6AD2482F5DB6560066F4B2 /* LoginBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBuilder.swift; sourceTree = "<group>"; };
+		9E6AD24F2F5DC0340066F4B2 /* MockAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthService.swift; sourceTree = "<group>"; };
+		9E6AD2542F5DC7AD0066F4B2 /* MockAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthError.swift; sourceTree = "<group>"; };
 		A6D197429DF4204F655968BA /* LoginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A78DFB39E6F2ADF7C38CFA79 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B35978D79FD3BEAC9798CF3D /* Firebase_FirebaseCoreInternal.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Firebase_FirebaseCoreInternal.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD9E8015A9AF1781D2203D60 /* GoogleUtilities_GoogleUtilities_AppDelegateSwizzler.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoogleUtilities_GoogleUtilities_AppDelegateSwizzler.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0AC984D1883233FE4A5CF27 /* Firebase_FirebaseCore.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Firebase_FirebaseCore.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C651B0D0EFD01000DA87826A /* LoginExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoginExample-Info.plist"; sourceTree = "<group>"; };
-		CAF3DF1EDA82C7396A558135 /* LoginTestingPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTestingPlaceholder.swift; sourceTree = "<group>"; };
 		D0CE6565134B39D4CAB37FD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E3D6CBEE81E5F4167B6B836D /* Firebase_FirebaseAuth.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Firebase_FirebaseAuth.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC3185666813FAFE43DFAEB /* LoginFeature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoginFeature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -396,7 +398,8 @@
 		3A8FBFB84969A641BAA52F0F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CAF3DF1EDA82C7396A558135 /* LoginTestingPlaceholder.swift */,
+				9E6AD2542F5DC7AD0066F4B2 /* MockAuthError.swift */,
+				9E6AD24F2F5DC0340066F4B2 /* MockAuthService.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -726,7 +729,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83F4B25DA7A8372B93E09540 /* LoginTestingPlaceholder.swift in Sources */,
+				9E6AD2552F5DC7B00066F4B2 /* MockAuthError.swift in Sources */,
+				9E6AD2502F5DC0390066F4B2 /* MockAuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
