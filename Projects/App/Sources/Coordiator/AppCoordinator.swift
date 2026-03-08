@@ -10,6 +10,7 @@ import HomeInterface
 import LoginInterface
 import UIKit
 
+@MainActor
 final class AppCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -18,7 +19,7 @@ final class AppCoordinator: Coordinator {
   private let authService: AuthServicing
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
-
+  
   init(
     navigationController: UINavigationController,
     authService: AuthServicing,
@@ -45,9 +46,7 @@ final class AppCoordinator: Coordinator {
   
   private func showLogin() {
     let loginVC = loginBuilder.build { [weak self] in
-      DispatchQueue.main.async {
-        self?.showHome()
-      }
+      self?.showHome()
     }
     
     navigationController.setViewControllers([loginVC], animated: true)

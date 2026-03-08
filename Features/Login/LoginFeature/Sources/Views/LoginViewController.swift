@@ -168,6 +168,25 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
       return
     }
     
-    viewModel.handleAppleAuthorization(credential, rawNonce: nonce)
+    guard let tokenData = credential.identityToken,
+          let idToken = String(data: tokenData, encoding: .utf8) else {
+      presentErrorAlert(message: "토큰 정보를 불러오지 못했어요.")
+      return
+    }
+    
+    let fullName = [credential.fullName?.familyName, credential.fullName?.givenName]
+      .compactMap { $0 }
+      .joined()
+    
+    let payload = AppleLoginPayload(
+      idToken: idToken,
+      rawNonce: nonce,
+      name: fullName.isEmpty ? nil : fullName,
+      email: credential.email
+    )
+    
+    Task {
+      await viewModel.handleAppleAuthorization(payload: payload)
+    }
   }
 }

@@ -17,18 +17,12 @@ public final class FirebaseAuthService: AuthServicing {
   }
   
   public func signInWithApple(
-    credential: ASAuthorizationAppleIDCredential,
-    rawNonce: String
+    payload: AppleLoginPayload
   ) async throws -> User {
-    guard let tokenData = credential.identityToken,
-          let idToken = String(data: tokenData, encoding: .utf8) else {
-      throw AuthError.invalidToken
-    }
-    
     let firebaseCredential = OAuthProvider.appleCredential(
-      withIDToken: idToken,
-      rawNonce: rawNonce,
-      fullName: credential.fullName
+      withIDToken: payload.idToken,
+      rawNonce: payload.rawNonce,
+      fullName: nil
     )
     
     let result: AuthDataResult
@@ -39,15 +33,10 @@ public final class FirebaseAuthService: AuthServicing {
       throw AuthError.signInFailed
     }
     
-    let name = [
-      credential.fullName?.familyName,
-      credential.fullName?.givenName
-    ].compactMap { $0 }.joined()
-    
     return User(
       id: result.user.uid,
-      name: name.isEmpty ? nil : name,
-      email: credential.email
+      name: payload.name,
+      email: payload.email
     )
   }
 }

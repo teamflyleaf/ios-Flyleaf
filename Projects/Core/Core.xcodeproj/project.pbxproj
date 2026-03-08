@@ -24,6 +24,7 @@
 		838B325057EEEF68DDBE83FF /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768292FE1E6642789CAFDFAC /* FirebaseCore.framework */; };
 		92C49C704AF7DDA2EE46411E /* GoogleUtilities_Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF4E795FDF860686AE8734F /* GoogleUtilities_Network.framework */; };
 		9C45B30F065A6041ACC659F0 /* third_party_IsAppEncrypted.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AAF319FF3A40E0509E5A2D /* third_party_IsAppEncrypted.framework */; };
+		9E6AD2532F5DC3B60066F4B2 /* AppleLoginPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */; };
 		A6D469259936353FB89CE77A /* FirebaseAuthInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3ACC3C1CAF0D95BA4B2A5 /* FirebaseAuthInternal.framework */; };
 		B81B2060755421EF96E3FA09 /* RecaptchaInterop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78CBAAA54E90CCB392FF0D5A /* RecaptchaInterop.framework */; };
 		D0A090454A94DB761EF8C987 /* GoogleUtilities_Logger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A6D43CCE4B334F89032AAB /* GoogleUtilities_Logger.framework */; };
@@ -70,6 +71,7 @@
 		7A8C5A5F699F8548F2DECB68 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		96DA0AFB1138106AF5DD9222 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9885DD3D1F68731B78F4047F /* FirebaseAuthInterop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseAuthInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginPayload.swift; sourceTree = "<group>"; };
 		A058034637EEB632AC9F9D8D /* FirebaseAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthService.swift; sourceTree = "<group>"; };
 		A6DA5BE7C588BA8FA743C1B5 /* GoogleUtilities_NSData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleUtilities_NSData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B192C2E9DE6D05DEAF1ED2E4 /* AuthServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServicing.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		81104ECEC5CD1B0F5111557B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD2512F5DC3AA0066F4B2 /* Payload */,
 				9E6AD2442F5DB3720066F4B2 /* Firebase */,
 				027D5722987FC7E2B9CF7011 /* Auth */,
 				3CE205FFA0B9CE31813EAD2B /* Model */,
@@ -205,6 +208,14 @@
 				28AAC1B2B777312322CA0887 /* FirebaseBootstrap.swift */,
 			);
 			path = Firebase;
+			sourceTree = "<group>";
+		};
+		9E6AD2512F5DC3AA0066F4B2 /* Payload */ = {
+			isa = PBXGroup;
+			children = (
+				9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */,
+			);
+			path = Payload;
 			sourceTree = "<group>";
 		};
 		E12816BA35F79D21E0D77318 /* Project */ = {
@@ -292,6 +303,7 @@
 				793826A0568DEAA1832CFFAB /* AuthServicing.swift in Sources */,
 				61B60EB48AC5AF090FDE08A7 /* FirebaseAuthService.swift in Sources */,
 				30B1676A82B7D8051DA00638 /* Nonce.swift in Sources */,
+				9E6AD2532F5DC3B60066F4B2 /* AppleLoginPayload.swift in Sources */,
 				55B4A67FEC928567E4F232E0 /* FirebaseBootstrap.swift in Sources */,
 				D5D82EB7D13DDDDC8FA71BA4 /* User.swift in Sources */,
 			);

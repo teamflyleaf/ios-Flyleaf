@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol Coordinator: AnyObject {
   var parentCoordinator: Coordinator? { get set }
   var childCoordinators: [Coordinator] { get set }
