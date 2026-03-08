@@ -5,9 +5,10 @@
 //  Created by 여성일 on 3/1/26.
 //
 
-import UIKit
+import Core
 import HomeFeature
 import LoginFeature
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -23,7 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = scene as? UIWindowScene else { return }
     
     let navigationController = UINavigationController()
-    let coordinator = AppCoordinator(navigationController: navigationController)
+    navigationController.navigationBar.isHidden = true
+    
+    let authService = FirebaseAuthService()
+    let homeBuilder = HomeBuilder()
+    let loginBuilder = LoginBuilder()
+    let coordinator = AppCoordinator(
+      navigationController: navigationController,
+      authService: authService,
+      homeBuilder: homeBuilder,
+      loginBuilder: loginBuilder
+    )
     
     let window = UIWindow(windowScene: windowScene)
     window.rootViewController = navigationController

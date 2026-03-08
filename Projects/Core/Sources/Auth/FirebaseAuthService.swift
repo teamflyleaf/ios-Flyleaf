@@ -9,9 +9,13 @@ import AuthenticationServices
 import FirebaseAuth
 import FirebaseCore
 
-public final class FirebaseAuthService: AuthServiceProtocol {
+public final class FirebaseAuthService: AuthServicing {
   public init() {}
 
+  public var isSignedIn: Bool {
+    Auth.auth().currentUser != nil
+  }
+  
   public func signInWithApple(
     credential: ASAuthorizationAppleIDCredential,
     rawNonce: String

@@ -9,9 +9,9 @@ import AuthenticationServices
 import Core
 
 public final class LoginViewModel {
-  private let authService: AuthServiceProtocol
+  private let authService: AuthServicing
   
-  public init(authService: AuthServiceProtocol) {
+  public init(authService: AuthServicing) {
     self.authService = authService
   }
   

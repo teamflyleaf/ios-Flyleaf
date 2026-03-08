@@ -7,7 +7,8 @@
 
 import AuthenticationServices
 
-public protocol AuthServiceProtocol {
+public protocol AuthServicing {
+  var isSignedIn: Bool { get }
   func signInWithApple(
     credential: ASAuthorizationAppleIDCredential,
     rawNonce: String
