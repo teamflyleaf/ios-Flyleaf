@@ -38,7 +38,7 @@ final class AppCoordinator: Coordinator {
   
   private func routeInitialFlow() {
     if authService.isSignedIn {
-      showHome()
+      showMainTabBar()
     } else {
       showLogin()
     }
@@ -46,15 +46,25 @@ final class AppCoordinator: Coordinator {
   
   private func showLogin() {
     let loginVC = loginBuilder.build { [weak self] in
-      self?.showHome()
+      self?.showMainTabBar()
     }
     
     navigationController.setViewControllers([loginVC], animated: true)
   }
   
-  private func showHome() {
+  private func showMainTabBar() {
     let homeVC = homeBuilder.build()
+    let journeyVC = PlaceholderViewController()
+    let wishlistVC = PlaceholderViewController()
+    let historyVC = PlaceholderViewController()
     
-    navigationController.setViewControllers([homeVC], animated: true)
+    let tabBarController = MainTabBarController(
+      homeViewController: homeVC,
+      journeyViewController: journeyVC,
+      wishlistViewController: wishlistVC,
+      historyViewController: historyVC
+    )
+    
+    navigationController.setViewControllers([tabBarController], animated: true)
   }
 }
