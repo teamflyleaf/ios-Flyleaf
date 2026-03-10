@@ -11,20 +11,25 @@
 		15CCB19C8F1446394CA76467 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8C5A5F699F8548F2DECB68 /* AuthError.swift */; };
 		17CE938DA276A73D734B1820 /* FirebaseCoreExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1184322350392BD782AB0194 /* FirebaseCoreExtension.framework */; };
 		1B033346630EE9604A849452 /* FirebaseAppCheckInterop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25C14BBDFD508F05421A015 /* FirebaseAppCheckInterop.framework */; };
+		262D76E7D8C86F6ABFF0B783 /* AppleLoginPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57280D4528B35CDA454AFDB5 /* AppleLoginPayload.swift */; };
 		30B1676A82B7D8051DA00638 /* Nonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CB54713544661D65F8C7DA /* Nonce.swift */; };
 		332BE947CE06362C2AB7444E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 96DA0AFB1138106AF5DD9222 /* libz.tbd */; };
 		43D8CB6358AB546054B1C965 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9D3DE1027FEB2602E78FD4 /* Firebase.framework */; };
 		4B0F05373E76471F664082EB /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A6968C8D3765048A73ABB3F /* FirebaseAuth.framework */; };
-		55B4A67FEC928567E4F232E0 /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AAC1B2B777312322CA0887 /* FirebaseBootstrap.swift */; };
 		5F9CD8D121885EDDB70C1F80 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D346EBCCB640EF87F64815D /* SafariServices.framework */; };
 		61B60EB48AC5AF090FDE08A7 /* FirebaseAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A058034637EEB632AC9F9D8D /* FirebaseAuthService.swift */; };
 		63FB325E6BF346FE42210F29 /* FirebaseAuthInterop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9885DD3D1F68731B78F4047F /* FirebaseAuthInterop.framework */; };
 		711FAB9DF0676AD9861A390C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F89BA4816DD744175DE91E5 /* UIKit.framework */; };
-		793826A0568DEAA1832CFFAB /* AuthServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B192C2E9DE6D05DEAF1ED2E4 /* AuthServicing.swift */; };
 		838B325057EEEF68DDBE83FF /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768292FE1E6642789CAFDFAC /* FirebaseCore.framework */; };
+		8F95E522897986C8394AA958 /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBC168EDFBC22932B4F7B59 /* FirebaseBootstrap.swift */; };
 		92C49C704AF7DDA2EE46411E /* GoogleUtilities_Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF4E795FDF860686AE8734F /* GoogleUtilities_Network.framework */; };
 		9C45B30F065A6041ACC659F0 /* third_party_IsAppEncrypted.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32AAF319FF3A40E0509E5A2D /* third_party_IsAppEncrypted.framework */; };
-		9E6AD2532F5DC3B60066F4B2 /* AppleLoginPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */; };
+		9E6AD2722F6053E60066F4B2 /* ReadingJourneyStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2712F6053E00066F4B2 /* ReadingJourneyStatusType.swift */; };
+		9E6AD2742F60540D0066F4B2 /* AirportInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2732F60540A0066F4B2 /* AirportInfo.swift */; };
+		9E6AD2762F60541D0066F4B2 /* BookInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2752F60541B0066F4B2 /* BookInfo.swift */; };
+		9E6AD2782F6054290066F4B2 /* JourneyMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2772F6054260066F4B2 /* JourneyMemo.swift */; };
+		9E6AD27A2F6054350066F4B2 /* ReadingJourney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD2792F6054320066F4B2 /* ReadingJourney.swift */; };
+		9E6AD27D2F6059D00066F4B2 /* ReadingJourney+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6AD27C2F6059CB0066F4B2 /* ReadingJourney+Mock.swift */; };
 		A6D469259936353FB89CE77A /* FirebaseAuthInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3ACC3C1CAF0D95BA4B2A5 /* FirebaseAuthInternal.framework */; };
 		B81B2060755421EF96E3FA09 /* RecaptchaInterop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78CBAAA54E90CCB392FF0D5A /* RecaptchaInterop.framework */; };
 		D0A090454A94DB761EF8C987 /* GoogleUtilities_Logger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A6D43CCE4B334F89032AAB /* GoogleUtilities_Logger.framework */; };
@@ -33,6 +38,7 @@
 		E4463BAA1CCEDCE41C53A88B /* GoogleUtilities_Environment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24A70B3DEDBC86CD2D0FDB2B /* GoogleUtilities_Environment.framework */; };
 		E5C3D01D473A3F020B867E03 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D5F55C56949FE8659B650A /* AppKit.framework */; platformFilters = (macos, ); };
 		EA2EB18D9C42CE7DDCF3610D /* GoogleUtilities_AppDelegateSwizzler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5339A0E283453A4FEEAC10D6 /* GoogleUtilities_AppDelegateSwizzler.framework */; };
+		F26F1090A0C096EF9CD39F84 /* AuthServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0DE14F0EE5F1FC3EDF8609 /* AuthServicing.swift */; };
 		FEAE84B6F88F05B26040ABBB /* GoogleUtilities_NSData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DA5BE7C588BA8FA743C1B5 /* GoogleUtilities_NSData.framework */; };
 		FF1C5E80FD1A19E17E0ACABE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3D1ECF7FEA0A4A67AA997A /* Security.framework */; };
 		FFB6299E82DAE71C52174D17 /* GoogleUtilities_Reachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC727B4EE1E4A1280D567736 /* GoogleUtilities_Reachability.framework */; };
@@ -57,24 +63,30 @@
 		1B3D1ECF7FEA0A4A67AA997A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		24A70B3DEDBC86CD2D0FDB2B /* GoogleUtilities_Environment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleUtilities_Environment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26BDD2D3E7FED8CDE9A52F46 /* Core-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Core-Info.plist"; sourceTree = "<group>"; };
-		28AAC1B2B777312322CA0887 /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		29CB54713544661D65F8C7DA /* Nonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nonce.swift; sourceTree = "<group>"; };
 		2B0FA7F85F3573FB522F9478 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32AAF319FF3A40E0509E5A2D /* third_party_IsAppEncrypted.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = third_party_IsAppEncrypted.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F89BA4816DD744175DE91E5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		51C2D06275741F4AC74F4E69 /* GTMSessionFetcherCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GTMSessionFetcherCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5339A0E283453A4FEEAC10D6 /* GoogleUtilities_AppDelegateSwizzler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleUtilities_AppDelegateSwizzler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57280D4528B35CDA454AFDB5 /* AppleLoginPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginPayload.swift; sourceTree = "<group>"; };
 		5D346EBCCB640EF87F64815D /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SafariServices.framework; sourceTree = DEVELOPER_DIR; };
 		5E9D3DE1027FEB2602E78FD4 /* Firebase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Firebase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		768292FE1E6642789CAFDFAC /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78CBAAA54E90CCB392FF0D5A /* RecaptchaInterop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RecaptchaInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A8C5A5F699F8548F2DECB68 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		8CBC168EDFBC22932B4F7B59 /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		96DA0AFB1138106AF5DD9222 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9885DD3D1F68731B78F4047F /* FirebaseAuthInterop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseAuthInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginPayload.swift; sourceTree = "<group>"; };
+		9E6AD2712F6053E00066F4B2 /* ReadingJourneyStatusType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingJourneyStatusType.swift; sourceTree = "<group>"; };
+		9E6AD2732F60540A0066F4B2 /* AirportInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportInfo.swift; sourceTree = "<group>"; };
+		9E6AD2752F60541B0066F4B2 /* BookInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo.swift; sourceTree = "<group>"; };
+		9E6AD2772F6054260066F4B2 /* JourneyMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyMemo.swift; sourceTree = "<group>"; };
+		9E6AD2792F6054320066F4B2 /* ReadingJourney.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingJourney.swift; sourceTree = "<group>"; };
+		9E6AD27C2F6059CB0066F4B2 /* ReadingJourney+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingJourney+Mock.swift"; sourceTree = "<group>"; };
 		A058034637EEB632AC9F9D8D /* FirebaseAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthService.swift; sourceTree = "<group>"; };
 		A6DA5BE7C588BA8FA743C1B5 /* GoogleUtilities_NSData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleUtilities_NSData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B192C2E9DE6D05DEAF1ED2E4 /* AuthServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServicing.swift; sourceTree = "<group>"; };
+		AD0DE14F0EE5F1FC3EDF8609 /* AuthServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServicing.swift; sourceTree = "<group>"; };
 		C25C14BBDFD508F05421A015 /* FirebaseAppCheckInterop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseAppCheckInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C622FF1D26F30839ABB6724C /* FirebaseCoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FirebaseCoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D5F55C56949FE8659B650A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -122,11 +134,19 @@
 			isa = PBXGroup;
 			children = (
 				7A8C5A5F699F8548F2DECB68 /* AuthError.swift */,
-				B192C2E9DE6D05DEAF1ED2E4 /* AuthServicing.swift */,
+				AD0DE14F0EE5F1FC3EDF8609 /* AuthServicing.swift */,
 				A058034637EEB632AC9F9D8D /* FirebaseAuthService.swift */,
 				29CB54713544661D65F8C7DA /* Nonce.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		03CB1550634628D6CE866BCE /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				8CBC168EDFBC22932B4F7B59 /* FirebaseBootstrap.swift */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 		250C62EE12DB56ECEBB473C3 /* Products */ = {
@@ -157,6 +177,11 @@
 		3CE205FFA0B9CE31813EAD2B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9E6AD2792F6054320066F4B2 /* ReadingJourney.swift */,
+				9E6AD2772F6054260066F4B2 /* JourneyMemo.swift */,
+				9E6AD2752F60541B0066F4B2 /* BookInfo.swift */,
+				9E6AD2732F60540A0066F4B2 /* AirportInfo.swift */,
+				9E6AD2712F6053E00066F4B2 /* ReadingJourneyStatusType.swift */,
 				FE544FF35EF839DA91AB23EE /* User.swift */,
 			);
 			path = Model;
@@ -191,31 +216,32 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		73600D594B4B480E3DEEDC0A /* Payload */ = {
+			isa = PBXGroup;
+			children = (
+				57280D4528B35CDA454AFDB5 /* AppleLoginPayload.swift */,
+			);
+			path = Payload;
+			sourceTree = "<group>";
+		};
 		81104ECEC5CD1B0F5111557B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				9E6AD2512F5DC3AA0066F4B2 /* Payload */,
-				9E6AD2442F5DB3720066F4B2 /* Firebase */,
+				9E6AD27B2F6059C60066F4B2 /* Mock */,
 				027D5722987FC7E2B9CF7011 /* Auth */,
+				03CB1550634628D6CE866BCE /* Firebase */,
 				3CE205FFA0B9CE31813EAD2B /* Model */,
+				73600D594B4B480E3DEEDC0A /* Payload */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		9E6AD2442F5DB3720066F4B2 /* Firebase */ = {
+		9E6AD27B2F6059C60066F4B2 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				28AAC1B2B777312322CA0887 /* FirebaseBootstrap.swift */,
+				9E6AD27C2F6059CB0066F4B2 /* ReadingJourney+Mock.swift */,
 			);
-			path = Firebase;
-			sourceTree = "<group>";
-		};
-		9E6AD2512F5DC3AA0066F4B2 /* Payload */ = {
-			isa = PBXGroup;
-			children = (
-				9E6AD2522F5DC3B20066F4B2 /* AppleLoginPayload.swift */,
-			);
-			path = Payload;
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		E12816BA35F79D21E0D77318 /* Project */ = {
@@ -299,13 +325,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E6AD2762F60541D0066F4B2 /* BookInfo.swift in Sources */,
+				9E6AD2742F60540D0066F4B2 /* AirportInfo.swift in Sources */,
 				15CCB19C8F1446394CA76467 /* AuthError.swift in Sources */,
-				793826A0568DEAA1832CFFAB /* AuthServicing.swift in Sources */,
+				F26F1090A0C096EF9CD39F84 /* AuthServicing.swift in Sources */,
 				61B60EB48AC5AF090FDE08A7 /* FirebaseAuthService.swift in Sources */,
+				9E6AD27A2F6054350066F4B2 /* ReadingJourney.swift in Sources */,
 				30B1676A82B7D8051DA00638 /* Nonce.swift in Sources */,
-				9E6AD2532F5DC3B60066F4B2 /* AppleLoginPayload.swift in Sources */,
-				55B4A67FEC928567E4F232E0 /* FirebaseBootstrap.swift in Sources */,
+				9E6AD27D2F6059D00066F4B2 /* ReadingJourney+Mock.swift in Sources */,
+				8F95E522897986C8394AA958 /* FirebaseBootstrap.swift in Sources */,
+				9E6AD2782F6054290066F4B2 /* JourneyMemo.swift in Sources */,
 				D5D82EB7D13DDDDC8FA71BA4 /* User.swift in Sources */,
+				262D76E7D8C86F6ABFF0B783 /* AppleLoginPayload.swift in Sources */,
+				9E6AD2722F6053E60066F4B2 /* ReadingJourneyStatusType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
