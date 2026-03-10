@@ -5,8 +5,9 @@
 //  Created by 여성일 on now.
 //
 
-import UIKit
 import HomeFeature
+import HomeInterface
+import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -17,11 +18,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
-
     guard let windowScene = scene as? UIWindowScene else { return }
     
+    let homeBuilder: HomeBuilder = HomeBuilder()
+    
+    let homeVC = homeBuilder.build()
+    
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = HomeViewController()
+    window.rootViewController = homeVC
     window.makeKeyAndVisible()
     
     self.window = window
