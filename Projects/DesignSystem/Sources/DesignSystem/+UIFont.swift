@@ -38,6 +38,7 @@ public extension UIFont {
   static let b1_m = pretendard(type: .medium, size: 16)
   static let b2_sb = pretendard(type: .semibold, size: 14)
   static let b2_m = pretendard(type: .medium, size: 14)
+  static let b3_sb = pretendard(type: .semibold, size: 10)
   
   // MARK: - Caption
   static let c1 = pretendard(type: .regular, size: 16)
