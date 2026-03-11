@@ -29,6 +29,7 @@ final class SearchResultView: BaseView {
   ).then {
     $0.backgroundColor = .clear
     $0.showsVerticalScrollIndicator = false
+    $0.keyboardDismissMode = .onDrag
     $0.dataSource = self
     $0.delegate = self
     $0.register(

@@ -15,6 +15,8 @@ open class BaseViewController: UIViewController {
     configureUI()
     setupLayout()
     bind()
+    
+    setupKeyboardDismiss()
   }
   
   /// ViewController의 UI 요소를 생성하고 기본 속성을 설정합니다.
@@ -37,4 +39,22 @@ open class BaseViewController: UIViewController {
   ///
   /// `setupLayout()` 이후 호출됩니다.
   open func bind() {}
+}
+
+// MARK: - Keyboard
+private extension BaseViewController {
+
+  func setupKeyboardDismiss() {
+    let tapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(dismissKeyboard)
+    )
+    
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
+  }
+
+  @objc func dismissKeyboard() {
+    view.endEditing(true)
+  }
 }
