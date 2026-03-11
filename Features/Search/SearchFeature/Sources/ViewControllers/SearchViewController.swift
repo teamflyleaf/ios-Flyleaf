@@ -25,6 +25,11 @@ public final class SearchViewController: BaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    headerView.searchTextField.becomeFirstResponder()
+  }
+  
   // MARK: - UI
   private let headerView = SearchHeader()
   private let dividerView = DividerView()
