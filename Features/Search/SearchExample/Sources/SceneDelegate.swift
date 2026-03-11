@@ -7,6 +7,7 @@
 
 import UIKit
 import SearchFeature
+import SearchInterface
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,11 +20,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   ) {
 
     guard let windowScene = scene as? UIWindowScene else { return }
-    
+
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = SearchRootViewController()
+
+    let searchBuilder: SearchBuildable = SearchBuilder()
+    let searchVC = searchBuilder.build(type: .book)
+
+    let navigationController = UINavigationController(rootViewController: searchVC)
+    navigationController.isNavigationBarHidden = true
+
+    window.rootViewController = navigationController
     window.makeKeyAndVisible()
-    
+
     self.window = window
   }
 }
