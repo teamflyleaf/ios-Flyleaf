@@ -8,6 +8,7 @@
 public enum Libraries {
   public static let snapKit = "SnapKit"
   public static let then = "Then"
+  public static let kingfisher = "Kingfisher"
 
   public static let firebaseCore = "FirebaseCore"
   public static let firebaseAuth = "FirebaseAuth"

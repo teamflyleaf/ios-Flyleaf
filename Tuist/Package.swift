@@ -7,7 +7,8 @@ import PackageDescription
     let packageSettings = PackageSettings(
         productTypes: [
           "SnapKit": .framework,
-          "Then": .framework
+          "Then": .framework,
+          "Kingfisher": .framework
         ]
     )
 #endif
@@ -17,6 +18,7 @@ let package = Package(
     dependencies: [
       .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1"),
       .package(url: "https://github.com/devxoul/Then", from: "3.0.0"),
-      .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.10.0")
+      .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.10.0"),
+      .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.8.0")
     ]
 )

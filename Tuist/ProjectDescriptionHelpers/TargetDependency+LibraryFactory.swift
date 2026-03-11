@@ -16,6 +16,10 @@ public extension TargetDependency {
     .external(name: Libraries.then)
   }
 
+  static func kingfisher() -> TargetDependency {
+    .external(name: Libraries.kingfisher)
+  }
+
   static func firebaseCore() -> TargetDependency {
     .external(name: Libraries.firebaseCore)
   }

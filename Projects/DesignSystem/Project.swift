@@ -21,7 +21,8 @@ let project = Project(
       dependencies: [
         .core(),
         .snapKit(),
-        .then()
+        .then(),
+        .kingfisher()
       ]
     )
   ]

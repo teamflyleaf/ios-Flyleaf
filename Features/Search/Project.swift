@@ -11,7 +11,12 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Search",
   targets: [
-    .microFeature(.search),
+    .microFeature(
+      .search,
+      dependencies: [
+        .kingfisher()
+      ]
+    ),
     .microInterface(.search),
     .microTests(.search),
     .microTesting(.search),
