@@ -9,6 +9,7 @@ import Core
 import HomeFeature
 import LoginFeature
 import UIKit
+import SearchFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -29,11 +30,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let authService = FirebaseAuthService()
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
+    let searchBuilder = SearchBuilder()
     let coordinator = AppCoordinator(
       navigationController: navigationController,
       authService: authService,
       homeBuilder: homeBuilder,
-      loginBuilder: loginBuilder
+      loginBuilder: loginBuilder,
+      searchBuilder: searchBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)
