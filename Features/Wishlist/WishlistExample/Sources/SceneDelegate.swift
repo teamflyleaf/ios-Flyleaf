@@ -7,6 +7,7 @@
 
 import UIKit
 import WishlistFeature
+import WishlistInterface
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,7 +22,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = scene as? UIWindowScene else { return }
     
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = WishlistRootViewController()
+    let viewModel = RegisterWishlistViewModel()
+    let registerWishlistBuilder: RegisterWishlistBuildable = RegisterWishlistBuilder()
+    let registerWishlistVC = registerWishlistBuilder.build(onTapBack: {})
+    window.rootViewController = registerWishlistVC
     window.makeKeyAndVisible()
     
     self.window = window
