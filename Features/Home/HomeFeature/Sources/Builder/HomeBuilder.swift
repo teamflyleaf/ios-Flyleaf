@@ -11,10 +11,18 @@ import UIKit
 public final class HomeBuilder: HomeBuildable {
   public init() {}
 
-  public func build(onTapAddButton: @escaping () -> Void) -> UIViewController {
+  public func build(
+    onTapWishlist: @escaping () -> Void,
+    onTapJourney: @escaping () -> Void,
+    onTapHistory: @escaping () -> Void
+  ) -> UIViewController {
     let viewModel = HomeViewModel()
     let viewController = HomeViewController(viewModel: viewModel)
-    viewController.onTapAddButton = onTapAddButton
+
+    viewController.onTapWishlist = onTapWishlist
+    viewController.onTapJourney = onTapJourney
+    viewController.onTapHistory = onTapHistory
+
     return viewController
   }
 }

@@ -22,7 +22,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let homeBuilder: HomeBuilder = HomeBuilder()
     
-    let homeVC = homeBuilder.build()
+    let homeVC = homeBuilder.build(
+      onTapWishlist: {},
+      onTapJourney: {},
+      onTapHistory: {}
+    )
     
     let window = UIWindow(windowScene: windowScene)
     window.rootViewController = homeVC

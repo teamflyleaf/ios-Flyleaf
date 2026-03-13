@@ -12,7 +12,9 @@ import Then
 import UIKit
 
 public final class HomeViewController: BaseViewController {
-  public var onTapAddButton: (() -> Void)?
+  public var onTapWishlist: (() -> Void)?
+  public var onTapJourney: (() -> Void)?
+  public var onTapHistory: (() -> Void)?
   
   private let viewModel: HomeViewModel
   private var didRenderJourneys = false
@@ -71,8 +73,7 @@ public final class HomeViewController: BaseViewController {
     }
     
     setupMapView()
-    
-    addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+    configureAddMenu()
   }
   
   override public func setupLayout() {
@@ -135,9 +136,6 @@ public final class HomeViewController: BaseViewController {
 
 // MARK: - Actions
 private extension HomeViewController {
-  @objc func didTapAddButton() {
-    onTapAddButton?()
-  }
 }
 
 // MARK: - MKMapViewDelegate
@@ -201,6 +199,28 @@ extension HomeViewController: MKMapViewDelegate {
 
 // MARK: - Private
 private extension HomeViewController {
+  func configureAddMenu() {
+    let wishlistAction = UIAction(title: "읽고 싶은 책") { [weak self] _ in
+      self?.onTapWishlist?()
+    }
+
+    let journeyAction = UIAction(title: "읽고 있는 책") { [weak self] _ in
+      self?.onTapJourney?()
+    }
+
+    let historyAction = UIAction(title: "다 읽은 책") { [weak self] _ in
+      self?.onTapHistory?()
+    }
+
+    addButton.menu = UIMenu(children: [
+      wishlistAction,
+      journeyAction,
+      historyAction
+    ])
+
+    addButton.showsMenuAsPrimaryAction = true
+  }
+  
   func setupMapView() {
     mapView.delegate = self
     mapView.addSubview(gradientOverlayView)
