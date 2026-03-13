@@ -33,15 +33,16 @@ public final class SearchViewController: BaseViewController {
   // MARK: - UI
   private let headerView = SearchHeader()
   private let dividerView = DividerView()
-  private let recentSearchsView = RecentSearchsView()
+  private let recentSearchesView = RecentSearchesView()
   private let searchResultView = SearchResultView()
   
   override public func configureUI() {
-    [headerView, dividerView, searchResultView].forEach {
+    [headerView, dividerView, recentSearchesView, searchResultView].forEach {
       view.addSubview($0)
     }
     
     headerView.searchTextField.delegate = self
+    showRecentSearches()
   }
   
   override public func setupLayout() {
@@ -55,10 +56,11 @@ public final class SearchViewController: BaseViewController {
       $0.width.equalToSuperview()
     }
     
-    //    recentSearchsView.snp.makeConstraints {
-    //      $0.top.equalTo(dividerView.snp.bottom).offset(22)
-    //      $0.width.equalToSuperview()
-    //    }
+    recentSearchesView.snp.makeConstraints {
+      $0.top.equalTo(dividerView.snp.bottom).offset(22)
+      $0.height.equalTo(100)
+      $0.width.equalToSuperview()
+    }
     
     searchResultView.snp.makeConstraints {
       $0.top.equalTo(dividerView.snp.bottom).offset(22)
@@ -73,7 +75,22 @@ public final class SearchViewController: BaseViewController {
     }
     
     headerView.setPlaceholder(viewModel.placeholder)
-
+    
+    recentSearchesView.onTapDeleteAll = { [weak self] in
+      self?.viewModel.deleteAllRecentSearch()
+    }
+    
+    recentSearchesView.onTapRecentSearch = { [weak self] qurey in
+      self?.headerView.searchTextField.text = qurey
+      Task {
+        await self?.viewModel.searchBooks(query:qurey)
+      }
+    }
+    
+    recentSearchesView.onTapDeleteRecentSearch = { [weak self] qurey in
+      self?.viewModel.deleteRecentSearch(qurey)
+    }
+    
     viewModel.onBooksChanged = { [weak self] books in
       DispatchQueue.main.async {
         let query = self?.headerView.searchTextField.text ?? ""
@@ -82,8 +99,18 @@ public final class SearchViewController: BaseViewController {
           query: query,
           items: books
         )
+        
+        self?.showSearchResults()
       }
     }
+    
+    viewModel.onRecentSearchesChanged = { [weak self] recentSearchs in
+      DispatchQueue.main.async {
+        self?.recentSearchesView.configure(items: recentSearchs)
+      }
+    }
+    
+    viewModel.loadRecentSearches()
     
     viewModel.onError = { [weak self] error in
       print(error)
@@ -125,5 +152,27 @@ extension SearchViewController: UITextFieldDelegate {
     
     textField.resignFirstResponder()
     return true
+  }
+  
+  public func textFieldDidChangeSelection(_ textField: UITextField) {
+    let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    
+    if text.isEmpty {
+      showRecentSearches()
+    }
+  }
+}
+
+// MARK: - Private
+private extension SearchViewController {
+  private func showRecentSearches() {
+    let hasRecentSearches = !viewModel.recentSearches.isEmpty
+    recentSearchesView.isHidden = !hasRecentSearches
+    searchResultView.isHidden = true
+  }
+
+  private func showSearchResults() {
+    recentSearchesView.isHidden = true
+    searchResultView.isHidden = false
   }
 }

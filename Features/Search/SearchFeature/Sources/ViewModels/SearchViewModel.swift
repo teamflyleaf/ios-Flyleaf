@@ -12,16 +12,29 @@ import SearchInterface
 public final class SearchViewModel {
   private let type: SearchType
   private let bookSearchService: BookSearchServicing
+  private let recentSearchStorage: RecentSearchStoring
   
   var onBooksChanged: (([BookSearchItem]) -> Void)?
+  var onRecentSearchesChanged: (([String]) -> Void)?
   var onError: ((Error) -> Void)?
   
   var placeholder: String {
-    type.placeholder
+    switch type {
+    case .book:
+      return "검색어를 입력하세요"
+    case .departureAirport:
+      return "출발 공항 검색 (공항명/도시/코드)"
+    case .arrivalAirport:
+      return "도착 공항 검색 (공항명/도시/코드)"
+    }
   }
   
   private(set) var books: [BookSearchItem] = [] {
     didSet { onBooksChanged?(books) }
+  }
+  
+  private(set) var recentSearches: [String] = [] {
+    didSet { onRecentSearchesChanged?(recentSearches) }
   }
   
   private var currentQuery: String = ""
@@ -34,10 +47,14 @@ public final class SearchViewModel {
   
   public init(
     type: SearchType,
-    bookSearchService: BookSearchServicing
+    bookSearchService: BookSearchServicing,
+    recentSearchStorage: RecentSearchStoring
   ) {
     self.type = type
     self.bookSearchService = bookSearchService
+    self.recentSearchStorage = recentSearchStorage
+    
+    recentSearches = recentSearchStorage.fetch(type: type)
   }
   
   // MARK: - Public Method
@@ -49,6 +66,8 @@ public final class SearchViewModel {
     currentPage = 1
     books = []
     
+    recentSearchStorage.save(query, type: type)
+    loadRecentSearches()
     await loadPage()
   }
   
@@ -59,7 +78,24 @@ public final class SearchViewModel {
     
     await loadPage()
   }
+
+  func deleteRecentSearch(_ query: String) {
+    recentSearchStorage.delete(query, type: type)
+    loadRecentSearches()
+  }
   
+  func deleteAllRecentSearch() {
+    recentSearchStorage.deleteAll(type: type)
+    recentSearches = []
+  }
+  
+  func loadRecentSearches() {
+    recentSearches = recentSearchStorage.fetch(type: type)
+  }
+}
+
+// MARK: - Private
+private extension SearchViewModel {
   private func loadPage() async {
     isLoading = true
     

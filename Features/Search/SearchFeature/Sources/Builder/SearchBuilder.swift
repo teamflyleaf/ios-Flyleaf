@@ -17,7 +17,14 @@ public final class SearchBuilder: SearchBuildable {
     onTapBack: @escaping () -> Void
   ) -> UIViewController {
     let bookSearchService = AladinBookSearchService()
-    let viewModel = SearchViewModel(type: type, bookSearchService: bookSearchService)
+    let recentSearchStorage = RecentSearchStorage()
+    
+    let viewModel = SearchViewModel(
+      type: type,
+      bookSearchService: bookSearchService,
+      recentSearchStorage: recentSearchStorage
+    )
+    
     let viewController = SearchViewController(viewModel: viewModel)
     viewController.onTapBack = onTapBack
     return viewController

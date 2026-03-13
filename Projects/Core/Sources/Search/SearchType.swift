@@ -10,14 +10,14 @@ public enum SearchType {
   case departureAirport
   case arrivalAirport
 
-  public var placeholder: String {
+  public var recentSearchKey: String {
     switch self {
     case .book:
-      return "검색어를 입력하세요"
+      return "recent_search_book"
     case .departureAirport:
-      return "출발 공항 검색 (공항명/도시/코드)"
+      return "recent_search_departure_airport"
     case .arrivalAirport:
-      return "도착 공항 검색 (공항명/도시/코드)"
+      return "recent_search_arrival_airport"
     }
   }
 }
