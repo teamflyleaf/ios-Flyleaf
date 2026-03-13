@@ -16,7 +16,7 @@ public final class SearchViewModel {
   
   var onBooksChanged: (([BookSearchItem]) -> Void)?
   var onRecentSearchesChanged: (([String]) -> Void)?
-  var onError: ((Error) -> Void)?
+  var onError: ((String) -> Void)?
   
   var placeholder: String {
     switch type {
@@ -120,7 +120,8 @@ private extension SearchViewModel {
       if currentPage > 1 { // 첫 페이지에서 검색 실패시 롤백을 막기 위한 조건
         currentPage -= 1 // loadNextPage()에서 페이지를 먼저 증가시킴. 따라서 검색 실패 시 잘못 된 currentPage 값을 롤백하기 위한 연산
       }
-      onError?(error)
+      let message = (error as? LocalizedError)?.errorDescription ?? "오류가 발생했습니다."
+      onError?(message)
     }
   }
 }

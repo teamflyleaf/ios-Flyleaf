@@ -112,8 +112,8 @@ public final class SearchViewController: BaseViewController {
     
     viewModel.loadRecentSearches()
     
-    viewModel.onError = { [weak self] error in
-      print(error)
+    viewModel.onError = { [weak self] message in
+      self?.presentAlert(title: "검색 실패", message: message)
     }
     
     searchResultView.onReachedBottom = { [weak self] in
