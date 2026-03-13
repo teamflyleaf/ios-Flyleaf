@@ -8,6 +8,7 @@
 import Core
 import HomeInterface
 import LoginInterface
+import SearchInterface
 import UIKit
 
 @MainActor
@@ -19,17 +20,20 @@ final class AppCoordinator: Coordinator {
   private let authService: AuthServicing
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
+  private let searchBuilder: SearchBuildable
   
   init(
     navigationController: UINavigationController,
     authService: AuthServicing,
     homeBuilder: HomeBuildable,
-    loginBuilder: LoginBuildable
+    loginBuilder: LoginBuildable,
+    searchBuilder: SearchBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
     self.homeBuilder = homeBuilder
     self.loginBuilder = loginBuilder
+    self.searchBuilder = searchBuilder
   }
   
   func start() {
@@ -52,8 +56,21 @@ final class AppCoordinator: Coordinator {
     navigationController.setViewControllers([loginVC], animated: true)
   }
   
+  private func showBookSearch() {
+    let searchVC = searchBuilder.build(
+      type: .book,
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      }
+    )
+    
+    navigationController.pushViewController(searchVC, animated: true)
+  }
+  
   private func showMainTabBar() {
-    let homeVC = homeBuilder.build()
+    let homeVC = homeBuilder.build { [weak self] in
+      self?.showBookSearch()
+    }
     let journeyVC = PlaceholderViewController()
     let wishlistVC = PlaceholderViewController()
     let historyVC = PlaceholderViewController()

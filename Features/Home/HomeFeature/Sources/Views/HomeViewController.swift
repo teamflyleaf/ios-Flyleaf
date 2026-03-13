@@ -12,6 +12,8 @@ import Then
 import UIKit
 
 public final class HomeViewController: BaseViewController {
+  public var onTapAddButton: (() -> Void)?
+  
   private let viewModel: HomeViewModel
   private var didRenderJourneys = false
 
@@ -50,6 +52,10 @@ public final class HomeViewController: BaseViewController {
     $0.font = .b1_m
   }
   
+  private let addButton = UIButton(configuration: .glass()).then {
+    $0.setImage(.plus, for: .normal)
+  }
+  
   private let mapView = MKMapView().then {
     $0.showsCompass = false
     $0.showsScale = false
@@ -60,11 +66,13 @@ public final class HomeViewController: BaseViewController {
   private let gradientOverlayView = GradientOverlayView()
   
   override public func configureUI() {
-    [mapView, greetingLabel, tripCountLabel, totalDistanceLabel].forEach {
+    [mapView, greetingLabel, tripCountLabel, totalDistanceLabel, addButton].forEach {
       view.addSubview($0)
     }
     
     setupMapView()
+    
+    addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
   }
   
   override public func setupLayout() {
@@ -81,6 +89,12 @@ public final class HomeViewController: BaseViewController {
     totalDistanceLabel.snp.makeConstraints {
       $0.top.equalTo(tripCountLabel.snp.bottom).offset(6)
       $0.leading.equalToSuperview().offset(20)
+    }
+    
+    addButton.snp.makeConstraints {
+      $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(48)
     }
     
     mapView.snp.makeConstraints {
@@ -116,6 +130,13 @@ public final class HomeViewController: BaseViewController {
     totalDistanceLabel.attributedText = NSAttributedString(totalDistancePrefixText)
     
     greetingLabel.text = viewModel.greetingText
+  }
+}
+
+// MARK: - Actions
+private extension HomeViewController {
+  @objc func didTapAddButton() {
+    onTapAddButton?()
   }
 }
 

@@ -10,10 +10,11 @@ import UIKit
 
 public final class HomeBuilder: HomeBuildable {
   public init() {}
-  
-  public func build() -> UIViewController {
+
+  public func build(onTapAddButton: @escaping () -> Void) -> UIViewController {
     let viewModel = HomeViewModel()
     let viewController = HomeViewController(viewModel: viewModel)
+    viewController.onTapAddButton = onTapAddButton
     return viewController
   }
 }

@@ -21,6 +21,7 @@ let project = Project(
         "CFBundleDevelopmentRegion": "ko",
         "CFBundleLocalizations": ["ko"],
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+        "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
         "UIApplicationSceneManifest": [
           "UIApplicationSupportsMultipleScenes": false,
           "UISceneConfigurations": [
@@ -31,7 +32,7 @@ let project = Project(
               ]
             ]
           ]
-        ]
+        ],
       ]),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
@@ -43,11 +44,17 @@ let project = Project(
         .feature(.home, .interface),
         .feature(.login, .feature),
         .feature(.login, .interface),
+        .feature(.search, .feature),
+        .feature(.search, .interface)
       ],
       settings: .settings(
         base: [
           "DEVELOPMENT_TEAM": "X67DB976UU",
           "CODE_SIGN_STYLE": "Automatic",
+        ],
+        configurations: [
+          .debug(name: "Debug", xcconfig: "../../Configs/Secrets.xcconfig"),
+          .release(name: "Release", xcconfig: "../../Configs/Secrets.xcconfig")
         ]
       )
     )
