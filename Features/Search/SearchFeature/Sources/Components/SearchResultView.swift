@@ -13,6 +13,7 @@ import UIKit
 
 final class SearchResultView: BaseView {
   var onTapItem: ((BookSearchItem) -> Void)?
+  var onReachedBottom: (() -> Void)?
   
   private var items: [BookSearchItem] = []
   
@@ -115,6 +116,15 @@ extension SearchResultView: UICollectionViewDelegate {
   ) {
     onTapItem?(items[indexPath.item])
   }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    guard indexPath.item == items.count - 1 else { return }
+    onReachedBottom?()
+  }
 }
 
 extension SearchResultView: UICollectionViewDelegateFlowLayout {
@@ -123,7 +133,6 @@ extension SearchResultView: UICollectionViewDelegateFlowLayout {
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
-
     return CGSize(
       width: collectionView.bounds.width,
       height: 132

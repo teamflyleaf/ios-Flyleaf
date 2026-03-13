@@ -88,6 +88,12 @@ public final class SearchViewController: BaseViewController {
     viewModel.onError = { [weak self] error in
       print(error)
     }
+    
+    searchResultView.onReachedBottom = { [weak self] in
+      Task {
+        await self?.viewModel.loadNextPage()
+      }
+    }
   }
 }
 

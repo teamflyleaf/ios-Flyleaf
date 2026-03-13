@@ -8,5 +8,8 @@
 import Foundation
 
 public protocol BookSearchServicing {
-  func searchBooks(query: String) async throws -> [BookSearchItem]
+  func searchBooks(
+    query: String,
+    start: Int,
+  )  async throws -> BookSearchPage
 }
