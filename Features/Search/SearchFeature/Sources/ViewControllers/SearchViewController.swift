@@ -107,6 +107,12 @@ public final class SearchViewController: BaseViewController {
     viewModel.onRecentSearchesChanged = { [weak self] recentSearchs in
       DispatchQueue.main.async {
         self?.recentSearchesView.configure(items: recentSearchs)
+        
+        let text = self?.headerView.searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        if text.isEmpty {
+          self?.showRecentSearches()
+        }
       }
     }
     
