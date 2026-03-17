@@ -31,12 +31,13 @@ public final class SearchHeader: BaseView {
     $0.tintColor = .n0
   }
   
-  public let searchTextField = SearchTextField().then {
+  public let searchTextField = NeutralTextField().then {
     $0.font = .b1_m
     $0.textColor = .n0
     $0.backgroundColor = .n60
     $0.layer.cornerRadius = 12
     $0.clipsToBounds = true
+    $0.returnKeyType = .search
   }
   
   public override func configureUI() {

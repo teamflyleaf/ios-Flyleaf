@@ -19,7 +19,7 @@ public struct BookSearchItem: Equatable, Sendable {
     author: String,
     coverURL: String,
     publisher: String,
-    isbn13: String
+    isbn13: String,
   ) {
     self.title = title
     self.author = author

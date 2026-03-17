@@ -22,7 +22,7 @@ extension AladinBookItemDTO {
       author: author,
       coverURL: cover,
       publisher: publisher,
-      isbn13: isbn13
+      isbn13: isbn13,
     )
   }
 }

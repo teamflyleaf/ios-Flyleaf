@@ -17,9 +17,13 @@ let project = Project(
       product: .framework,
       bundleId: "com.yeo.flyleaf.core",
       sources: ["Sources/**"],
+      resources: [
+        "Resources/**"
+      ],
       dependencies: [
         .firebaseAuth(),
         .firebaseCore(),
+        .firebaseFirestore()
       ],
       settings: .settings(
         base: [

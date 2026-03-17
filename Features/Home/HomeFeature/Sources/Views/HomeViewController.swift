@@ -12,7 +12,9 @@ import Then
 import UIKit
 
 public final class HomeViewController: BaseViewController {
-  public var onTapAddButton: (() -> Void)?
+  public var onTapWishlist: (() -> Void)?
+  public var onTapJourney: (() -> Void)?
+  public var onTapHistory: (() -> Void)?
   
   private let viewModel: HomeViewModel
   private var didRenderJourneys = false
@@ -66,13 +68,18 @@ public final class HomeViewController: BaseViewController {
   private let gradientOverlayView = GradientOverlayView()
   
   override public func configureUI() {
-    [mapView, greetingLabel, tripCountLabel, totalDistanceLabel, addButton].forEach {
+    [
+      mapView,
+      greetingLabel,
+      tripCountLabel,
+      totalDistanceLabel,
+      addButton
+    ].forEach {
       view.addSubview($0)
     }
     
     setupMapView()
-    
-    addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+    configureAddMenu()
   }
   
   override public func setupLayout() {
@@ -135,9 +142,6 @@ public final class HomeViewController: BaseViewController {
 
 // MARK: - Actions
 private extension HomeViewController {
-  @objc func didTapAddButton() {
-    onTapAddButton?()
-  }
 }
 
 // MARK: - MKMapViewDelegate
@@ -201,6 +205,28 @@ extension HomeViewController: MKMapViewDelegate {
 
 // MARK: - Private
 private extension HomeViewController {
+  func configureAddMenu() {
+    let wishlistAction = UIAction(title: "읽고 싶은 책") { [weak self] _ in
+      self?.onTapWishlist?()
+    }
+
+    let journeyAction = UIAction(title: "읽고 있는 책") { [weak self] _ in
+      self?.onTapJourney?()
+    }
+
+    let historyAction = UIAction(title: "다 읽은 책") { [weak self] _ in
+      self?.onTapHistory?()
+    }
+
+    addButton.menu = UIMenu(children: [
+      wishlistAction,
+      journeyAction,
+      historyAction
+    ])
+
+    addButton.showsMenuAsPrimaryAction = true
+  }
+  
   func setupMapView() {
     mapView.delegate = self
     mapView.addSubview(gradientOverlayView)
@@ -231,13 +257,13 @@ private extension HomeViewController {
       
       let departureAnnotation = AirportAnnotation(
         iconType: .departure,
-        code: journey.departureAirport.code,
+        code: journey.departureAirport.iata,
         coordinate: departureCoordinate
       )
       
       let arrivalAnnotation = AirportAnnotation(
         iconType: .arrival,
-        code: journey.arrivalAirport.code,
+        code: journey.arrivalAirport.iata,
         coordinate: arrivalCoordinate
       )
       

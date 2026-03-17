@@ -11,6 +11,8 @@ public enum BookSearchError: LocalizedError {
   case invalidURL
   case invalidResponse
   case httpError(statusCode: Int)
+  case missingBookDetail
+  case missingItemPage
 
   public var errorDescription: String? {
     switch self {
@@ -20,6 +22,10 @@ public enum BookSearchError: LocalizedError {
       return "응답을 처리할 수 없습니다."
     case .httpError(let statusCode):
       return "서버 오류가 발생했습니다. (\(statusCode))"
+    case .missingBookDetail:
+      return "도서 상세 정보를 찾을 수 없습니다."
+    case .missingItemPage:
+      return "도서 페이지 정보를 찾을 수 없습니다."
     }
   }
 }
