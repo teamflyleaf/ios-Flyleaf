@@ -12,6 +12,7 @@ public enum FeatureName: String, CaseIterable {
   case onboarding = "Onboarding"
   case search = "Search"
   case wishlist = "Wishlist"
+  case history = "History"
 }
 
 public enum MicroModule: String {
