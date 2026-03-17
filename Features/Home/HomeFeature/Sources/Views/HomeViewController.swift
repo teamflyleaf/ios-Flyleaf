@@ -68,7 +68,13 @@ public final class HomeViewController: BaseViewController {
   private let gradientOverlayView = GradientOverlayView()
   
   override public func configureUI() {
-    [mapView, greetingLabel, tripCountLabel, totalDistanceLabel, addButton].forEach {
+    [
+      mapView,
+      greetingLabel,
+      tripCountLabel,
+      totalDistanceLabel,
+      addButton
+    ].forEach {
       view.addSubview($0)
     }
     
@@ -251,13 +257,13 @@ private extension HomeViewController {
       
       let departureAnnotation = AirportAnnotation(
         iconType: .departure,
-        code: journey.departureAirport.code,
+        code: journey.departureAirport.iata,
         coordinate: departureCoordinate
       )
       
       let arrivalAnnotation = AirportAnnotation(
         iconType: .arrival,
-        code: journey.arrivalAirport.code,
+        code: journey.arrivalAirport.iata,
         coordinate: arrivalCoordinate
       )
       
