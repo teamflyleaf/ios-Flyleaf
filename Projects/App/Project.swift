@@ -45,7 +45,9 @@ let project = Project(
         .feature(.login, .feature),
         .feature(.login, .interface),
         .feature(.search, .feature),
-        .feature(.search, .interface)
+        .feature(.search, .interface),
+        .feature(.wishlist, .feature),
+        .feature(.wishlist, .interface)
       ],
       settings: .settings(
         base: [

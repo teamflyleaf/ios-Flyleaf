@@ -10,6 +10,7 @@ import HomeFeature
 import LoginFeature
 import UIKit
 import SearchFeature
+import WishlistFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -31,12 +32,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder()
+    let registerWishlistBuilder = RegisterWishlistBuilder()
+    let wishTicketBuilder = WishTicketBuilder()
     let coordinator = AppCoordinator(
       navigationController: navigationController,
       authService: authService,
       homeBuilder: homeBuilder,
       loginBuilder: loginBuilder,
-      searchBuilder: searchBuilder
+      searchBuilder: searchBuilder,
+      registerWishlistBuilder: registerWishlistBuilder,
+      wishTicketBuilder: wishTicketBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)
