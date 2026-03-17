@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/11/26.
 //
 
+import Core
 import DesignSystem
 import MapKit
 import SnapKit
@@ -13,6 +14,8 @@ import UIKit
 
 public final class SearchViewController: BaseViewController {
   public var onTapBack: (() -> Void)?
+  public var onTapBookItem: ((BookInfo) -> Void)?
+  public var onTapAirportItem: ((AirportInfo) -> Void)?
   
   private let viewModel: SearchViewModel
   
@@ -35,9 +38,16 @@ public final class SearchViewController: BaseViewController {
   private let dividerView = DividerView()
   private let recentSearchesView = RecentSearchesView()
   private let searchResultView = SearchResultView()
+  private let searchAirportResultView = SearchAirportResultView()
   
   override public func configureUI() {
-    [headerView, dividerView, recentSearchesView, searchResultView].forEach {
+    [
+      headerView,
+      dividerView,
+      recentSearchesView,
+      searchResultView,
+      searchAirportResultView
+    ].forEach {
       view.addSubview($0)
     }
     
@@ -67,38 +77,30 @@ public final class SearchViewController: BaseViewController {
       $0.bottom.equalToSuperview().inset(22)
       $0.width.equalToSuperview()
     }
+    
+    searchAirportResultView.snp.makeConstraints {
+      $0.top.equalTo(dividerView.snp.bottom).offset(22)
+      $0.bottom.equalToSuperview().inset(22)
+      $0.width.equalToSuperview()
+    }
   }
   
   override public func bind() {
-    headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
-    }
-    
-    headerView.setPlaceholder(viewModel.placeholder)
-    
-    recentSearchesView.onTapDeleteAll = { [weak self] in
-      self?.viewModel.deleteAllRecentSearch()
-    }
-    
-    recentSearchesView.onTapRecentSearch = { [weak self] qurey in
-      self?.headerView.searchTextField.text = qurey
-      Task {
-        await self?.viewModel.searchBooks(query:qurey)
-      }
-    }
-    
-    recentSearchesView.onTapDeleteRecentSearch = { [weak self] qurey in
-      self?.viewModel.deleteRecentSearch(qurey)
-    }
+    bindHeaderView()
+    bindSearchResultView()
+    bindRecentSearchesView()
+    bindSearchAirportResultView()
     
     viewModel.onBooksChanged = { [weak self] books in
       DispatchQueue.main.async {
         let query = self?.headerView.searchTextField.text ?? ""
         
-        self?.searchResultView.configure(
-          query: query,
-          items: books
-        )
+        if self?.viewModel.type == .book {
+          self?.searchResultView.configure(
+            query: query,
+            items: books
+          )
+        }
         
         self?.showSearchResults()
       }
@@ -118,13 +120,25 @@ public final class SearchViewController: BaseViewController {
     
     viewModel.loadRecentSearches()
     
-    viewModel.onError = { [weak self] message in
-      self?.presentAlert(title: "검색 실패", message: message)
+    viewModel.onAirportsChanged = { [weak self] airports in
+      DispatchQueue.main.async {
+        let query = self?.headerView.searchTextField.text ?? ""
+        
+        if self?.viewModel.type == .departureAirport ||
+            self?.viewModel.type == .arrivalAirport {
+          self?.searchAirportResultView.configure(
+            query: query,
+            items: airports
+          )
+        }
+        
+        self?.showSearchResults()
+      }
     }
     
-    searchResultView.onReachedBottom = { [weak self] in
-      Task {
-        await self?.viewModel.loadNextPage()
+    viewModel.onError = { [weak self] message in
+      DispatchQueue.main.async {
+        self?.presentAlert(title: "검색 실패", message: message)
       }
     }
   }
@@ -153,7 +167,7 @@ extension SearchViewController: UITextFieldDelegate {
           !text.isEmpty else { return true }
     
     Task { [weak self] in
-      await self?.viewModel.searchBooks(query: text)
+      await self?.viewModel.search(query: text)
     }
     
     textField.resignFirstResponder()
@@ -171,14 +185,79 @@ extension SearchViewController: UITextFieldDelegate {
 
 // MARK: - Private
 private extension SearchViewController {
-  private func showRecentSearches() {
+  func showRecentSearches() {
     let hasRecentSearches = !viewModel.recentSearches.isEmpty
     recentSearchesView.isHidden = !hasRecentSearches
+    
     searchResultView.isHidden = true
+    searchAirportResultView.isHidden = true
   }
-
-  private func showSearchResults() {
+  
+  func showSearchResults() {
     recentSearchesView.isHidden = true
-    searchResultView.isHidden = false
+    
+    switch viewModel.type {
+    case .book:
+      searchResultView.isHidden = false
+      searchAirportResultView.isHidden = true
+    case .departureAirport, .arrivalAirport:
+      searchResultView.isHidden = true
+      searchAirportResultView.isHidden = false
+    }
+  }
+  
+  func bindHeaderView() {
+    headerView.onTapBack = { [weak self] in
+      self?.onTapBack?()
+    }
+    
+    headerView.setPlaceholder(viewModel.placeholder)
+  }
+  
+  func bindRecentSearchesView() {
+    recentSearchesView.onTapDeleteAll = { [weak self] in
+      self?.viewModel.deleteAllRecentSearch()
+    }
+    
+    recentSearchesView.onTapRecentSearch = { [weak self] qurey in
+      self?.headerView.searchTextField.text = qurey
+      Task {
+        await self?.viewModel.search(query:qurey)
+      }
+    }
+    
+    recentSearchesView.onTapDeleteRecentSearch = { [weak self] qurey in
+      self?.viewModel.deleteRecentSearch(qurey)
+    }
+  }
+  
+  func bindSearchResultView() {
+    searchResultView.onReachedBottom = { [weak self] in
+      Task {
+        await self?.viewModel.loadNextPage()
+      }
+    }
+    
+    searchResultView.onTapItem = { [weak self] item in
+      Task { [weak self] in
+        guard let self else { return }
+
+        do {
+          let bookInfo = try await self.viewModel.fetchBookDetail(for: item)
+          self.onTapBookItem?(bookInfo)
+        } catch {
+          let message = (error as? LocalizedError)?.errorDescription ?? "도서 상세 정보를 불러오지 못했습니다."
+          self.presentAlert(title: "조회 실패", message: message)
+        }
+      }
+    }
+  }
+  
+  func bindSearchAirportResultView() {
+    searchAirportResultView.onTapItem = { [weak self] item in
+      self?.onTapAirportItem?(item)
+    }
+    
+    searchAirportResultView.type = viewModel.type
   }
 }

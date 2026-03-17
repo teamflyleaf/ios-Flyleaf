@@ -10,14 +10,17 @@ import Foundation
 import SearchInterface
 
 public final class SearchViewModel {
-  private let type: SearchType
+  private(set) var type: SearchType
   private let bookSearchService: BookSearchServicing
+  private let airportSearchService: AirportSearchServicing
   private let recentSearchStorage: RecentSearchStoring
   
   var onBooksChanged: (([BookSearchItem]) -> Void)?
+  var onAirportsChanged: (([AirportInfo]) -> Void)?
   var onRecentSearchesChanged: (([String]) -> Void)?
   var onError: ((String) -> Void)?
   
+  // 검색 타입에 따른 placeholder 텍스트
   var placeholder: String {
     switch type {
     case .book:
@@ -29,99 +32,163 @@ public final class SearchViewModel {
     }
   }
   
+  // 도서 검색 결과
   private(set) var books: [BookSearchItem] = [] {
     didSet { onBooksChanged?(books) }
   }
   
+  // 공항 검색 결과
+  private(set) var airports: [AirportInfo] = [] {
+    didSet { onAirportsChanged?(airports) }
+  }
+  
+  // 최근 검색어 리스트
   private(set) var recentSearches: [String] = [] {
     didSet { onRecentSearchesChanged?(recentSearches) }
   }
   
+  // 현재 검색어
   private var currentQuery: String = ""
+  
+  // 현재 페이지 (도서 검색용)
   private var currentPage: Int = 1
+  
+  // 전체 검색 결과 수
   private var totalResult: Int = 0
+  
+  // 로딩 중 여부 (중복 요청 방지용)
   private var isLoading = false
+  
+  // 다음 페이지가 존재하는지 여부
   private var hasNextPage: Bool {
     books.count < totalResult
-  } // 다음 페이지가 존재하는지 여부를 나타내는 변수
+  }
   
   public init(
     type: SearchType,
     bookSearchService: BookSearchServicing,
+    airportSearchService: AirportSearchServicing,
     recentSearchStorage: RecentSearchStoring
   ) {
     self.type = type
     self.bookSearchService = bookSearchService
+    self.airportSearchService = airportSearchService
     self.recentSearchStorage = recentSearchStorage
     
     recentSearches = recentSearchStorage.fetch(type: type)
+    
+    do {
+      try airportSearchService.loadAirports()
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "공항 데이터를 불러오지 못했습니다."
+      onError?(message)
+    }
   }
   
   // MARK: - Public Method
-  func searchBooks(query: String) async {
-    // 현재 API 요청 중이 아닐 때만(로딩 상태) 검색 요청
+  /// 검색을 수행합니다.
+  ///
+  /// - Parameter query: 검색어
+  ///
+  /// - Note:
+  ///   - 기존 결과 초기화
+  ///   - 최근 검색어 저장
+  ///   - 타입에 따라 도서 / 공항 검색 분기
+  func search(query: String) async {
     guard !isLoading else { return }
     
     currentQuery = query
     currentPage = 1
     books = []
+    airports = []
     
     recentSearchStorage.save(query, type: type)
     loadRecentSearches()
-    await loadPage()
+    
+    switch type {
+    case .book:
+      await loadBookPage()
+      
+    case .departureAirport, .arrivalAirport:
+      loadAirports()
+    }
   }
   
+  /// 다음 페이지를 로드합니다. (도서 검색 전용)
   func loadNextPage() async {
-    // 로딩 상태가 아니고, 다음 페이지가 존재하고, 검색어 쿼리가 공백이 아닐 때만 다음 페이지 요청
+    guard type == .book else { return }
     guard !isLoading, hasNextPage, !currentQuery.isEmpty else { return }
-    currentPage += 1
     
-    await loadPage()
+    currentPage += 1
+    await loadBookPage()
   }
-
+  
+  /// 특정 최근 검색어 삭제
   func deleteRecentSearch(_ query: String) {
     recentSearchStorage.delete(query, type: type)
     loadRecentSearches()
   }
   
+  /// 전체 최근 검색어 삭제
   func deleteAllRecentSearch() {
     recentSearchStorage.deleteAll(type: type)
     recentSearches = []
   }
   
+  /// 최근 검색어 로드
   func loadRecentSearches() {
     recentSearches = recentSearchStorage.fetch(type: type)
+  }
+  
+  /// 선택한 도서의 상세 정보를 조회합니다.
+  ///
+  /// - Parameter item: 선택된 도서
+  /// - Returns: 상세 도서 정보
+  func fetchBookDetail(
+    for item: BookSearchItem
+  ) async throws -> BookInfo {
+    try await bookSearchService.fetchBookDetail(isbn13: item.isbn13)
   }
 }
 
 // MARK: - Private
 private extension SearchViewModel {
-  private func loadPage() async {
+  /// 도서 검색 API를 호출하여 페이지 데이터 로드
+  func loadBookPage() async {
     isLoading = true
-    
-    defer { isLoading = false } // 현재 함수가 끝나기 직전에 반드시 실행되어야 함. defer 없으면 모든 경우의 수에서 isLoading = false를 실행해야 함.
+    defer { isLoading = false }
     
     do {
       let page = try await bookSearchService.searchBooks(
         query: currentQuery,
-        start: currentPage,
+        start: currentPage
       )
       
       totalResult = page.totalResults
       
       if currentPage == 1 {
-        // 첫번째 페이지라면 item 반환
         books = page.items
       } else {
-        // 다음 페이지라면 현재 아이템에 추가 검색 아이템 더해서 반환
         books.append(contentsOf: page.items)
       }
     } catch {
-      if currentPage > 1 { // 첫 페이지에서 검색 실패시 롤백을 막기 위한 조건
-        currentPage -= 1 // loadNextPage()에서 페이지를 먼저 증가시킴. 따라서 검색 실패 시 잘못 된 currentPage 값을 롤백하기 위한 연산
+      if currentPage > 1 {
+        currentPage -= 1
       }
       let message = (error as? LocalizedError)?.errorDescription ?? "오류가 발생했습니다."
       onError?(message)
     }
+  }
+  
+  /// 공항 데이터를 로컬에서 필터링하여 검색
+  func loadAirports() {
+    let trimmedQuery = currentQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    guard !trimmedQuery.isEmpty else {
+      airports = []
+      return
+    }
+    
+    airports = airportSearchService.searchAirports(query: trimmedQuery)
   }
 }
