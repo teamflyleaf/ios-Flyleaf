@@ -9,6 +9,7 @@ import XCTest
 @testable import SearchFeature
 @testable import Core
 @testable import SearchInterface
+@testable import SearchTesting
 
 final class SearchViewModelTests: XCTestCase {
   private var sut: SearchViewModel!

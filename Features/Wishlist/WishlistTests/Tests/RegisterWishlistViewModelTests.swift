@@ -6,8 +6,9 @@
 //
 
 import XCTest
-@testable import WishlistFeature
 @testable import Core
+@testable import WishlistFeature
+@testable import WishlistTesting
 
 final class RegisterWishlistViewModelTests: XCTestCase {
   private var sut: RegisterWishlistViewModel!
