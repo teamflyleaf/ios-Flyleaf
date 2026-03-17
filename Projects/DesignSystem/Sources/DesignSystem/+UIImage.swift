@@ -26,6 +26,9 @@ public extension UIImage {
   static let landing = DesignSystemAsset.landing.image.withRenderingMode(.alwaysTemplate)
   static let takeOff = DesignSystemAsset.takeOff.image.withRenderingMode(.alwaysTemplate)
   
+  // MARK: - Image
+  static let worldMap = DesignSystemAsset.worldMap.image.withRenderingMode(.alwaysTemplate)
+  
   // MARK: - Public Method
   /// UIImage의 크기를 지정한 width, height로 리사이즈하여 새로운 이미지를 반환합니다.
   ///
