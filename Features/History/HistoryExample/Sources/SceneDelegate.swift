@@ -7,6 +7,7 @@
 
 import UIKit
 import HistoryFeature
+import HistoryInterface
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,7 +22,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = scene as? UIWindowScene else { return }
     
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = HistoryRootViewController()
+    let viewModel = RegisterHistoryViewModel()
+    let registerHistoryBuilder: RegisterHistoryBuildable = RegisterHistoryBuilder()
+    let registerHistoryVC = registerHistoryBuilder.build()
+    window.rootViewController = registerHistoryVC
     window.makeKeyAndVisible()
     
     self.window = window
