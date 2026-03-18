@@ -42,7 +42,7 @@ public final class RegisterHistoryViewController: BaseViewController {
   }
   
   // MARK: - UI
-  private let headerView = HeaderView(title: "읽고 싶은 책")
+  private let headerView = HeaderView(title: "다 읽은 책")
   private let progressView = NeutralProgressView()
   private let dividerView = DividerView()
   private let registerHistoryBookView = RegisterHistoryBookView()
