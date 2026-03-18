@@ -11,4 +11,8 @@ public protocol ReadingJourneyServicing {
   func createWishlistJourney(
     payload: WishlistTicketPayload
   ) async throws -> ReadingJourney
+  
+  func createHistoryJourney(
+    payload: HistoryPayload
+  ) async throws -> ReadingJourney
 }

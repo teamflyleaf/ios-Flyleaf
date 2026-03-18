@@ -125,6 +125,80 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
       lastUpdatedAt: now
     )
   }
+  
+  /// 히스토리(다 읽은 책) 상태의 독서 여행을 생성합니다.
+  ///
+  /// - Parameter payload: 책, 출발지, 도착지, 시작일, 종료일, 감상평 등을 포함한 생성 데이터
+  /// - Returns: 생성된 `ReadingJourney` 모델
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.duplicateJourney`: 동일 노선의 진행 중 여행이 이미 존재하는 경우
+  ///   - 기타 Firestore 네트워크/저장 오류
+  ///
+  /// - Important:
+  ///   - Firestore에는 `nil` 값을 직접 저장할 수 없기 때문에
+  ///     일부 필드는 `NSNull()`로 저장됩니다.
+  public func createHistoryJourney(
+    payload: HistoryPayload
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let distanceKm = Double(
+      AirportInfo.distanceKm(from: payload.departureAirport, to: payload.destinationAirport)
+    )
+    let now = Date()
+    
+    let journeysRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+    
+    let documentRef = journeysRef.document()
+    
+    let trimmedReview = payload.review.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    let document: [String: Any] = [
+      "status": ReadingJourneyStatusType.finished.rawValue,
+      "departureAirport": departureAirportDictionary(payload.departureAirport),
+      "arrivalAirport": arrivalAirportDictionary(payload.destinationAirport),
+      "distanceKm": distanceKm,
+      "remainingDistanceKm": 0,
+      "book": bookDictionary(payload.book),
+      "reason": NSNull(),
+      "startedAt": payload.startDate,
+      "finishedAt": payload.finishDate,
+      "currentPage": payload.book.itemPage,
+      "progressUpdatedAt": payload.finishDate,
+      "review": trimmedReview.isEmpty ? NSNull() : trimmedReview,
+      "createdAt": now,
+      "updatedAt": NSNull(),
+      "lastUpdatedAt": now
+    ]
+    
+    try await documentRef.setData(document)
+    
+    return ReadingJourney(
+      id: documentRef.documentID,
+      status: .finished,
+      departureAirport: payload.departureAirport,
+      arrivalAirport: payload.destinationAirport,
+      distanceKm: distanceKm,
+      remainingDistanceKm: 0,
+      book: payload.book,
+      reason: nil,
+      startedAt: payload.startDate,
+      finishedAt: payload.finishDate,
+      currentPage: payload.book.itemPage,
+      progressUpdatedAt: payload.finishDate,
+      review: trimmedReview.isEmpty ? nil : trimmedReview,
+      createdAt: now,
+      updatedAt: nil,
+      lastUpdatedAt: now
+    )
+  }
 }
 
 // MARK: - Private

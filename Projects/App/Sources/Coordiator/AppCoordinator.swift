@@ -10,6 +10,7 @@ import HomeInterface
 import LoginInterface
 import SearchInterface
 import WishlistInterface
+import HistoryInterface
 import UIKit
 
 @MainActor
@@ -28,6 +29,7 @@ final class AppCoordinator: Coordinator {
   private let searchBuilder: SearchBuildable
   private let registerWishlistBuilder: RegisterWishlistBuildable
   private let wishTicketBuilder: WishTicketBuildable
+  private let registerHistoryBuilder: RegisterHistoryBuildable
   
   init(
     navigationController: UINavigationController,
@@ -37,6 +39,7 @@ final class AppCoordinator: Coordinator {
     searchBuilder: SearchBuildable,
     registerWishlistBuilder: RegisterWishlistBuildable,
     wishTicketBuilder: WishTicketBuildable,
+    registerHistoryBuilder: RegisterHistoryBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -45,6 +48,7 @@ final class AppCoordinator: Coordinator {
     self.searchBuilder = searchBuilder
     self.registerWishlistBuilder = registerWishlistBuilder
     self.wishTicketBuilder = wishTicketBuilder
+    self.registerHistoryBuilder = registerHistoryBuilder
   }
   
   func start() {
@@ -58,16 +62,67 @@ final class AppCoordinator: Coordinator {
       showLogin()
     }
   }
+}
+
+// MARK: - MainTabBar
+private extension AppCoordinator {
+  func showMainTabBar() {
+    let homeVC = homeBuilder.build(
+      onTapWishlist: { [weak self] in
+        self?.showRegisterWishlist()
+      },
+      onTapJourney: {},
+      onTapHistory: { [weak self] in
+        self?.showRegisterHistory()
+      }
+    )
+    let journeyVC = PlaceholderViewController()
+    let wishlistVC = PlaceholderViewController()
+    let historyVC = PlaceholderViewController()
+    
+    let tabBarController = MainTabBarController(
+      homeViewController: homeVC,
+      journeyViewController: journeyVC,
+      wishlistViewController: wishlistVC,
+      historyViewController: historyVC
+    )
+    
+    navigationController.setViewControllers([tabBarController], animated: true)
+  }
   
-  private func showLogin() {
+  func moveToWishlistTab() {
+    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
+      return
+    }
+    
+    navigationController.popToRootViewController(animated: false)
+    tabBarController.selectedIndex = 2
+  }
+  
+  func moveToHistoryTab() {
+    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
+      return
+    }
+    
+    navigationController.popToRootViewController(animated: false)
+    tabBarController.selectedIndex = 3
+  }
+}
+
+// MARK: - Login
+private extension AppCoordinator {
+  func showLogin() {
     let loginVC = loginBuilder.build { [weak self] in
       self?.showMainTabBar()
     }
     
     navigationController.setViewControllers([loginVC], animated: true)
   }
-  
-  private func showBookSearch() {
+}
+
+// MARK: - Search
+private extension AppCoordinator {
+  func showBookSearch() {
     let searchVC = searchBuilder.build(
       type: .book,
       onTapBack: { [weak self] in
@@ -84,7 +139,7 @@ final class AppCoordinator: Coordinator {
     navigationController.pushViewController(searchVC, animated: true)
   }
   
-  private func showDepartureAirportSearch() {
+  func showDepartureAirportSearch() {
     let searchVC = searchBuilder.build(
       type: .departureAirport,
       onTapBack: { [weak self] in
@@ -101,7 +156,7 @@ final class AppCoordinator: Coordinator {
     navigationController.pushViewController(searchVC, animated: true)
   }
   
-  private func showArrivalAirportSearch() {
+  func showArrivalAirportSearch() {
     let searchVC = searchBuilder.build(
       type: .arrivalAirport,
       onTapBack: { [weak self] in
@@ -117,30 +172,11 @@ final class AppCoordinator: Coordinator {
     
     navigationController.pushViewController(searchVC, animated: true)
   }
-  
-  private func showMainTabBar() {
-    let homeVC = homeBuilder.build(
-      onTapWishlist: { [weak self] in
-        self?.showRegisterWishlist()
-      },
-      onTapJourney: {},
-      onTapHistory: {}
-    )
-    let journeyVC = PlaceholderViewController()
-    let wishlistVC = PlaceholderViewController()
-    let historyVC = PlaceholderViewController()
-    
-    let tabBarController = MainTabBarController(
-      homeViewController: homeVC,
-      journeyViewController: journeyVC,
-      wishlistViewController: wishlistVC,
-      historyViewController: historyVC
-    )
-    
-    navigationController.setViewControllers([tabBarController], animated: true)
-  }
-  
-  private func showRegisterWishlist() {
+}
+
+// MARK: - Wishlist
+private extension AppCoordinator {
+  func showRegisterWishlist() {
     let registerWishlistVC = registerWishlistBuilder.build(
       onTapBack: { [weak self] in
         self?.pop(animated: true)
@@ -169,16 +205,7 @@ final class AppCoordinator: Coordinator {
     navigationController.pushViewController(registerWishlistVC, animated: true)
   }
   
-  private func moveToWishlistTab() {
-    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
-      return
-    }
-    
-    navigationController.popToRootViewController(animated: false)
-    tabBarController.selectedIndex = 2
-  }
-  
-  private func showWishTicket(
+  func showWishTicket(
     book: BookInfo,
     departure: AirportInfo,
     destination: AirportInfo,
@@ -196,11 +223,38 @@ final class AppCoordinator: Coordinator {
       onTapBack: { [weak self] in
         self?.pop(animated: true)
       },
-      onUploadCompleted: { [weak self] in 
+      onUploadCompleted: { [weak self] in
         self?.moveToWishlistTab()
       }
     )
 
     navigationController.pushViewController(ticketVC, animated: true)
+  }
+}
+
+// MARK: - History
+private extension AppCoordinator {
+  func showRegisterHistory() {
+    let registerHistoryVC = registerHistoryBuilder.build(
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      },
+      onTapRegisterBookSearch: { [weak self] onSelected in
+        self?.onBookItemSelected = onSelected
+        self?.showBookSearch()
+      },
+      onTapSelectDepartureButton: { [weak self] onSelected in
+        self?.onDepatureAirportSelected = onSelected
+        self?.showDepartureAirportSearch()
+      },
+      onTapSelectDestinationButton: { [weak self] onSelected in
+        self?.onDestinationAirportSelected = onSelected
+        self?.showArrivalAirportSearch()
+      },
+      onUploadCompleted: { [weak self] in
+        self?.moveToHistoryTab()
+      }
+    )
+    navigationController.pushViewController(registerHistoryVC, animated: true)
   }
 }

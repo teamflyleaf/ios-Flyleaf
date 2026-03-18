@@ -11,6 +11,7 @@ import LoginFeature
 import UIKit
 import SearchFeature
 import WishlistFeature
+import HistoryFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -34,6 +35,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let searchBuilder = SearchBuilder()
     let registerWishlistBuilder = RegisterWishlistBuilder()
     let wishTicketBuilder = WishTicketBuilder()
+    let registerHistoryBuilder = RegisterHistoryBuilder()
+    
     let coordinator = AppCoordinator(
       navigationController: navigationController,
       authService: authService,
@@ -41,7 +44,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       loginBuilder: loginBuilder,
       searchBuilder: searchBuilder,
       registerWishlistBuilder: registerWishlistBuilder,
-      wishTicketBuilder: wishTicketBuilder
+      wishTicketBuilder: wishTicketBuilder,
+      registerHistoryBuilder: registerHistoryBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)
