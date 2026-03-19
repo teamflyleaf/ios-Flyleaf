@@ -12,6 +12,7 @@ import UIKit
 import SearchFeature
 import WishlistFeature
 import HistoryFeature
+import JourneyFeature
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -36,6 +37,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let registerWishlistBuilder = RegisterWishlistBuilder()
     let wishTicketBuilder = WishTicketBuilder()
     let registerHistoryBuilder = RegisterHistoryBuilder()
+    let registerJourneyBuilder = RegisterJourneyBuilder()
+    let journeyTicketBuilder = JourneyTicketBuilder()
     
     let coordinator = AppCoordinator(
       navigationController: navigationController,
@@ -45,7 +48,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       searchBuilder: searchBuilder,
       registerWishlistBuilder: registerWishlistBuilder,
       wishTicketBuilder: wishTicketBuilder,
-      registerHistoryBuilder: registerHistoryBuilder
+      registerHistoryBuilder: registerHistoryBuilder,
+      registerJourneyBuilder: registerJourneyBuilder,
+      journeyTicketBuilder: journeyTicketBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)
