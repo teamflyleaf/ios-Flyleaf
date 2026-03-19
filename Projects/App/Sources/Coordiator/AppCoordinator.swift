@@ -11,6 +11,7 @@ import LoginInterface
 import SearchInterface
 import WishlistInterface
 import HistoryInterface
+import JourneyInterface
 import UIKit
 
 @MainActor
@@ -30,6 +31,8 @@ final class AppCoordinator: Coordinator {
   private let registerWishlistBuilder: RegisterWishlistBuildable
   private let wishTicketBuilder: WishTicketBuildable
   private let registerHistoryBuilder: RegisterHistoryBuildable
+  private let registerJourneyBuilder: RegisterJourneyBuildable
+  private let journeyTicketBuilder: JourneyTicketBuildable
   
   init(
     navigationController: UINavigationController,
@@ -39,7 +42,9 @@ final class AppCoordinator: Coordinator {
     searchBuilder: SearchBuildable,
     registerWishlistBuilder: RegisterWishlistBuildable,
     wishTicketBuilder: WishTicketBuildable,
-    registerHistoryBuilder: RegisterHistoryBuildable
+    registerHistoryBuilder: RegisterHistoryBuildable,
+    registerJourneyBuilder: RegisterJourneyBuildable,
+    journeyTicketBuilder: JourneyTicketBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -49,6 +54,8 @@ final class AppCoordinator: Coordinator {
     self.registerWishlistBuilder = registerWishlistBuilder
     self.wishTicketBuilder = wishTicketBuilder
     self.registerHistoryBuilder = registerHistoryBuilder
+    self.registerJourneyBuilder = registerJourneyBuilder
+    self.journeyTicketBuilder = journeyTicketBuilder
   }
   
   func start() {
@@ -71,7 +78,9 @@ private extension AppCoordinator {
       onTapWishlist: { [weak self] in
         self?.showRegisterWishlist()
       },
-      onTapJourney: {},
+      onTapJourney: { [weak self] in
+        self?.showRegisterJourney()
+      },
       onTapHistory: { [weak self] in
         self?.showRegisterHistory()
       }
@@ -88,6 +97,15 @@ private extension AppCoordinator {
     )
     
     navigationController.setViewControllers([tabBarController], animated: true)
+  }
+  
+  func moveToJourneyTab() {
+    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
+      return
+    }
+    
+    navigationController.popToRootViewController(animated: false)
+    tabBarController.selectedIndex = 1
   }
   
   func moveToWishlistTab() {
@@ -227,7 +245,7 @@ private extension AppCoordinator {
         self?.moveToWishlistTab()
       }
     )
-
+    
     navigationController.pushViewController(ticketVC, animated: true)
   }
 }
@@ -256,5 +274,66 @@ private extension AppCoordinator {
       }
     )
     navigationController.pushViewController(registerHistoryVC, animated: true)
+  }
+}
+
+// MARK: - Journey
+private extension AppCoordinator {
+  func showRegisterJourney() {
+    let registerJourneyVC = registerJourneyBuilder.build(
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      },
+      onTapRegisterBookSearch: { [weak self] onSelected in
+        self?.onBookItemSelected = onSelected
+        self?.showBookSearch()
+      },
+      onTapSelectDepartureButton: { [weak self] onSelected in
+        self?.onDepatureAirportSelected = onSelected
+        self?.showDepartureAirportSearch()
+      },
+      onTapSelectDestinationButton: { [weak self] onSelected in
+        self?.onDestinationAirportSelected = onSelected
+        self?.showArrivalAirportSearch()
+      },
+      onTapCreateTicket: { [weak self] book, departure, destination, startDate, currentPage in
+        self?.showJourneyTicket(
+          book: book,
+          departure: departure,
+          destination: destination,
+          startDate: startDate,
+          currentPage: currentPage
+        )
+      }
+    )
+    navigationController.pushViewController(registerJourneyVC, animated: true)
+  }
+  
+  func showJourneyTicket(
+    book: BookInfo,
+    departure: AirportInfo,
+    destination: AirportInfo,
+    startDate: Date,
+    currentPage: Int
+  ) {
+    let payload = JourneyPayload(
+      book: book,
+      startDate: startDate,
+      currentPage: currentPage,
+      departureAirport: departure,
+      destinationAirport: destination
+    )
+    
+    let ticketVC = journeyTicketBuilder.build(
+      payload: payload,
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      },
+      onUploadCompleted: { [weak self] in
+        self?.moveToJourneyTab()
+      }
+    )
+    
+    navigationController.pushViewController(ticketVC, animated: true)
   }
 }

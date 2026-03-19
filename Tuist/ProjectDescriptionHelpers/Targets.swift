@@ -13,6 +13,7 @@ public enum FeatureName: String, CaseIterable {
   case search = "Search"
   case wishlist = "Wishlist"
   case history = "History"
+  case journey = "Journey"
 }
 
 public enum MicroModule: String {

@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/8/26.
 //
 
+import Core
 import HomeInterface
 import UIKit
 
@@ -16,7 +17,8 @@ public final class HomeBuilder: HomeBuildable {
     onTapJourney: @escaping () -> Void,
     onTapHistory: @escaping () -> Void
   ) -> UIViewController {
-    let viewModel = HomeViewModel()
+    let readingJourneyService = FirebaseReadingJourneyService()
+    let viewModel = HomeViewModel(readingJourneyService: readingJourneyService)
     let viewController = HomeViewController(viewModel: viewModel)
 
     viewController.onTapWishlist = onTapWishlist

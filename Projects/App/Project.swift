@@ -49,7 +49,9 @@ let project = Project(
         .feature(.wishlist, .feature),
         .feature(.wishlist, .interface),
         .feature(.history, .feature),
-        .feature(.history, .interface)
+        .feature(.history, .interface),
+        .feature(.journey, .feature),
+        .feature(.journey, .interface)
       ],
       settings: .settings(
         base: [

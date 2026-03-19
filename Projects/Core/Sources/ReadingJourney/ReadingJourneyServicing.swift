@@ -15,4 +15,10 @@ public protocol ReadingJourneyServicing {
   func createHistoryJourney(
     payload: HistoryPayload
   ) async throws -> ReadingJourney
+  
+  func createJourney(
+    payload: JourneyPayload
+  ) async throws -> ReadingJourney
+  
+  func fetchReadingJourneys() async throws -> [ReadingJourney]
 }
