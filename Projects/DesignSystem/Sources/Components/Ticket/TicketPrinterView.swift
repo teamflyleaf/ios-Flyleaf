@@ -12,24 +12,73 @@ import Then
 
 /// 티켓이 슬롯에서 아래로 출력되는 애니메이션을 제공하는 뷰입니다.
 ///
-/// ```swift
+/// swift
 /// let printerView = TicketPrinterView()
 /// printerView.configure(
 ///   bookItem: book,
 ///   departure: departureAirport,
 ///   destination: destinationAirport
 /// )
+/// printerView.isTearEnabled = true
 /// printerView.startPrintAnimation()
-/// ```
+///
 /// - Note:
 ///   - 티켓은 하단 바코드 영역부터 먼저 출력되도록 구성되어 있습니다.
-///   - 출력 애니메이션은 `revealContainerView`의 높이를 늘리는 방식으로 구현됩니다.
-///   - 출력 중 햅틱은 `Timer`를 사용해 반복적으로 발생합니다.
-///   - 출력 완료 시 성공 햅틱이 발생합니다.
 ///   - 티켓은 고정 높이로 530 입니다.
+///   - isTearEnabled가 true인 경우에만 프린트 완료 후 찢기 인터랙션이 활성화됩니다.
 public final class TicketPrinterView: BaseView {
-  /// 프린트 애니메이션이 끝났을 때 이벤트
+  // 프린트 애니메이션 완료 시 호출되는 이벤트
   public var onPrintAnimationCompleted: (() -> Void)?
+  
+  // 티켓 찢기 완료 시 호출되는 이벤트
+  public var onTearCompleted: (() -> Void)?
+  
+  // 티켓 찢기 상태 바뀔 때 호출되는 이벤트
+  public var onTearProgressChanged: ((Bool) -> Void)?
+  
+  /// 티켓 찢기 기능 활성화 여부입니다
+  public var isTearEnabled: Bool = false
+  
+  private var isTearCompleted: Bool = false
+  
+  // 좌 우 스와이프 감지하는 제스처
+  private lazy var panGesture = UIPanGestureRecognizer(
+    target: self,
+    action: #selector(handlePanGesture(_:))
+  )
+  
+  // 프린트 애니메이션 완료 여부
+  private var isPrintCompleted = false
+  
+  // 티켓을 찢는 중인지?
+  private var isTearing = false
+  
+  // 티켓 점선 기준 Y비율
+  private let tearLineYRatio: CGFloat = 0.78
+  
+  // 티켓 찢기 시작을 허용하는 오차 범위임. 정확히 점선 위를 누르지 않아도 여유있게 찢기 가능
+  private let tearActivationInset: CGFloat = 28
+  
+  // 진행도가 이 비율 이상이면 자동으로 찢기 완료 처리함. 85% 이상에서 자동 완료
+  private let tearAutoCompleteRatio: CGFloat = 0.85
+  
+  // 현재까지 찢긴 진행도를 가로 길이 기준으로 저장
+  private var tearProgressX: CGFloat = 0
+  
+  // pan 시작 시점의 진행도
+  private var panStartProgressX: CGFloat = 0
+  
+  // 찢기 중 사용하는 햅틱 제너레이터
+  private let tearHapticGenerator = UIImpactFeedbackGenerator(style: .rigid)
+  
+  // 마지막으로 햅틱이 발생한 진행도 위치임. 너무 자주 울리지 않게 하기 위함
+  private var lastHapticProgress: CGFloat = 0
+  
+  // 찢긴 햅틱 발생 간격
+  private let hapticStep: CGFloat = 8
+  
+  // 점선 아래 바코드 영역을 스냅샷으로 분리한 뷰임. 실제로 찢기는 애니메는 이 뷰를 회전하고 이동시키며 구현
+  private var bottomPieceView: UIView?
   
   // MARK: - UI
   private let slotView = UIView().then {
@@ -53,21 +102,20 @@ public final class TicketPrinterView: BaseView {
   // 티켓의 고정 높이
   private let ticketHeight: CGFloat = 530
   
-  // 햅틱 타이머
+  // 햅틱  타이머
   private var hapticTimer: Timer?
   
   // 햅틱 제너레이터
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: .heavy) // 햅틱
+  private let hapticGenerator = UIImpactFeedbackGenerator(style: .heavy)
   
   public override func configureUI() {
-    [
-      slotView,
-      revealContainerView
-    ].forEach {
-      addSubview($0)
-    }
-    
+    addSubview(slotView)
+    addSubview(revealContainerView)
     revealContainerView.addSubview(ticketView)
+    
+    // 프린트 완료 전까지 찢기는 제스처 비활성화
+    panGesture.isEnabled = false
+    revealContainerView.addGestureRecognizer(panGesture)
   }
   
   public override func setupLayout() {
@@ -93,6 +141,20 @@ public final class TicketPrinterView: BaseView {
   }
   
   // MARK: - Public Method
+  public func configure(
+    bookItem: BookInfo,
+    departure: AirportInfo,
+    destination: AirportInfo,
+    startPage: Int = 0
+  ) {
+    ticketView.configure(
+      bookItem: bookItem,
+      departure: departure,
+      destination: destination,
+      startPage: startPage
+    )
+  }
+  
   /// 티켓 출력 애니메이션을 시작합니다.
   public func startPrintAnimation() {
     layoutIfNeeded()
@@ -114,54 +176,258 @@ public final class TicketPrinterView: BaseView {
       self.layoutIfNeeded()
     } completion: { _ in
       self.stopHaptics()
+      self.isPrintCompleted = true
       
       let finishGenerator = UINotificationFeedbackGenerator()
       finishGenerator.notificationOccurred(.success)
       
+      self.enableTearIfNeeded()
       self.onPrintAnimationCompleted?()
     }
-  }
-  
-  public func configure(
-    bookItem: BookInfo,
-    departure: AirportInfo,
-    destination: AirportInfo
-  ) {
-    ticketView.configure(
-      bookItem: bookItem,
-      departure: departure,
-      destination: destination
-    )
   }
 }
 
 // MARK: - Private
 private extension TicketPrinterView {
-  // 출력 상태 초기화
-  // 티켓 노출 높이를 0으로 되돌리고, 진행 중인 햅틱을 중지함.
+  // 출력 상태 초기화, 찢기 애니메이션 상태 초기화
+  // 분리된 아래 조각 스냅샷 제거
   func reset() {
     stopHaptics()
+    
+    isPrintCompleted = false
+    isTearing = false
+    isTearCompleted = false
+    tearProgressX = 0
+    panStartProgressX = 0
+    lastHapticProgress = 0
+    
+    panGesture.isEnabled = false
+    
+    cleanupBottomPiece()
+    
+    ticketView.isHidden = false
+    ticketView.transform = .identity
+    ticketView.layer.mask = nil
+    
     revealHeightConstraint?.update(offset: 0)
     layoutIfNeeded()
   }
   
-  // 햅틱 타이머
+  // 찢기 기능이 활성화 되어 있으면 pan 제스처 활성화
+  func enableTearIfNeeded() {
+    guard isTearEnabled else { return }
+    panGesture.isEnabled = true
+  }
+  
+  // 프린트 중 반복 햅틱 시작
   func startHaptics() {
     stopHaptics()
-    
-    // withTimeInterval로 간격 조절
     hapticTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
       guard let self else { return }
-      // intensity로 햅틱 세기 조절
       self.hapticGenerator.impactOccurred(intensity: 1.0)
-      // 햅틱 응답성이 좋아진다?
       self.hapticGenerator.prepare()
     }
   }
   
-  // 햅틱 중지
+  // 프린트 중 반복 햅틱 중지
   func stopHaptics() {
     hapticTimer?.invalidate()
     hapticTimer = nil
+  }
+  
+  // 분리된 아래 스냅샷 제거하고 원본 티켓 마스크 초기화
+  func cleanupBottomPiece() {
+    bottomPieceView?.removeFromSuperview()
+    bottomPieceView = nil
+    ticketView.layer.mask = nil
+  }
+  
+  // tearProgressX를 기준으로 찢기 UI 갱신
+  // 1. 점선 아래 영역을 스냅샷으로 1회 생성
+  // 2. 원본 티켓뷰는 점선 위쪽만 보이게 마스킹
+  // 3. 아래 조각은 오른쪽 상단을 축으로 회전시켜 뜯기는 느낌
+  func updateTearUI() {
+    layoutIfNeeded()
+    
+    let ticketBounds = ticketView.bounds
+    let width = ticketBounds.width
+    let height = ticketBounds.height
+    let tearY = height * tearLineYRatio
+    
+    let progressX = min(max(tearProgressX, 0), width)
+    let normalized = progressX / width
+    
+    guard normalized > 0 else {
+      cleanupBottomPiece()
+      return
+    }
+    
+    // 아래 조각 스냅샷은 최초 1회 생성
+    if bottomPieceView == nil {
+      let bottomRect = CGRect(x: 0, y: tearY, width: width, height: height - tearY)
+      guard let snapshot = ticketView.resizableSnapshotView(
+        from: bottomRect,
+        afterScreenUpdates: false,
+        withCapInsets: .zero
+      ) else { return }
+      
+      // 오른쪽 위를 회전축으로
+      // 오른쪽은 붙어있고, 왼쪽만 내려가는 느낌
+      snapshot.layer.anchorPoint = CGPoint(x: 1, y: 0)
+      snapshot.layer.position = CGPoint(
+        x: ticketView.frame.maxX,
+        y: ticketView.frame.minY + tearY
+      )
+      snapshot.bounds = CGRect(x: 0, y: 0, width: width, height: height - tearY)
+      
+      snapshot.layer.shadowColor = UIColor.black.cgColor
+      revealContainerView.addSubview(snapshot)
+      bottomPieceView = snapshot
+      
+      // 원본 티켓뷰는 점선 위쪽만 보이게 마스킹
+      // 아래쪽은 스냅샷이 보여줌
+      let topOnlyPath = UIBezierPath(
+        rect: CGRect(x: 0, y: 0, width: width, height: tearY)
+      )
+      let topMask = CAShapeLayer()
+      topMask.frame = ticketBounds
+      topMask.path = topOnlyPath.cgPath
+      topMask.fillRule = .nonZero
+      ticketView.layer.mask = topMask
+    }
+    
+    guard let piece = bottomPieceView else { return }
+    
+    // 진행도에 따라 아래 조각 더 많이 회전
+    let rotation = -(normalized * 0.35)
+  
+    // 진행도에 비례해서 그림자 강하게
+    piece.transform = CGAffineTransform(rotationAngle: rotation)
+    piece.layer.shadowOpacity = Float(0.1 + normalized * 0.2)
+    piece.layer.shadowRadius = 4 + normalized * 10
+    piece.layer.shadowOffset = CGSize(width: -2, height: 4 + normalized * 8)
+  }
+  
+  // 찢기 완료 애니메이션
+  func animateTearCompletion() {
+    guard let piece = bottomPieceView else {
+      finalizeTear()
+      return
+    }
+    
+    let generator = UIImpactFeedbackGenerator(style: .heavy)
+    generator.impactOccurred(intensity: 1.0)
+    
+    UIView.animate(
+      withDuration: 0.5,
+      delay: 0,
+      usingSpringWithDamping: 0.82,
+      initialSpringVelocity: 0.5,
+      options: [.curveEaseIn]
+    ) {
+      piece.transform = CGAffineTransform(rotationAngle: -(0.7))
+      piece.alpha = 0
+    } completion: { _ in
+      self.cleanupBottomPiece()
+      
+      let ticketBounds = self.ticketView.bounds
+      let tearY = ticketBounds.height * self.tearLineYRatio
+      let finalPath = UIBezierPath(
+        rect: CGRect(x: 0, y: 0, width: ticketBounds.width, height: tearY)
+      )
+      let finalMask = CAShapeLayer()
+      finalMask.frame = ticketBounds
+      finalMask.path = finalPath.cgPath
+      finalMask.fillRule = .nonZero
+      self.ticketView.layer.mask = finalMask
+      
+      self.finalizeTear()
+    }
+  }
+  
+  // 찢기 완료 상태 확정
+  func finalizeTear() {
+    isTearCompleted = true
+    panGesture.isEnabled = false
+    onTearProgressChanged?(true)
+    onTearCompleted?()
+  }
+}
+
+// MARK: - Gesture
+private extension TicketPrinterView {
+  // 팬 제스처 처리 메소드
+  @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+    guard isTearEnabled, isPrintCompleted, !isTearCompleted else { return }
+    
+    let location = gesture.location(in: ticketView)
+    let translation = gesture.translation(in: revealContainerView)
+    
+    switch gesture.state {
+      // 점선 좌우 부근에서 시작했는지 검증
+    case .began:
+      guard canStartTear(at: location) else { return }
+      isTearing = true
+      panStartProgressX = tearProgressX
+      tearHapticGenerator.prepare()
+      
+      // 좌우 translation을 진행도로 변환하고 ui 갱신함.
+    case .changed:
+      guard isTearing else { return }
+      
+      let maxWidth = ticketView.bounds.width
+      let newProgress = max(
+        0,
+        min(maxWidth, panStartProgressX + max(0, translation.x))
+      )
+      
+      updateTearProgress(newProgress)
+      emitTearHapticIfNeeded(progress: newProgress)
+      
+      // 진행도 85이상이면 자동 완료
+      let normalized = newProgress / maxWidth
+      if normalized >= tearAutoCompleteRatio && !isTearCompleted {
+        isTearing = false
+        gesture.isEnabled = false
+        gesture.isEnabled = true
+        animateTearCompletion()
+      }
+      
+      // 진행도가 임계치 이상이면 완료 애니메 실행
+    case .ended, .cancelled, .failed:
+      guard isTearing else { return }
+      isTearing = false
+      
+      let normalized = tearProgressX / ticketView.bounds.width
+      if normalized >= tearAutoCompleteRatio {
+        animateTearCompletion()
+      }
+      
+    default:
+      break
+    }
+  }
+  
+  // 찢기 애니메 시작 가능 여부 확인
+  // 사용자가 점선 근처에서 제스처를 시작했을때만 트루 반환함.
+  func canStartTear(at location: CGPoint) -> Bool {
+    let tearY = ticketView.bounds.height * tearLineYRatio
+    return abs(location.y - tearY) <= tearActivationInset
+  }
+  
+  // 찢기 진행도 갱신하고 ui 업데이트
+  func updateTearProgress(_ progress: CGFloat) {
+    guard progress != tearProgressX else { return }
+    tearProgressX = progress
+    updateTearUI()
+  }
+  
+  // 진행도 차이가 일정 간격 이상일 때만 찢기 햅틱 발생
+  func emitTearHapticIfNeeded(progress: CGFloat) {
+    guard progress > 0 else { return }
+    guard progress - lastHapticProgress >= hapticStep else { return }
+    lastHapticProgress = progress
+    tearHapticGenerator.impactOccurred(intensity: 0.7)
+    tearHapticGenerator.prepare()
   }
 }

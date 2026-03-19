@@ -155,14 +155,15 @@ public final class TicketView: BaseView {
   public func configure(
     bookItem: BookInfo,
     departure: AirportInfo,
-    destination: AirportInfo
+    destination: AirportInfo,
+    startPage: Int = 0
   ) {
     routeBookInfoView.configure(
       bookItem: bookItem,
       departure: departure,
       destination: destination
     )
-
+    startPageLabel.text = "\(startPage)p"
     arrivePageLabel.text = "\(bookItem.itemPage)p"
     distanceLabel.text = "\(AirportInfo.distanceKm(from: departure, to: destination).formattedWithComma)km"
   }
