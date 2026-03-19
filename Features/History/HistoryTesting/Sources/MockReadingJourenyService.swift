@@ -49,4 +49,12 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
 
     return stubbedCreateHistoryJourneyResult
   }
+  
+  func createJourney(payload: JourneyPayload) async throws -> ReadingJourney {
+    fatalError("Not used")
+  }
+  
+  func fetchReadingJourneys() async throws -> [ReadingJourney] {
+    fatalError("Not used")
+  }
 }
