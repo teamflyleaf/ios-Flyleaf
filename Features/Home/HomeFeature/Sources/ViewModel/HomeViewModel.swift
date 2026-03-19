@@ -9,14 +9,26 @@ import Core
 import Foundation
 
 public final class HomeViewModel {
+  private let readingJourneyService: ReadingJourneyServicing
 
-  public init() {}
-
-  var journeys: [ReadingJourney] = ReadingJourney.mockList
+  var onJourneysChanged: (([ReadingJourney]) -> Void)?
+  var onError: ((String) -> Void)?
+  
+  private(set) var journeys: [ReadingJourney] = [] {
+    didSet {
+      onJourneysChanged?(journeys)
+    }
+  }
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
   
   var greetingText: String {
     let hour = Calendar.current.component(.hour, from: Date())
-
+    
     switch hour {
     case 5..<11:
       return "좋은 아침이에요"
@@ -37,12 +49,25 @@ public final class HomeViewModel {
     Int(journeys.reduce(0) { $0 + $1.distanceKm })
   }
   
+  var latestJourney: ReadingJourney? {
+    journeys.max { $0.lastUpdatedAt < $1.lastUpdatedAt }
+  }
+  
   // MARK: - Public Method
+  func loadReadingJourneys() async {
+    do {
+      journeys = try await readingJourneyService.fetchReadingJourneys()
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "여행 정보를 불러오지 못했습니다."
+      onError?(message)
+    }
+  }
+  
   func calculateProgress(journey: ReadingJourney) -> Double {
     guard let currentPage = journey.currentPage, journey.book.itemPage > 0 else {
       return 0
     }
-
+    
     return min(max(Double(currentPage) / Double(journey.book.itemPage), 0), 1)
   }
 }

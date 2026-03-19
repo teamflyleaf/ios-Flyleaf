@@ -55,7 +55,7 @@ final class AirportAnnotationView: MKAnnotationView {
 // MARK: - Private
 private extension AirportAnnotationView {
   func configureUI() {
-    frame = CGRect(x: 0, y: 0, width: 44, height: 20)
+    frame = CGRect(x: 0, y: 0, width: 48, height: 22)
     backgroundColor = .key0
     layer.borderWidth = 2
     layer.borderColor = UIColor.n70.cgColor
@@ -72,13 +72,12 @@ private extension AirportAnnotationView {
   func setupLayout() {
     iconImageView.snp.makeConstraints {
       $0.width.height.equalTo(12)
-      $0.leading.equalToSuperview().offset(4)
+      $0.leading.equalToSuperview().offset(6)
       $0.centerY.equalToSuperview()
     }
     
     codeLabel.snp.makeConstraints {
-      $0.leading.equalTo(iconImageView.snp.trailing).offset(4)
-      $0.trailing.equalToSuperview().inset(4)
+      $0.trailing.equalToSuperview().inset(6)
       $0.centerY.equalToSuperview()
     }
   }
