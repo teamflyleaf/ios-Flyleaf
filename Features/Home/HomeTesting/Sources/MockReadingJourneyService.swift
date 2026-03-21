@@ -36,4 +36,16 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
   ) async throws -> ReadingJourney {
     fatalError("Not used in HomeViewModelTests")
   }
+  
+  func fetchWishlist() async throws -> [ReadingJourney] {
+    fatalError("Not used in HomeViewModelTests")
+  }
+  
+  func updateJourneyStatusToReading(journeyId: String, startDate: Date, currentPage: Int) async throws -> ReadingJourney {
+    fatalError("Not used in HomeViewModelTests")
+  }
+  
+  func deleteWishlistJourney(journeyId: String) async throws {
+    fatalError("Not used in HomeViewModelTests")
+  }
 }
