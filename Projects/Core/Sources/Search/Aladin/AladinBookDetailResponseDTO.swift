@@ -24,6 +24,7 @@ struct AladinBookDetailItemDTO: Decodable {
   let cover: String
   let publisher: String
   let isbn13: String
+  let description: String
   let subInfo: AladinBookSubInfoDTO?
 
   func toModel() throws -> BookInfo {
@@ -37,7 +38,8 @@ struct AladinBookDetailItemDTO: Decodable {
       author: author,
       publisher: publisher,
       itemPage: itemPage,
-      cover: cover
+      cover: cover,
+      description: description
     )
   }
 }

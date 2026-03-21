@@ -519,7 +519,8 @@ private extension FirebaseReadingJourneyService {
       "author": book.author,
       "publisher": book.publisher,
       "itemPage": book.itemPage,
-      "cover": book.cover
+      "cover": book.cover,
+      "description": book.description
     ]
   }
   
@@ -672,7 +673,8 @@ private extension FirebaseReadingJourneyService {
       let author = data["author"] as? String,
       let publisher = data["publisher"] as? String,
       let itemPage = data["itemPage"] as? Int,
-      let cover = data["cover"] as? String
+      let cover = data["cover"] as? String,
+      let description = data["description"] as? String
     else {
       throw ReadingJourneyError.invalidDocument
     }
@@ -683,7 +685,8 @@ private extension FirebaseReadingJourneyService {
       author: author,
       publisher: publisher,
       itemPage: itemPage,
-      cover: cover
+      cover: cover,
+      description: description
     )
   }
 }

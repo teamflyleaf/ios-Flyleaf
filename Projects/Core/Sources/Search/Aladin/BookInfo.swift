@@ -14,6 +14,7 @@ public struct BookInfo: Codable, Equatable, Sendable {
   public let publisher: String
   public let itemPage: Int
   public let cover: String
+  public let description: String
 
   public init(
     isbn13: String,
@@ -21,7 +22,8 @@ public struct BookInfo: Codable, Equatable, Sendable {
     author: String,
     publisher: String,
     itemPage: Int,
-    cover: String
+    cover: String,
+    description: String
   ) {
     self.isbn13 = isbn13
     self.title = title
@@ -29,5 +31,6 @@ public struct BookInfo: Codable, Equatable, Sendable {
     self.publisher = publisher
     self.itemPage = itemPage
     self.cover = cover
+    self.description = description
   }
 }
