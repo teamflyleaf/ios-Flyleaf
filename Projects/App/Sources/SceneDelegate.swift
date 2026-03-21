@@ -34,8 +34,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder()
+    let wishlistBuilder = WishlistBuilder()
     let registerWishlistBuilder = RegisterWishlistBuilder()
     let wishTicketBuilder = WishTicketBuilder()
+    let checkInWishTicketBuilder = CheckInWishTicketBuilder()
     let registerHistoryBuilder = RegisterHistoryBuilder()
     let registerJourneyBuilder = RegisterJourneyBuilder()
     let journeyTicketBuilder = JourneyTicketBuilder()
@@ -46,11 +48,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       homeBuilder: homeBuilder,
       loginBuilder: loginBuilder,
       searchBuilder: searchBuilder,
+      wishlistBuilder: wishlistBuilder,
+      checkInWishTicketBuilder: checkInWishTicketBuilder,
       registerWishlistBuilder: registerWishlistBuilder,
       wishTicketBuilder: wishTicketBuilder,
+      journeyTicketBuilder: journeyTicketBuilder,
       registerHistoryBuilder: registerHistoryBuilder,
       registerJourneyBuilder: registerJourneyBuilder,
-      journeyTicketBuilder: journeyTicketBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)

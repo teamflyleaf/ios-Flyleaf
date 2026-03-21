@@ -28,11 +28,13 @@ final class AppCoordinator: Coordinator {
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
   private let searchBuilder: SearchBuildable
+  private let wishlistBuilder: WishlistBuildable
+  private let checkInWishTicketBuilder: CheckInWishTicketBuildable
   private let registerWishlistBuilder: RegisterWishlistBuildable
   private let wishTicketBuilder: WishTicketBuildable
+  private let journeyTicketBuilder: JourneyTicketBuildable
   private let registerHistoryBuilder: RegisterHistoryBuildable
   private let registerJourneyBuilder: RegisterJourneyBuildable
-  private let journeyTicketBuilder: JourneyTicketBuildable
   
   init(
     navigationController: UINavigationController,
@@ -40,22 +42,26 @@ final class AppCoordinator: Coordinator {
     homeBuilder: HomeBuildable,
     loginBuilder: LoginBuildable,
     searchBuilder: SearchBuildable,
+    wishlistBuilder: WishlistBuildable,
+    checkInWishTicketBuilder: CheckInWishTicketBuildable,
     registerWishlistBuilder: RegisterWishlistBuildable,
     wishTicketBuilder: WishTicketBuildable,
+    journeyTicketBuilder: JourneyTicketBuildable,
     registerHistoryBuilder: RegisterHistoryBuildable,
     registerJourneyBuilder: RegisterJourneyBuildable,
-    journeyTicketBuilder: JourneyTicketBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
     self.homeBuilder = homeBuilder
     self.loginBuilder = loginBuilder
     self.searchBuilder = searchBuilder
+    self.wishlistBuilder = wishlistBuilder
+    self.checkInWishTicketBuilder = checkInWishTicketBuilder
     self.registerWishlistBuilder = registerWishlistBuilder
     self.wishTicketBuilder = wishTicketBuilder
+    self.journeyTicketBuilder = journeyTicketBuilder
     self.registerHistoryBuilder = registerHistoryBuilder
     self.registerJourneyBuilder = registerJourneyBuilder
-    self.journeyTicketBuilder = journeyTicketBuilder
   }
   
   func start() {
@@ -86,7 +92,11 @@ private extension AppCoordinator {
       }
     )
     let journeyVC = PlaceholderViewController()
-    let wishlistVC = PlaceholderViewController()
+    let wishlistVC = wishlistBuilder.build(
+      onTapCheckIn: { [weak self] journey in
+        self?.showCheckInWishTicket(journey: journey)
+      }
+    )
     let historyVC = PlaceholderViewController()
     
     let tabBarController = MainTabBarController(
@@ -247,6 +257,22 @@ private extension AppCoordinator {
     )
     
     navigationController.pushViewController(ticketVC, animated: true)
+  }
+  
+  func showCheckInWishTicket(
+    journey: ReadingJourney
+  ) {
+    let viewController = checkInWishTicketBuilder.build(
+      journey: journey,
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      },
+      onUploadCompleted: { [weak self] in
+        self?.moveToJourneyTab()
+      }
+    )
+    
+    navigationController.pushViewController(viewController, animated: true)
   }
 }
 
