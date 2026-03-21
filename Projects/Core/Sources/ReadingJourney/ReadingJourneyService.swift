@@ -341,6 +341,25 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     }
   }
   
+  /// 위시리스트(`wishlist`) 상태의 독서 여행을 읽는 중(`reading`) 상태로 변경합니다.
+  ///
+  /// - Parameters:
+  ///   - journeyId: 상태를 변경할 독서 여행 문서 ID
+  ///   - startDate: 독서를 시작한 날짜
+  ///   - currentPage: 현재까지 읽은 페이지 수
+  /// - Returns: 상태가 갱신된 `ReadingJourney` 모델
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 필수 필드가 올바르지 않은 경우
+  ///   - `ReadingJourneyError.duplicateJourney`: 동일 노선의 `reading` 상태 여행이 이미 존재하는 경우
+  ///   - 기타 Firestore 네트워크/저장 오류
+  ///
+  /// - Important:
+  ///   - `wishlist` 상태의 문서만 `reading` 상태로 변경할 수 있습니다.
+  ///   - 진행도는 `currentPage / itemPage` 기준으로 계산되며,
+  ///     이에 따라 `remainingDistanceKm`도 함께 갱신됩니다.
+  ///   - 상태 변경 시 `startedAt`, `progressUpdatedAt`, `updatedAt`, `lastUpdatedAt`이 함께 업데이트됩니다.
   public func updateJourneyStatusToReading(
     journeyId: String,
     startDate: Date,
@@ -416,6 +435,19 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     return try readingJourney(from: journeyId, data: updatedData)
   }
   
+  /// 위시리스트(`wishlist`) 상태의 독서 여행을 삭제합니다.
+  ///
+  /// - Parameter journeyId: 삭제할 독서 여행 문서 ID
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 데이터를 읽을 수 없는 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 삭제 대상이 `wishlist` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/삭제 오류
+  ///
+  /// - Important:
+  ///   - `wishlist` 상태의 문서만 삭제할 수 있습니다.
+  ///   - `reading`, `finished` 상태의 여행은 이 메서드로 삭제되지 않습니다.
   public func deleteWishlistJourney(
     journeyId: String
   ) async throws {
