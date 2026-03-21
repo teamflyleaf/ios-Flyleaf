@@ -12,6 +12,7 @@ public enum ReadingJourneyError: LocalizedError {
   case duplicateJourney
   case invalidSnapshot
   case invalidDocument
+  case invalidStatus
   case unknown
   
   public var errorDescription: String? {
@@ -24,6 +25,8 @@ public enum ReadingJourneyError: LocalizedError {
       return "여행 데이터를 저장하지 못했습니다."
     case .invalidDocument:
       return "독서 여행 데이터를 읽는 중 오류가 발생했습니다."
+    case .invalidStatus:
+      return "삭제할 수 없는 여행 상태입니다."
     case .unknown:
       return "알 수 없는 오류가 발생했습니다."
     }

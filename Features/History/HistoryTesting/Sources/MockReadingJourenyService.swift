@@ -57,4 +57,16 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
   func fetchReadingJourneys() async throws -> [ReadingJourney] {
     fatalError("Not used")
   }
+  
+  func fetchWishlist() async throws -> [ReadingJourney] {
+    fatalError("Not used")
+  }
+  
+  func updateJourneyStatusToReading(journeyId: String, startDate: Date, currentPage: Int) async throws -> ReadingJourney {
+    fatalError("Not used")
+  }
+  
+  func deleteWishlistJourney(journeyId: String) async throws {
+    fatalError("Not used")
+  }
 }

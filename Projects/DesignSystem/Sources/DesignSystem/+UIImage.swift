@@ -16,6 +16,8 @@ public extension UIImage {
   static let search = DesignSystemAsset.search.image.withRenderingMode(.alwaysTemplate)
   static let time = DesignSystemAsset.time.image.withRenderingMode(.alwaysTemplate)
   static let xmark = DesignSystemAsset.x.image.withRenderingMode(.alwaysTemplate)
+  static let calendar = DesignSystemAsset.calendar.image.withRenderingMode(.alwaysTemplate)
+  static let openBook = DesignSystemAsset.openBook.image.withRenderingMode(.alwaysTemplate)
   
   // MARK: - Chevron
   static let chevronLeft = DesignSystemAsset.chevronLeft.image.withRenderingMode(.alwaysTemplate)

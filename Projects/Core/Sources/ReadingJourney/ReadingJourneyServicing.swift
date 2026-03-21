@@ -21,4 +21,15 @@ public protocol ReadingJourneyServicing {
   ) async throws -> ReadingJourney
   
   func fetchReadingJourneys() async throws -> [ReadingJourney]
+  func fetchWishlist() async throws -> [ReadingJourney]
+  
+  func updateJourneyStatusToReading(
+    journeyId: String,
+    startDate: Date,
+    currentPage: Int
+  ) async throws -> ReadingJourney
+  
+  func deleteWishlistJourney(
+    journeyId: String
+  ) async throws
 }
