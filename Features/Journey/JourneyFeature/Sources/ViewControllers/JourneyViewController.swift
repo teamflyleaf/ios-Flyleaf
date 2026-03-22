@@ -238,16 +238,15 @@ public final class JourneyViewController: BaseViewController {
       DispatchQueue.main.async { [weak self] in
         guard let self else { return }
         
-        if self.isInitialLoading {
-          self.setContentHidden(isLoading)
+        guard self.isInitialLoading else { return }
+        
+        if isLoading {
+          self.setContentHidden(true)
           self.emptyView.isHidden = true
-          
-          if isLoading {
-            self.initialLoadingIndicatorView.startAnimating()
-          } else {
-            self.initialLoadingIndicatorView.stopAnimating()
-            self.isInitialLoading = false
-          }
+          self.initialLoadingIndicatorView.startAnimating()
+        } else {
+          self.initialLoadingIndicatorView.stopAnimating()
+          self.isInitialLoading = false
         }
       }
     }
@@ -268,6 +267,11 @@ public final class JourneyViewController: BaseViewController {
         
         if self.selectedIndex >= journeys.count {
           self.selectedIndex = max(0, journeys.count - 1)
+        }
+        
+        // 첫 데이터 진입 시에만 기본 탭 세팅
+        if self.contentContainerView.subviews.isEmpty {
+          self.updateSegmentSelection(index: self.selectedSegmentIndex)
         }
         
         self.journeyCollectionView.reloadData()
@@ -293,8 +297,6 @@ public final class JourneyViewController: BaseViewController {
         self?.memoView.configure(memos)
       }
     }
-    
-    setupInitialContent()
   }
 }
 
@@ -368,8 +370,8 @@ private extension JourneyViewController {
     updateSegmentSelection(index: 0)
   }
   
+  // 컨텐츠 숨김 처리
   func setContentHidden(_ isHidden: Bool) {
-    headerTitleLabel.isHidden = isHidden
     journeyCollectionView.isHidden = isHidden
     dividerView.isHidden = isHidden
     segmentScrollView.isHidden = isHidden
