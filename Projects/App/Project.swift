@@ -37,6 +37,7 @@ let project = Project(
       ]),
       sources: ["Sources/**"],
       resources: [
+        "Resources/Common/**",
         "Resources/Firebase/Dev/GoogleService-Info.plist"
       ],
       entitlements: .file(path: "Flyleaf.entitlements"),
@@ -59,7 +60,8 @@ let project = Project(
       settings: .settings(
         base: [
           "DEVELOPMENT_TEAM": "X67DB976UU",
-          "CODE_SIGN_STYLE": "Automatic"
+          "CODE_SIGN_STYLE": "Automatic",
+          "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIconDev"
         ],
         configurations: [
           .debug(name: "Debug", xcconfig: "../../Configs/Dev.xcconfig"),
@@ -94,6 +96,7 @@ let project = Project(
         ]),
         sources: ["Sources/**"],
         resources: [
+          "Resources/Common/**",
           "Resources/Firebase/Prod/GoogleService-Info.plist"
         ],
         entitlements: .file(path: "Flyleaf.entitlements"),
@@ -116,7 +119,8 @@ let project = Project(
         settings: .settings(
           base: [
             "DEVELOPMENT_TEAM": "X67DB976UU",
-            "CODE_SIGN_STYLE": "Automatic"
+            "CODE_SIGN_STYLE": "Automatic",
+            "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
           ],
           configurations: [
             .debug(name: "Debug", xcconfig: "../../Configs/Prod.xcconfig"),
