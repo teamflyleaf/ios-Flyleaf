@@ -35,6 +35,7 @@ final class AppCoordinator: Coordinator {
   private let journeyTicketBuilder: JourneyTicketBuildable
   private let registerHistoryBuilder: RegisterHistoryBuildable
   private let registerJourneyBuilder: RegisterJourneyBuildable
+  private let jourenyBuilder: JourneyBuildable
   
   init(
     navigationController: UINavigationController,
@@ -49,6 +50,7 @@ final class AppCoordinator: Coordinator {
     journeyTicketBuilder: JourneyTicketBuildable,
     registerHistoryBuilder: RegisterHistoryBuildable,
     registerJourneyBuilder: RegisterJourneyBuildable,
+    jourenyBuilder: JourneyBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -62,6 +64,7 @@ final class AppCoordinator: Coordinator {
     self.journeyTicketBuilder = journeyTicketBuilder
     self.registerHistoryBuilder = registerHistoryBuilder
     self.registerJourneyBuilder = registerJourneyBuilder
+    self.jourenyBuilder = jourenyBuilder
   }
   
   func start() {
@@ -91,7 +94,7 @@ private extension AppCoordinator {
         self?.showRegisterHistory()
       }
     )
-    let journeyVC = PlaceholderViewController()
+    let journeyVC = jourenyBuilder.build()
     let wishlistVC = wishlistBuilder.build(
       onTapCheckIn: { [weak self] journey in
         self?.showCheckInWishTicket(journey: journey)

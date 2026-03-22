@@ -286,6 +286,122 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     )
   }
   
+  /// 진행 중(`reading`) 독서 여행을 완료(`finished`) 상태로 변경합니다.
+  ///
+  /// - Parameters:
+  ///   - journeyId: 완료 처리할 독서 여행 문서 ID
+  ///   - review: 사용자가 입력한 감상평
+  /// - Returns: 완료 상태로 갱신된 `ReadingJourney`
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 필수 필드가 올바르지 않은 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 완료 대상이 `reading` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/저장 오류
+  public func finishJourney(
+    journeyId: String,
+    review: String
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    guard
+      let statusRaw = data["status"] as? String,
+      let status = ReadingJourneyStatusType(rawValue: statusRaw),
+      status == .reading
+    else {
+      throw ReadingJourneyError.invalidStatus
+    }
+    
+    guard
+      let bookData = data["book"] as? [String: Any]
+    else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    let book = try bookInfo(from: bookData)
+    let trimmedReview = review.trimmingCharacters(in: .whitespacesAndNewlines)
+    let now = Date()
+    
+    try await documentRef.updateData([
+      "status": ReadingJourneyStatusType.finished.rawValue,
+      "finishedAt": now,
+      "currentPage": book.itemPage,
+      "remainingDistanceKm": 0,
+      "progressUpdatedAt": now,
+      "review": trimmedReview.isEmpty ? NSNull() : trimmedReview,
+      "updatedAt": now,
+      "lastUpdatedAt": now
+    ])
+    
+    let updatedSnapshot = try await documentRef.getDocument()
+    
+    guard let updatedData = updatedSnapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    return try readingJourney(from: journeyId, data: updatedData)
+  }
+  
+  public func updateJourneyCurrentPage(
+    journeyId: String,
+    currentPage: Int
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    let journey = try readingJourney(from: journeyId, data: data)
+    
+    let maxPage = journey.book.itemPage
+    let clampedPage = min(max(0, currentPage), maxPage)
+    
+    let progress = min(max(Double(clampedPage) / Double(maxPage), 0), 1)
+    let remainingDistanceKm = max(journey.distanceKm * (1 - progress), 0)
+    let now = Date()
+    
+    try await documentRef.updateData([
+      "currentPage": clampedPage,
+      "remainingDistanceKm": remainingDistanceKm,
+      "progressUpdatedAt": now,
+      "updatedAt": now,
+      "lastUpdatedAt": now
+    ])
+    
+    let updatedSnapshot = try await documentRef.getDocument()
+    
+    guard let updatedData = updatedSnapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    return try readingJourney(from: journeyId, data: updatedData)
+  }
+  
   /// 현재 사용자의 진행 중(`reading`) 독서 여행 목록을 조회합니다.
   ///
   /// - Returns: `reading` 상태의 `ReadingJourney` 배열
@@ -306,6 +422,7 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
       .document(uid)
       .collection("readingJourneys")
       .whereField("status", isEqualTo: ReadingJourneyStatusType.reading.rawValue)
+      .order(by: "lastUpdatedAt", descending: true)
       .getDocuments()
     
     return try snapshot.documents.map { document in
@@ -519,7 +636,8 @@ private extension FirebaseReadingJourneyService {
       "author": book.author,
       "publisher": book.publisher,
       "itemPage": book.itemPage,
-      "cover": book.cover
+      "cover": book.cover,
+      "description": book.description
     ]
   }
   
@@ -596,21 +714,21 @@ private extension FirebaseReadingJourneyService {
     else {
       throw ReadingJourneyError.invalidDocument
     }
-
+    
     let departureAirport = try airportInfo(from: departureAirportData)
     let arrivalAirport = try airportInfo(from: arrivalAirportData)
     let book = try bookInfo(from: bookData)
-
+    
     let remainingDistanceKm = data["remainingDistanceKm"] as? Double
     let reason = data["reason"] as? String
     let currentPage = data["currentPage"] as? Int
     let review = data["review"] as? String
-
+    
     let startedAt = (data["startedAt"] as? Timestamp)?.dateValue()
     let finishedAt = (data["finishedAt"] as? Timestamp)?.dateValue()
     let progressUpdatedAt = (data["progressUpdatedAt"] as? Timestamp)?.dateValue()
     let updatedAt = (data["updatedAt"] as? Timestamp)?.dateValue()
-
+    
     return ReadingJourney(
       id: id,
       status: status,
@@ -672,7 +790,8 @@ private extension FirebaseReadingJourneyService {
       let author = data["author"] as? String,
       let publisher = data["publisher"] as? String,
       let itemPage = data["itemPage"] as? Int,
-      let cover = data["cover"] as? String
+      let cover = data["cover"] as? String,
+      let description = data["description"] as? String
     else {
       throw ReadingJourneyError.invalidDocument
     }
@@ -683,7 +802,8 @@ private extension FirebaseReadingJourneyService {
       author: author,
       publisher: publisher,
       itemPage: itemPage,
-      cover: cover
+      cover: cover,
+      description: description
     )
   }
 }

@@ -10,14 +10,14 @@ import Foundation
 public struct JourneyMemo: Codable, Equatable, Sendable {
   public let id: String
   public let content: String
-  public let page: Int?
+  public let page: Int
   public let createdAt: Date
   public let updatedAt: Date?
   
   public init(
     id: String,
     content: String,
-    page: Int?,
+    page: Int,
     createdAt: Date,
     updatedAt: Date?
   ) {

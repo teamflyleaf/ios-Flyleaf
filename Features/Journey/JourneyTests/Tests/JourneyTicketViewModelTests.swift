@@ -161,7 +161,8 @@ private extension JourneyTicketViewModelTests {
       author: "테스트 작가",
       publisher: "테스트 출판사",
       itemPage: 584,
-      cover: "https://example.com/cover.jpg"
+      cover: "https://example.com/cover.jpg",
+      description: "test"
     )
   }
 

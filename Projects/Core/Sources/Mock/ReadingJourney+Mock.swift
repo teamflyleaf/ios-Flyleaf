@@ -22,7 +22,8 @@ public extension ReadingJourney {
       author: "로버트 C. 마틴",
       publisher: "인사이트",
       itemPage: 584,
-      cover: ""
+      cover: "",
+      description: "테스트 디스크립션"
     ),
     reason: nil,
     startedAt: Date(),
@@ -48,7 +49,8 @@ public extension ReadingJourney {
       author: "조영호",
       publisher: "위키북스",
       itemPage: 324,
-      cover: ""
+      cover: "",
+      description: "테스트 디스크립션"
     ),
     reason: nil,
     startedAt: Date(),
