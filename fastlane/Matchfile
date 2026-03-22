@@ -1,0 +1,13 @@
+git_url(ENV["MATCH_GIT_URL"])
+git_branch("main")
+storage_mode("git")
+
+type("appstore")
+
+app_identifier([
+  "com.yeo.flyleaf.dev",
+  "com.yeo.flyleaf"
+])
+
+username(ENV["FASTLANE_USER"])
+readonly(false)
