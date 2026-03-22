@@ -7,25 +7,23 @@
 
 import UIKit
 import HistoryFeature
-import HistoryInterface
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
   var window: UIWindow?
-
+  
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
-
     guard let windowScene = scene as? UIWindowScene else { return }
     
+    let rootVC = HistoryRootViewController()
+    let navigationController = UINavigationController(rootViewController: rootVC)
+    navigationController.isNavigationBarHidden = false
+    
     let window = UIWindow(windowScene: windowScene)
-    let viewModel = RegisterHistoryViewModel()
-    let registerHistoryBuilder: RegisterHistoryBuildable = RegisterHistoryBuilder()
-    let registerHistoryVC = registerHistoryBuilder.build()
-    window.rootViewController = registerHistoryVC
+    window.rootViewController = navigationController
     window.makeKeyAndVisible()
     
     self.window = window
