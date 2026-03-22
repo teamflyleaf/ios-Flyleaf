@@ -101,6 +101,25 @@ public final class JourneyViewController: BaseViewController {
     $0.hidesWhenStopped = true
   }
   
+  private let emptyView = UIView().then {
+    $0.isHidden = true
+  }
+  
+  private let emptyTitleLabel = UILabel().then {
+    $0.text = "진행 중인 여행이 없어요"
+    $0.font = .b1_sb
+    $0.textColor = .n0
+    $0.textAlignment = .center
+  }
+  
+  private let emptyDescriptionLabel = UILabel().then {
+    $0.text = "새로운 독서 여행을 시작해보세요"
+    $0.font = .c3
+    $0.textColor = .n20
+    $0.textAlignment = .center
+    $0.numberOfLines = 0
+  }
+  
   public override func configureUI() {
     [
       headerTitleLabel,
@@ -109,8 +128,16 @@ public final class JourneyViewController: BaseViewController {
       segmentScrollView,
       scrollView,
       initialLoadingIndicatorView,
+      emptyView
     ].forEach {
       view.addSubview($0)
+    }
+    
+    [
+      emptyTitleLabel,
+      emptyDescriptionLabel
+    ].forEach {
+      emptyView.addSubview($0)
     }
     
     segmentScrollView.addSubview(segmentStackView)
@@ -183,6 +210,23 @@ public final class JourneyViewController: BaseViewController {
     initialLoadingIndicatorView.snp.makeConstraints {
       $0.center.equalToSuperview()
     }
+    
+    emptyView.snp.makeConstraints {
+      $0.top.equalTo(headerTitleLabel.snp.bottom).offset(40)
+      $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    emptyTitleLabel.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(-12)
+    }
+    
+    emptyDescriptionLabel.snp.makeConstraints {
+      $0.top.equalTo(emptyTitleLabel.snp.bottom).offset(8)
+      $0.centerX.equalToSuperview()
+      $0.leading.greaterThanOrEqualToSuperview().offset(20)
+      $0.trailing.lessThanOrEqualToSuperview().inset(20)
+    }
   }
   
   public override func bind() {
@@ -190,13 +234,13 @@ public final class JourneyViewController: BaseViewController {
     bindJourneyInfoView()
     bindMemoView()
     
-    // 로딩상태 처리
     viewModel.onLoadingChanged = { [weak self] isLoading in
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [weak self] in
         guard let self else { return }
         
         if self.isInitialLoading {
           self.setContentHidden(isLoading)
+          self.emptyView.isHidden = true
           
           if isLoading {
             self.initialLoadingIndicatorView.startAnimating()
@@ -209,26 +253,43 @@ public final class JourneyViewController: BaseViewController {
     }
     
     viewModel.onJourneysChanged = { [weak self] journeys in
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [weak self] in
         guard let self else { return }
         
-        if self.selectedIndex >= journeys.count {
+        if journeys.isEmpty {
           self.selectedIndex = 0
+          self.journeyCollectionView.reloadData()
+          self.clearSelectedJourneyContent()
+          self.setEmptyState(true)
+          return
+        }
+        
+        self.setEmptyState(false)
+        
+        if self.selectedIndex >= journeys.count {
+          self.selectedIndex = max(0, journeys.count - 1)
         }
         
         self.journeyCollectionView.reloadData()
         self.updateSelectedJourneyContent()
+        
+        if self.selectedSegmentIndex == 2 {
+          let selectedJourney = journeys[self.selectedIndex]
+          Task { [weak self] in
+            await self?.viewModel.loadMemos(journeyId: selectedJourney.id)
+          }
+        }
       }
     }
     
     viewModel.onError = { [weak self] message in
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [weak self] in
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
     
     viewModel.onMemosChanged = { [weak self] memos in
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [weak self] in
         self?.memoView.configure(memos)
       }
     }
@@ -315,6 +376,16 @@ private extension JourneyViewController {
     scrollView.isHidden = isHidden
   }
   
+  // Empty 상태 처리
+  func setEmptyState(_ isEmpty: Bool) {
+    emptyView.isHidden = !isEmpty
+    
+    journeyCollectionView.isHidden = isEmpty
+    dividerView.isHidden = isEmpty
+    segmentScrollView.isHidden = isEmpty
+    scrollView.isHidden = isEmpty
+  }
+  
   // 세그먼트 버튼 클릭 시 업데이트
   func updateSegmentSelection(index: Int) {
     selectedSegmentIndex = index
@@ -376,6 +447,13 @@ private extension JourneyViewController {
     }
   }
   
+  // 현재 표시 중인 컨텐츠 뷰 초기화
+  // 데이터가 없는 상태로 전환될 때 이전 여행 정보 UI가 남아있지 않도록 제거하기 위함임
+  func clearSelectedJourneyContent() {
+    contentContainerView.subviews.forEach { $0.removeFromSuperview() }
+  }
+  
+  // 사용자가 읽은 페이지 수를 변경했을 때 호출하여 업데이트
   func updateCurrentPage(_ page: Int) {
     guard viewModel.journeys.indices.contains(selectedIndex) else { return }
     
@@ -406,6 +484,10 @@ private extension JourneyViewController {
   func bindJourneyInfoView() {
     journeyInfoView.onPageChanged = { [weak self] page in
       self?.updateCurrentPage(page)
+    }
+    
+    journeyInfoView.onTapFinish = { [weak self] in
+      self?.presentJourneyFinishSheet()
     }
   }
   
@@ -519,5 +601,31 @@ private extension JourneyViewController {
     }
     
     present(alert, animated: true)
+  }
+  
+  // 여행 마치기 시트 show
+  func presentJourneyFinishSheet() {
+    guard viewModel.journeys.indices.contains(selectedIndex) else { return }
+    
+    let selectedJourney = viewModel.journeys[selectedIndex]
+    let vc = JourneyFinishViewController(existingReview: selectedJourney.review)
+    
+    vc.onTapComplete = { [weak self] review in
+      Task {
+        await self?.viewModel.finishJourney(
+          journeyId: selectedJourney.id,
+          review: review
+        )
+      }
+    }
+    
+    if let sheet = vc.sheetPresentationController {
+      sheet.detents = [
+        .custom { _ in 460 }
+      ]
+      sheet.preferredCornerRadius = 24
+    }
+    
+    present(vc, animated: true)
   }
 }

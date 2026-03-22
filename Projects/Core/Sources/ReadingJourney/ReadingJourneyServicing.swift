@@ -20,6 +20,11 @@ public protocol ReadingJourneyServicing {
     payload: JourneyPayload
   ) async throws -> ReadingJourney
   
+  func finishJourney(
+    journeyId: String,
+    review: String
+  ) async throws -> ReadingJourney
+  
   func updateJourneyCurrentPage(
     journeyId: String,
     currentPage: Int

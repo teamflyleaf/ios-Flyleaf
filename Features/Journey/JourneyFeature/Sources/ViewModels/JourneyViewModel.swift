@@ -73,6 +73,22 @@ public final class JourneyViewModel {
     }
   }
   
+  func finishJourney(
+    journeyId: String,
+    review: String
+  ) async {
+    do {
+      _ = try await readingJourneyService.finishJourney(
+        journeyId: journeyId,
+        review: review
+      )
+      
+      await loadReadingJourneys()
+    } catch {
+      onError?(error.localizedDescription)
+    }
+  }
+  
   func saveMemo(
     journeyId: String,
     memo: JourneyMemo

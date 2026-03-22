@@ -12,6 +12,7 @@ import Then
 import UIKit
 
 final class JourneyInfoView: BaseView {
+  var onTapFinish: (() -> Void)?
   var onPageChanged: ((Int) -> Void)?
   
   // MARK: - UI
@@ -96,6 +97,8 @@ final class JourneyInfoView: BaseView {
       self?.currentPageLabel.text = "\(page)p"
       self?.onPageChanged?(page)
     }
+    
+    bind()
   }
   
   override func setupLayout() {
@@ -181,7 +184,15 @@ final class JourneyInfoView: BaseView {
 
 // MARK: - Private
 private extension JourneyInfoView {
+  func bind() {
+    finishButton.addTarget(self, action: #selector(didTapFinish), for: .touchUpInside)
+  }
+  
   @objc func didTapCurrentPage() {
     currentPagePickerField.presentPicker()
+  }
+  
+  @objc func didTapFinish() {
+    onTapFinish?()
   }
 }
