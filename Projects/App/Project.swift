@@ -21,6 +21,7 @@ let project = Project(
         "CFBundleDevelopmentRegion": "ko",
         "CFBundleLocalizations": ["ko"],
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+        "UIUserInterfaceStyle": "Dark",
         "CFBundleDisplayName": "Flyleaf Dev",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
         "UIApplicationSceneManifest": [
@@ -58,14 +59,29 @@ let project = Project(
         .feature(.history, .interface),
       ],
       settings: .settings(
-        base: [
-          "DEVELOPMENT_TEAM": "X67DB976UU",
-          "CODE_SIGN_STYLE": "Automatic",
-          "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIconDev"
-        ],
         configurations: [
-          .debug(name: "Debug", xcconfig: "../../Configs/Dev.xcconfig"),
-          .release(name: "Release", xcconfig: "../../Configs/Dev.xcconfig")
+          .debug(
+            name: "Debug",
+            settings: [
+              "DEVELOPMENT_TEAM": "X67DB976UU",
+              "CODE_SIGN_STYLE": "Manual",
+              "CODE_SIGN_IDENTITY": "Apple Development: Seongil Yeo (SP9DA93H4W)",
+              "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIconDev",
+              "TARGETED_DEVICE_FAMILY": "1"
+            ],
+            xcconfig: "../../Configs/DevDebug.xcconfig"
+          ),
+          .release(
+            name: "Release",
+            settings: [
+              "DEVELOPMENT_TEAM": "X67DB976UU",
+              "CODE_SIGN_STYLE": "Manual",
+              "CODE_SIGN_IDENTITY": "Apple Distribution: Seongil Yeo (X67DB976UU)",
+              "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIconDev",
+              "TARGETED_DEVICE_FAMILY": "1"
+            ],
+            xcconfig: "../../Configs/DevRelease.xcconfig"
+          )
         ]
       )
     ),
@@ -80,6 +96,7 @@ let project = Project(
           "CFBundleDevelopmentRegion": "ko",
           "CFBundleLocalizations": ["ko"],
           "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+          "UIUserInterfaceStyle": "Dark",
           "CFBundleDisplayName": "Flyleaf",
           "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
           "UIApplicationSceneManifest": [
@@ -117,14 +134,29 @@ let project = Project(
           .feature(.history, .interface),
         ],
         settings: .settings(
-          base: [
-            "DEVELOPMENT_TEAM": "X67DB976UU",
-            "CODE_SIGN_STYLE": "Automatic",
-            "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
-          ],
           configurations: [
-            .debug(name: "Debug", xcconfig: "../../Configs/Prod.xcconfig"),
-            .release(name: "Release", xcconfig: "../../Configs/Prod.xcconfig")
+            .debug(
+              name: "Debug",
+              settings: [
+                "DEVELOPMENT_TEAM": "X67DB976UU",
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Development: Seongil Yeo (SP9DA93H4W)",
+                "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
+                "TARGETED_DEVICE_FAMILY": "1"
+              ],
+              xcconfig: "../../Configs/ProdDebug.xcconfig"
+            ),
+            .release(
+              name: "Release",
+              settings: [
+                "DEVELOPMENT_TEAM": "X67DB976UU",
+                "CODE_SIGN_STYLE": "Manual",
+                "CODE_SIGN_IDENTITY": "Apple Distribution: Seongil Yeo (X67DB976UU)",
+                "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
+                "TARGETED_DEVICE_FAMILY": "1"
+              ],
+              xcconfig: "../../Configs/ProdRelease.xcconfig"
+            )
           ]
         )
       )
