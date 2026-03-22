@@ -314,28 +314,216 @@ final class JourneyViewModelTests: XCTestCase {
     XCTAssertEqual(mockJourneyMemoService.fetchMemosCallCount, 0)
     XCTAssertEqual(receivedErrorMessage, "메모 삭제에 실패했습니다.")
   }
+  
+  /*
+   여행 목록 불러오기 성공 시 로딩 상태 콜백이 true/false 순서로 호출되는지 검증하는 테스트
+   - Given: fetchReadingJourneys가 여행 목록을 반환하도록 설정된 MockReadingJourneyService
+   - When: loadReadingJourneys() 호출
+   - Then: onLoadingChanged가 true, false 순서로 호출되는지 확인합니다.
+   */
+  func test_loadReadingJourneys_success_callsLoadingStateChanged() async {
+    mockReadingJourneyService.stubbedFetchReadingJourneysResult = [makeReadingJourney()]
+    
+    var loadingStates: [Bool] = []
+    
+    sut.onLoadingChanged = { isLoading in
+      loadingStates.append(isLoading)
+    }
+    
+    await sut.loadReadingJourneys()
+    
+    XCTAssertEqual(loadingStates, [true, false])
+  }
+  
+  /*
+   여행 목록 불러오기 실패 시에도 로딩 상태 콜백이 true/false 순서로 호출되는지 검증하는 테스트
+   - Given: fetchReadingJourneys가 에러를 던지도록 설정된 MockReadingJourneyService
+   - When: loadReadingJourneys() 호출
+   - Then: onLoadingChanged가 true, false 순서로 호출되는지 확인합니다.
+   */
+  func test_loadReadingJourneys_failure_callsLoadingStateChanged() async {
+    mockReadingJourneyService.stubbedFetchReadingJourneysError = MockReadingJourneyError.failed
+    
+    var loadingStates: [Bool] = []
+    
+    sut.onLoadingChanged = { isLoading in
+      loadingStates.append(isLoading)
+    }
+    
+    await sut.loadReadingJourneys()
+    
+    XCTAssertEqual(loadingStates, [true, false])
+  }
+  
+  /*
+   읽은 페이지 수 수정 성공 시 updateJourneyCurrentPage가 호출되고 journeys가 갱신되는지 검증하는 테스트
+   - Given: updateJourneyCurrentPage가 수정된 ReadingJourney를 반환하도록 설정된 MockReadingJourneyService
+   - When: updateCurrentPage(journeyId:currentPage:) 호출
+   - Then: updateJourneyCurrentPage 호출 횟수와 전달값이 올바르며, journeys가 수정된 값으로 갱신되는지 확인합니다.
+   */
+  func test_updateCurrentPage_success_updatesJourney() async {
+    let originalJourney = makeReadingJourney()
+    let updatedJourney = makeReadingJourney(currentPage: 200, remainingDistanceKm: 100)
+
+    mockReadingJourneyService.stubbedFetchReadingJourneysResult = [originalJourney]
+    await sut.loadReadingJourneys()
+
+    mockReadingJourneyService.stubbedUpdateJourneyCurrentPageResult = updatedJourney
+    
+    var receivedJourneys: [ReadingJourney] = []
+    
+    sut.onJourneysChanged = { journeys in
+      receivedJourneys = journeys
+    }
+    
+    await sut.updateCurrentPage(
+      journeyId: originalJourney.id,
+      currentPage: 200
+    )
+    
+    XCTAssertEqual(sut.journeys, [updatedJourney])
+    XCTAssertEqual(receivedJourneys, [updatedJourney])
+  }
+  
+  /*
+   읽은 페이지 수 수정 실패 시 onError가 호출되고 journeys가 변경되지 않는지 검증하는 테스트
+   - Given: updateJourneyCurrentPage가 에러를 던지도록 설정된 MockReadingJourneyService
+   - When: updateCurrentPage(journeyId:currentPage:) 호출
+   - Then: onError가 호출되고, journeys는 기존 상태를 유지하는지 확인합니다.
+   */
+  func test_updateCurrentPage_failure_callsOnErrorAndDoesNotUpdateJourneys() async {
+    let originalJourney = makeReadingJourney()
+    
+    // 초기 journeys 상태 세팅
+    mockReadingJourneyService.stubbedFetchReadingJourneysResult = [originalJourney]
+    await sut.loadReadingJourneys()
+    
+    // 업데이트 실패 stub
+    mockReadingJourneyService.stubbedUpdateJourneyCurrentPageError = MockLocalizedReadingJourneyError.updateFailed
+    
+    var receivedErrorMessage: String?
+    
+    sut.onError = { message in
+      receivedErrorMessage = message
+    }
+    
+    await sut.updateCurrentPage(
+      journeyId: originalJourney.id,
+      currentPage: 200
+    )
+    
+    XCTAssertEqual(mockReadingJourneyService.updateJourneyCurrentPageCallCount, 1)
+    XCTAssertEqual(mockReadingJourneyService.lastUpdateJourneyId, originalJourney.id)
+    XCTAssertEqual(mockReadingJourneyService.lastUpdatedCurrentPage, 200)
+    XCTAssertEqual(sut.journeys, [originalJourney])
+    XCTAssertEqual(receivedErrorMessage, "페이지 업데이트에 실패했습니다.")
+  }
+  
+  /*
+   독서 완료 성공 시 finishJourney 호출 후 진행 중 여행 목록을 다시 불러오는지 검증하는 테스트
+   - Given: finishJourney는 성공하고 fetchReadingJourneys가 빈 배열을 반환하도록 설정된 MockReadingJourneyService
+   - When: finishJourney(journeyId:review:) 호출
+   - Then: finishJourney와 fetchReadingJourneys가 각각 1회 호출되고, journeys가 빈 배열로 갱신되는지 확인합니다.
+   */
+  func test_finishJourney_success_finishesJourneyAndReloadsReadingJourneys() async {
+    let journeyId = "journey-id"
+    let review = "정말 좋았던 책입니다."
+    
+    mockReadingJourneyService.stubbedFinishJourneyResult = makeFinishedJourney(review: review)
+    mockReadingJourneyService.stubbedFetchReadingJourneysResult = []
+    
+    var receivedJourneys: [ReadingJourney] = [makeReadingJourney()]
+    
+    sut.onJourneysChanged = { journeys in
+      receivedJourneys = journeys
+    }
+    
+    await sut.finishJourney(
+      journeyId: journeyId,
+      review: review
+    )
+    
+    XCTAssertEqual(mockReadingJourneyService.finishJourneyCallCount, 1)
+    XCTAssertEqual(mockReadingJourneyService.lastFinishedJourneyId, journeyId)
+    XCTAssertEqual(mockReadingJourneyService.lastReview, review)
+    XCTAssertEqual(mockReadingJourneyService.fetchReadingJourneysCallCount, 1)
+    XCTAssertEqual(sut.journeys, [])
+    XCTAssertEqual(receivedJourneys, [])
+  }
+  
+  /*
+   독서 완료 실패 시 onError가 호출되고 진행 중 여행 목록을 다시 불러오지 않는지 검증하는 테스트
+   - Given: finishJourney가 에러를 던지도록 설정된 MockReadingJourneyService
+   - When: finishJourney(journeyId:review:) 호출
+   - Then: onError가 호출되고 fetchReadingJourneys는 호출되지 않는지 확인합니다.
+   */
+  func test_finishJourney_failure_callsOnErrorAndDoesNotReloadReadingJourneys() async {
+    let journeyId = "journey-id"
+    let review = "감상평"
+    
+    mockReadingJourneyService.stubbedFinishJourneyError = MockLocalizedReadingJourneyError.finishFailed
+    
+    var receivedErrorMessage: String?
+    
+    sut.onError = { message in
+      receivedErrorMessage = message
+    }
+    
+    await sut.finishJourney(
+      journeyId: journeyId,
+      review: review
+    )
+    
+    XCTAssertEqual(mockReadingJourneyService.finishJourneyCallCount, 1)
+    XCTAssertEqual(mockReadingJourneyService.fetchReadingJourneysCallCount, 0)
+    XCTAssertEqual(receivedErrorMessage, "독서 완료 처리에 실패했습니다.")
+  }
 }
 
 // MARK: - Helper
 private extension JourneyViewModelTests {
-  func makeReadingJourney() -> ReadingJourney {
+  func makeReadingJourney(
+    currentPage: Int = 120,
+    remainingDistanceKm: Double = 300
+  ) -> ReadingJourney {
     ReadingJourney(
       id: "journey-id",
       status: .reading,
       departureAirport: makeDepartureAirport(),
       arrivalAirport: makeArrivalAirport(),
       distanceKm: 540,
-      remainingDistanceKm: 300,
+      remainingDistanceKm: remainingDistanceKm,
       book: makeBookInfo(),
       reason: nil,
       startedAt: Date(timeIntervalSince1970: 1_700_000_000),
       finishedAt: nil,
-      currentPage: 120,
+      currentPage: currentPage,
       progressUpdatedAt: Date(timeIntervalSince1970: 1_700_000_100),
       review: nil,
       createdAt: Date(timeIntervalSince1970: 1_700_000_000),
       updatedAt: nil,
       lastUpdatedAt: Date(timeIntervalSince1970: 1_700_000_200)
+    )
+  }
+  
+  func makeFinishedJourney(review: String) -> ReadingJourney {
+    ReadingJourney(
+      id: "journey-id",
+      status: .finished,
+      departureAirport: makeDepartureAirport(),
+      arrivalAirport: makeArrivalAirport(),
+      distanceKm: 540,
+      remainingDistanceKm: 0,
+      book: makeBookInfo(),
+      reason: nil,
+      startedAt: Date(timeIntervalSince1970: 1_700_000_000),
+      finishedAt: Date(timeIntervalSince1970: 1_700_000_500),
+      currentPage: 584,
+      progressUpdatedAt: Date(timeIntervalSince1970: 1_700_000_500),
+      review: review,
+      createdAt: Date(timeIntervalSince1970: 1_700_000_000),
+      updatedAt: Date(timeIntervalSince1970: 1_700_000_500),
+      lastUpdatedAt: Date(timeIntervalSince1970: 1_700_000_500)
     )
   }
   

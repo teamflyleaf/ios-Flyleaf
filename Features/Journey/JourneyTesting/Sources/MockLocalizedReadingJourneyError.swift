@@ -13,11 +13,17 @@ enum MockReadingJourneyError: Error {
 
 enum MockLocalizedReadingJourneyError: LocalizedError {
   case fetchFailed
+  case updateFailed
+  case finishFailed
 
   var errorDescription: String? {
     switch self {
     case .fetchFailed:
       return "독서 여행을 불러오지 못했습니다."
+    case .updateFailed:
+      return "페이지 업데이트에 실패했습니다."
+    case .finishFailed:
+      return "독서 완료 처리에 실패했습니다."
     }
   }
 }
