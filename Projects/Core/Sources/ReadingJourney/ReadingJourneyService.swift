@@ -306,6 +306,7 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
       .document(uid)
       .collection("readingJourneys")
       .whereField("status", isEqualTo: ReadingJourneyStatusType.reading.rawValue)
+      .order(by: "lastUpdatedAt", descending: true)
       .getDocuments()
     
     return try snapshot.documents.map { document in
