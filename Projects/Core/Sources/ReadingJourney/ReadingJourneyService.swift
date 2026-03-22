@@ -286,6 +286,52 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     )
   }
   
+  public func updateJourneyCurrentPage(
+    journeyId: String,
+    currentPage: Int
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    let journey = try readingJourney(from: journeyId, data: data)
+    
+    let maxPage = journey.book.itemPage
+    let clampedPage = min(max(0, currentPage), maxPage)
+    
+    let progress = min(max(Double(clampedPage) / Double(maxPage), 0), 1)
+    let remainingDistanceKm = max(journey.distanceKm * (1 - progress), 0)
+    let now = Date()
+    
+    try await documentRef.updateData([
+      "currentPage": clampedPage,
+      "remainingDistanceKm": remainingDistanceKm,
+      "progressUpdatedAt": now,
+      "updatedAt": now,
+      "lastUpdatedAt": now
+    ])
+    
+    let updatedSnapshot = try await documentRef.getDocument()
+    
+    guard let updatedData = updatedSnapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    return try readingJourney(from: journeyId, data: updatedData)
+  }
+  
   /// 현재 사용자의 진행 중(`reading`) 독서 여행 목록을 조회합니다.
   ///
   /// - Returns: `reading` 상태의 `ReadingJourney` 배열

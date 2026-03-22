@@ -55,6 +55,24 @@ public final class JourneyViewModel {
     onLoadingChanged?(false)
   }
   
+  func updateCurrentPage(
+    journeyId: String,
+    currentPage: Int
+  ) async {
+    do {
+      let updatedJourney = try await readingJourneyService.updateJourneyCurrentPage(
+        journeyId: journeyId,
+        currentPage: currentPage
+      )
+      
+      if let index = self.journeys.firstIndex(where: { $0.id == journeyId }) {
+        self.journeys[index] = updatedJourney
+      }
+    } catch {
+      onError?(error.localizedDescription)
+    }
+  }
+  
   func saveMemo(
     journeyId: String,
     memo: JourneyMemo

@@ -12,6 +12,8 @@ import Then
 import UIKit
 
 final class JourneyInfoView: BaseView {
+  var onPageChanged: ((Int) -> Void)?
+  
   // MARK: - UI
   private let routeInfoView = RouteInfoView()
   
@@ -37,8 +39,13 @@ final class JourneyInfoView: BaseView {
     $0.font = .c3
     $0.textColor = .n20
     $0.textAlignment = .left
+    $0.isUserInteractionEnabled = true
   }
-    
+  
+  private let currentPagePickerField = NeutralPagePickerField().then {
+    $0.isHidden = true
+  }
+  
   private let distanceSectionTitleLabel = UILabel().then {
     $0.text = "여행 거리"
     $0.font = .b1_sb
@@ -50,7 +57,7 @@ final class JourneyInfoView: BaseView {
     $0.textColor = .n20
     $0.textAlignment = .left
   }
-      
+  
   private let remainingDistanceSectionTitleLabel = UILabel().then {
     $0.text = "남은 거리"
     $0.font = .b1_sb
@@ -63,6 +70,8 @@ final class JourneyInfoView: BaseView {
     $0.textAlignment = .left
   }
   
+  private let finishButton = CTAButton(title: "독서 끝내기")
+  
   override func configureUI() {
     [
       routeInfoView,
@@ -70,12 +79,22 @@ final class JourneyInfoView: BaseView {
       startDateLabel,
       currentPageSectionTitleLabel,
       currentPageLabel,
+      currentPagePickerField,
       distanceSectionTitleLabel,
       distanceLabel,
       remainingDistanceSectionTitleLabel,
-      remainingDistanceLabel
+      remainingDistanceLabel,
+      finishButton
     ].forEach {
       addSubview($0)
+    }
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCurrentPage))
+    currentPageLabel.addGestureRecognizer(tapGesture)
+    
+    currentPagePickerField.onPageChanged = { [weak self] page in
+      self?.currentPageLabel.text = "\(page)p"
+      self?.onPageChanged?(page)
     }
   }
   
@@ -105,6 +124,13 @@ final class JourneyInfoView: BaseView {
       $0.horizontalEdges.equalToSuperview()
     }
     
+    // 화면에는 안 보이지만 picker inputView 용도로만 존재
+    currentPagePickerField.snp.makeConstraints {
+      $0.top.equalTo(currentPageLabel.snp.bottom)
+      $0.leading.equalToSuperview()
+      $0.width.height.equalTo(0)
+    }
+    
     distanceSectionTitleLabel.snp.makeConstraints {
       $0.top.equalTo(currentPageLabel.snp.bottom).offset(32)
       $0.leading.equalToSuperview()
@@ -123,11 +149,15 @@ final class JourneyInfoView: BaseView {
     remainingDistanceLabel.snp.makeConstraints {
       $0.top.equalTo(remainingDistanceSectionTitleLabel.snp.bottom).offset(8)
       $0.horizontalEdges.equalToSuperview()
+    }
+    
+    finishButton.snp.makeConstraints {
+      $0.top.equalTo(remainingDistanceLabel.snp.bottom).offset(32)
+      $0.horizontalEdges.equalToSuperview()
       $0.bottom.equalToSuperview()
     }
   }
   
-  // MARK: - Public
   func configure(_ journey: ReadingJourney) {
     routeInfoView.configure(
       departure: journey.departureAirport,
@@ -143,5 +173,15 @@ final class JourneyInfoView: BaseView {
     } else {
       remainingDistanceLabel.text = "-"
     }
+    
+    currentPagePickerField.configure(maxPage: journey.book.itemPage)
+    currentPagePickerField.setPage(journey.currentPage ?? 0)
+  }
+}
+
+// MARK: - Private
+private extension JourneyInfoView {
+  @objc func didTapCurrentPage() {
+    currentPagePickerField.presentPicker()
   }
 }

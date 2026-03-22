@@ -166,7 +166,8 @@ public final class JourneyViewController: BaseViewController {
     
     scrollView.snp.makeConstraints {
       $0.top.equalTo(segmentScrollView.snp.bottom).offset(20)
-      $0.horizontalEdges.bottom.equalToSuperview()
+      $0.horizontalEdges.equalToSuperview()
+      $0.bottom.equalTo(view.safeAreaLayoutGuide)
     }
     
     contentView.snp.makeConstraints {
@@ -186,6 +187,7 @@ public final class JourneyViewController: BaseViewController {
   
   public override func bind() {
     bindSegmentButton()
+    bindJourneyInfoView()
     bindMemoView()
     
     // 로딩상태 처리
@@ -374,6 +376,19 @@ private extension JourneyViewController {
     }
   }
   
+  func updateCurrentPage(_ page: Int) {
+    guard viewModel.journeys.indices.contains(selectedIndex) else { return }
+    
+    let selectedJourney = viewModel.journeys[selectedIndex]
+    
+    Task { [weak self] in
+      await self?.viewModel.updateCurrentPage(
+        journeyId: selectedJourney.id,
+        currentPage: page
+      )
+    }
+  }
+  
   func bindSegmentButton() {
     bookButton.onTap = { [weak self] in
       self?.updateSegmentSelection(index: 0)
@@ -385,6 +400,12 @@ private extension JourneyViewController {
     
     memoButton.onTap = { [weak self] in
       self?.updateSegmentSelection(index: 2)
+    }
+  }
+  
+  func bindJourneyInfoView() {
+    journeyInfoView.onPageChanged = { [weak self] page in
+      self?.updateCurrentPage(page)
     }
   }
   
