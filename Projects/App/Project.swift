@@ -21,6 +21,7 @@ let project = Project(
         "CFBundleDevelopmentRegion": "ko",
         "CFBundleLocalizations": ["ko"],
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+        "CFBundleDisplayName": "Flyleaf Dev",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
         "UIApplicationSceneManifest": [
           "UIApplicationSupportsMultipleScenes": false,
@@ -45,24 +46,67 @@ let project = Project(
         .feature(.login, .feature),
         .feature(.login, .interface),
         .feature(.search, .feature),
-        .feature(.search, .interface),
-        .feature(.wishlist, .feature),
-        .feature(.wishlist, .interface),
-        .feature(.history, .feature),
-        .feature(.history, .interface),
-        .feature(.journey, .feature),
-        .feature(.journey, .interface)
+        .feature(.search, .interface)
       ],
       settings: .settings(
         base: [
           "DEVELOPMENT_TEAM": "X67DB976UU",
-          "CODE_SIGN_STYLE": "Automatic",
+          "CODE_SIGN_STYLE": "Automatic"
         ],
         configurations: [
-          .debug(name: "Debug", xcconfig: "../../Configs/Secrets.xcconfig"),
-          .release(name: "Release", xcconfig: "../../Configs/Secrets.xcconfig")
+          .debug(name: "Debug", xcconfig: "../../Configs/Dev.xcconfig"),
+          .release(name: "Release", xcconfig: "../../Configs/Dev.xcconfig")
         ]
       )
-    )
+    ),
+    
+      .target(
+        name: "Flyleaf",
+        destinations: .iOS,
+        product: .app,
+        bundleId: "com.yeo.flyleaf",
+        infoPlist: .extendingDefault(with: [
+          "UILaunchScreen": [:],
+          "CFBundleDevelopmentRegion": "ko",
+          "CFBundleLocalizations": ["ko"],
+          "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+          "CFBundleDisplayName": "Flyleaf",
+          "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
+          "UIApplicationSceneManifest": [
+            "UIApplicationSupportsMultipleScenes": false,
+            "UISceneConfigurations": [
+              "UIWindowSceneSessionRoleApplication": [
+                [
+                  "UISceneConfigurationName": "Default Configuration",
+                  "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
+                ]
+              ]
+            ]
+          ],
+        ]),
+        sources: ["Sources/**"],
+        resources: ["Resources/**"],
+        entitlements: .file(path: "Flyleaf.entitlements"),
+        dependencies: [
+          .core(),
+          .designSystem(),
+          .feature(.home, .feature),
+          .feature(.home, .interface),
+          .feature(.login, .feature),
+          .feature(.login, .interface),
+          .feature(.search, .feature),
+          .feature(.search, .interface)
+        ],
+        settings: .settings(
+          base: [
+            "DEVELOPMENT_TEAM": "X67DB976UU",
+            "CODE_SIGN_STYLE": "Automatic"
+          ],
+          configurations: [
+            .debug(name: "Debug", xcconfig: "../../Configs/Prod.xcconfig"),
+            .release(name: "Release", xcconfig: "../../Configs/Prod.xcconfig")
+          ]
+        )
+      )
   ]
 )
