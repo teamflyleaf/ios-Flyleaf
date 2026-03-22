@@ -186,7 +186,8 @@ private extension CheckInWishTicketViewModelTests {
       author: "테스트 작가",
       publisher: "테스트 출판사",
       itemPage: itemPage,
-      cover: "https://example.com/cover.jpg"
+      cover: "https://example.com/cover.jpg",
+      description: "test"
     )
   }
   
