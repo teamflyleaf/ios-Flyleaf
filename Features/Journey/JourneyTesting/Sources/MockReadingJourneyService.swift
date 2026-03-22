@@ -12,7 +12,11 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
   var stubbedCreateJourneyResult: ReadingJourney?
   var stubbedCreateJourneyError: Error?
 
+  var stubbedFetchReadingJourneysResult: [ReadingJourney] = []
+  var stubbedFetchReadingJourneysError: Error?
+  
   private(set) var createJourneyCallCount = 0
+  private(set) var fetchReadingJourneysCallCount = 0
   private(set) var lastJourneyPayload: JourneyPayload?
 
   func createJourney(
@@ -45,7 +49,13 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
   }
 
   func fetchReadingJourneys() async throws -> [ReadingJourney] {
-    fatalError("Not used in JourneyTicketViewModelTests")
+    fetchReadingJourneysCallCount += 1
+    
+    if let stubbedFetchReadingJourneysError {
+      throw stubbedFetchReadingJourneysError
+    }
+    
+    return stubbedFetchReadingJourneysResult
   }
   
   func fetchWishlist() async throws -> [ReadingJourney] {
