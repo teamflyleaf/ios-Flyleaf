@@ -147,4 +147,20 @@ final class MockReadingJourneyService: ReadingJourneyServicing {
       throw stubbedDeleteWishlistJourneyError
     }
   }
+  
+  func finishJourney(journeyId: String, review: String) async throws -> Core.ReadingJourney {
+    fatalError("Not Used")
+  }
+  
+  func updateJourneyCurrentPage(journeyId: String, currentPage: Int) async throws -> Core.ReadingJourney {
+    fatalError("Not Used")
+  }
+  
+  func fetchFinishedJourneys() async throws -> [Core.ReadingJourney] {
+    fatalError("Not Used")
+  }
+  
+  func deleteFinishedJourney(journeyId: String) async throws {
+    fatalError("Not Used")
+  }
 }

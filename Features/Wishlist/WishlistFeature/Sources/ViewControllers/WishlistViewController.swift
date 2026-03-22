@@ -15,6 +15,7 @@ public final class WishlistViewController: BaseViewController {
   public var onTapCheckIn: ((ReadingJourney) -> Void)?
   
   private let viewModel: WishlistViewModel
+  private var isInitialLoading = true
   
   public init(viewModel: WishlistViewModel) {
     self.viewModel = viewModel
@@ -47,18 +48,57 @@ public final class WishlistViewController: BaseViewController {
     $0.showsVerticalScrollIndicator = false
   }
   
+  private let initialLoadingIndicatorView = UIActivityIndicatorView(style: .large).then {
+    $0.color = .n0
+    $0.hidesWhenStopped = true
+  }
+  
+  private let emptyView = UIView().then {
+    $0.isHidden = true
+  }
+  
+  private let emptyTitleLabel = UILabel().then {
+    $0.text = "아직 예약이 없어요"
+    $0.font = .b1_sb
+    $0.textColor = .n0
+    $0.textAlignment = .center
+  }
+  
+  private let emptyDescriptionLabel = UILabel().then {
+    $0.text = "읽고 싶은 책을 예약하면 이곳에 쌓여요"
+    $0.font = .c3
+    $0.textColor = .n20
+    $0.textAlignment = .center
+    $0.numberOfLines = 0
+  }
+  
   public override func configureUI() {
     [
       headerTitleLabel,
       dividerView,
-      tableView
+      tableView,
+      initialLoadingIndicatorView,
+      emptyView
     ].forEach {
       view.addSubview($0)
     }
-
-    tableView.register(WishTicketTableViewCell.self, forCellReuseIdentifier: WishTicketTableViewCell.identifier)
+    
+    [
+      emptyTitleLabel,
+      emptyDescriptionLabel
+    ].forEach {
+      emptyView.addSubview($0)
+    }
+    
+    tableView.register(
+      WishTicketTableViewCell.self,
+      forCellReuseIdentifier: WishTicketTableViewCell.identifier
+    )
     tableView.delegate = self
     tableView.dataSource = self
+    
+    setContentHidden(true)
+    initialLoadingIndicatorView.startAnimating()
   }
   
   public override func setupLayout() {
@@ -77,17 +117,63 @@ public final class WishlistViewController: BaseViewController {
       $0.horizontalEdges.equalToSuperview().inset(20)
       $0.bottom.equalToSuperview()
     }
+    
+    initialLoadingIndicatorView.snp.makeConstraints {
+      $0.center.equalToSuperview()
+    }
+    
+    emptyView.snp.makeConstraints {
+      $0.top.equalTo(headerTitleLabel.snp.bottom).offset(40)
+      $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    emptyTitleLabel.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(-12)
+    }
+    
+    emptyDescriptionLabel.snp.makeConstraints {
+      $0.top.equalTo(emptyTitleLabel.snp.bottom).offset(8)
+      $0.centerX.equalToSuperview()
+      $0.leading.greaterThanOrEqualToSuperview().offset(20)
+      $0.trailing.lessThanOrEqualToSuperview().inset(20)
+    }
   }
   
   public override func bind() {
-    viewModel.onJourneysChanged = { [weak self] _ in
-      DispatchQueue.main.async {
-        self?.tableView.reloadData()
+    viewModel.onLoadingChanged = { [weak self] isLoading in
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        guard self.isInitialLoading else { return }
+        
+        if isLoading {
+          self.setContentHidden(true)
+          self.emptyView.isHidden = true
+          self.initialLoadingIndicatorView.startAnimating()
+        } else {
+          self.initialLoadingIndicatorView.stopAnimating()
+          self.isInitialLoading = false
+        }
+      }
+    }
+    
+    viewModel.onJourneysChanged = { [weak self] journeys in
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        
+        if journeys.isEmpty {
+          self.setEmptyState(true)
+          self.tableView.reloadData()
+          return
+        }
+        
+        self.setEmptyState(false)
+        self.tableView.reloadData()
       }
     }
     
     viewModel.onError = { [weak self] message in
-      DispatchQueue.main.async {
+      DispatchQueue.main.async { [weak self] in
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
@@ -102,7 +188,7 @@ extension WishlistViewController: UITableViewDataSource {
   ) -> Int {
     return viewModel.numberOfItems
   }
-
+  
   public func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
@@ -113,7 +199,7 @@ extension WishlistViewController: UITableViewDataSource {
     ) as? WishTicketTableViewCell else {
       return UITableViewCell()
     }
-
+    
     let journey = viewModel.journeys[indexPath.row]
     
     cell.configure(
@@ -123,7 +209,7 @@ extension WishlistViewController: UITableViewDataSource {
       registerDate: journey.createdAt,
       reason: journey.reason ?? ""
     )
-
+    
     cell.onCheckInTriggered = { [weak self] in
       self?.onTapCheckIn?(journey)
     }
@@ -158,5 +244,19 @@ extension WishlistViewController: UITableViewDelegate {
     heightForRowAt indexPath: IndexPath
   ) -> CGFloat {
     return 260
+  }
+}
+
+// MARK: - Private
+private extension WishlistViewController {
+  func setContentHidden(_ isHidden: Bool) {
+    dividerView.isHidden = isHidden
+    tableView.isHidden = isHidden
+  }
+  
+  func setEmptyState(_ isEmpty: Bool) {
+    emptyView.isHidden = !isEmpty
+    dividerView.isHidden = isEmpty
+    tableView.isHidden = isEmpty
   }
 }

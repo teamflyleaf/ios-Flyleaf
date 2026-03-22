@@ -171,6 +171,48 @@ final class WishlistViewModelTests: XCTestCase {
     XCTAssertEqual(mockReadingJourneyService.fetchWishlistCallCount, 0)
     XCTAssertEqual(receivedMessage, "중복된 독서 여행입니다.")
   }
+  
+  /*
+   예약 목록 불러오기 성공 시 로딩 상태 콜백이 true/false 순서로 호출되는지 검증하는 테스트
+   - Given: wishlist journey 목록을 반환하는 MockReadingJourneyService
+   - When: loadWishlistJourneys 호출
+   - Then: onLoadingChanged가 true, false 순서로 호출되는지 확인합니다.
+   */
+  func test_loadWishlistJourneys_success_callsOnLoadingChanged() async {
+    mockReadingJourneyService.stubbedFetchWishlistResult = [
+      makeWishlistJourney(id: "journey-1")
+    ]
+    
+    var loadingStates: [Bool] = []
+    
+    sut.onLoadingChanged = { isLoading in
+      loadingStates.append(isLoading)
+    }
+    
+    await sut.loadWishlistJourneys()
+    
+    XCTAssertEqual(loadingStates, [true, false])
+  }
+
+  /*
+   예약 목록 불러오기에 실패해도 로딩 상태 콜백이 true/false 순서로 호출되는지 검증하는 테스트
+   - Given: 에러를 던지도록 설정된 MockReadingJourneyService
+   - When: loadWishlistJourneys 호출
+   - Then: onLoadingChanged가 true, false 순서로 호출되는지 확인합니다.
+   */
+  func test_loadWishlistJourneys_failure_callsOnLoadingChanged() async {
+    mockReadingJourneyService.stubbedFetchWishlistError = MockLocalizedReadingJourneyError.custom
+    
+    var loadingStates: [Bool] = []
+    
+    sut.onLoadingChanged = { isLoading in
+      loadingStates.append(isLoading)
+    }
+    
+    await sut.loadWishlistJourneys()
+    
+    XCTAssertEqual(loadingStates, [true, false])
+  }
 }
 
 // MARK: - Helper
@@ -205,7 +247,8 @@ private extension WishlistViewModelTests {
       author: "테스트 작가",
       publisher: "테스트 출판사",
       itemPage: itemPage,
-      cover: "https://example.com/cover.jpg"
+      cover: "https://example.com/cover.jpg",
+      description: "test"
     )
   }
   

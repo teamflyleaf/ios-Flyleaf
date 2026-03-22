@@ -186,7 +186,8 @@ private extension RegisterWishlistViewModelTests {
       author: "가와바타 야스나리",
       publisher: "민음사",
       itemPage: 176,
-      cover: "https://example.com/book.jpg"
+      cover: "https://example.com/book.jpg",
+      description: "test"
     )
   }
 
