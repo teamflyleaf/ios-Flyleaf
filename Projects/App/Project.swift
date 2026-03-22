@@ -36,7 +36,9 @@ let project = Project(
         ],
       ]),
       sources: ["Sources/**"],
-      resources: ["Resources/**"],
+      resources: [
+        "Resources/Firebase/Dev/GoogleService-Info.plist"
+      ],
       entitlements: .file(path: "Flyleaf.entitlements"),
       dependencies: [
         .core(),
@@ -85,7 +87,9 @@ let project = Project(
           ],
         ]),
         sources: ["Sources/**"],
-        resources: ["Resources/**"],
+        resources: [
+          "Resources/Firebase/Prod/GoogleService-Info.plist"
+        ],
         entitlements: .file(path: "Flyleaf.entitlements"),
         dependencies: [
           .core(),
