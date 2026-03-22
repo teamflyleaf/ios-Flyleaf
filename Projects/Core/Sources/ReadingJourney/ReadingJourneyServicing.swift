@@ -31,6 +31,9 @@ public protocol ReadingJourneyServicing {
   ) async throws -> ReadingJourney
   
   func fetchReadingJourneys() async throws -> [ReadingJourney]
+  
+  func fetchFinishedJourneys() async throws -> [ReadingJourney]
+  
   func fetchWishlist() async throws -> [ReadingJourney]
   
   func updateJourneyStatusToReading(
@@ -40,6 +43,10 @@ public protocol ReadingJourneyServicing {
   ) async throws -> ReadingJourney
   
   func deleteWishlistJourney(
+    journeyId: String
+  ) async throws
+  
+  func deleteFinishedJourney(
     journeyId: String
   ) async throws
 }

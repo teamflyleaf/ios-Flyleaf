@@ -430,6 +430,34 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     }
   }
   
+  /// 현재 사용자의 진행 중(`finished`) 독서 여행 목록을 조회합니다.
+  ///
+  /// - Returns: `finished` 상태의 `ReadingJourney` 배열
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - Firestore 네트워크/조회 오류
+  ///
+  /// - Note:
+  ///   - 조회된 문서는 `readingJourney(from:)`를 통해 모델로 변환됩니다.
+  public func fetchFinishedJourneys() async throws -> [ReadingJourney] {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let snapshot = try await db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .whereField("status", isEqualTo: ReadingJourneyStatusType.finished.rawValue)
+      .order(by: "finishedAt", descending: true)
+      .getDocuments()
+    
+    return try snapshot.documents.map { document in
+      try readingJourney(from: document)
+    }
+  }
+  
   /// 현재 사용자의 위시리스트(`wishlist`) 독서 여행 목록을 조회합니다.
   ///
   /// - Returns: `wishlist` 상태의 `ReadingJourney` 배열
@@ -588,6 +616,45 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
       let statusRaw = data["status"] as? String,
       let status = ReadingJourneyStatusType(rawValue: statusRaw),
       status == .wishlist
+    else {
+      throw ReadingJourneyError.invalidStatus
+    }
+    
+    try await documentRef.delete()
+  }
+  
+  /// 히스토리(`finished`) 상태의 독서 여행을 삭제합니다.
+  ///
+  /// - Parameter journeyId: 삭제할 독서 여행 문서 ID
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 데이터를 읽을 수 없는 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 삭제 대상이 `finished` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/삭제 오류
+  public func deleteFinishedJourney(
+    journeyId: String
+  ) async throws {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    guard
+      let statusRaw = data["status"] as? String,
+      let status = ReadingJourneyStatusType(rawValue: statusRaw),
+      status == .finished
     else {
       throw ReadingJourneyError.invalidStatus
     }

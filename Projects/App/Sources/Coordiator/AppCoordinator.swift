@@ -36,6 +36,8 @@ final class AppCoordinator: Coordinator {
   private let registerHistoryBuilder: RegisterHistoryBuildable
   private let registerJourneyBuilder: RegisterJourneyBuildable
   private let jourenyBuilder: JourneyBuildable
+  private let historyBuilder: HistoryBuildable
+  private let detailHistoryBuilder: DetailHistoryBuildable
   
   init(
     navigationController: UINavigationController,
@@ -50,7 +52,9 @@ final class AppCoordinator: Coordinator {
     journeyTicketBuilder: JourneyTicketBuildable,
     registerHistoryBuilder: RegisterHistoryBuildable,
     registerJourneyBuilder: RegisterJourneyBuildable,
-    jourenyBuilder: JourneyBuildable
+    jourenyBuilder: JourneyBuildable,
+    historyBuilder: HistoryBuildable,
+    detailHistoryBuilder: DetailHistoryBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -65,6 +69,8 @@ final class AppCoordinator: Coordinator {
     self.registerHistoryBuilder = registerHistoryBuilder
     self.registerJourneyBuilder = registerJourneyBuilder
     self.jourenyBuilder = jourenyBuilder
+    self.historyBuilder = historyBuilder
+    self.detailHistoryBuilder = detailHistoryBuilder
   }
   
   func start() {
@@ -95,12 +101,18 @@ private extension AppCoordinator {
       }
     )
     let journeyVC = jourenyBuilder.build()
+    
     let wishlistVC = wishlistBuilder.build(
       onTapCheckIn: { [weak self] journey in
         self?.showCheckInWishTicket(journey: journey)
       }
     )
-    let historyVC = PlaceholderViewController()
+    
+    let historyVC = historyBuilder.build(
+      onTapHistory: { [weak self] journey in
+        self?.showDetailHistory(journey: journey)
+      }
+    )
     
     let tabBarController = MainTabBarController(
       homeViewController: homeVC,
@@ -303,6 +315,17 @@ private extension AppCoordinator {
       }
     )
     navigationController.pushViewController(registerHistoryVC, animated: true)
+  }
+  
+  func showDetailHistory(journey: ReadingJourney) {
+    let vc = detailHistoryBuilder.build(
+      journey: journey,
+      onTapBack: { [weak self] in
+        self?.pop(animated: true)
+      }
+    )
+    
+    navigationController.pushViewController(vc, animated: true)
   }
 }
 

@@ -42,6 +42,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let registerJourneyBuilder = RegisterJourneyBuilder()
     let journeyTicketBuilder = JourneyTicketBuilder()
     let journeyBuilder = JourneyBuilder()
+    let historyBuilder = HistoryBuilder()
+    let detailHistoryBuilder = DetailHistoryBuilder()
     
     let coordinator = AppCoordinator(
       navigationController: navigationController,
@@ -56,7 +58,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       journeyTicketBuilder: journeyTicketBuilder,
       registerHistoryBuilder: registerHistoryBuilder,
       registerJourneyBuilder: registerJourneyBuilder,
-      jourenyBuilder: journeyBuilder
+      jourenyBuilder: journeyBuilder,
+      historyBuilder: historyBuilder,
+      detailHistoryBuilder: detailHistoryBuilder
     )
     
     let window = UIWindow(windowScene: windowScene)
