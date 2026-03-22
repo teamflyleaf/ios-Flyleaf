@@ -62,8 +62,16 @@ public final class NeutralPagePickerField: UIControl {
     fatalError()
   }
   
-  public func configure(maxPage: Int) {
+  public func configure(
+    maxPage: Int,
+    backgroundColor: UIColor? = nil
+  ) {
     self.maxPage = maxPage
+    
+    if let backgroundColor {
+      textField.backgroundColor = backgroundColor
+    }
+    
     updatePlaceholder()
   }
   
