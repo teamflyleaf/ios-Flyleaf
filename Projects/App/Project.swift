@@ -48,7 +48,13 @@ let project = Project(
         .feature(.login, .feature),
         .feature(.login, .interface),
         .feature(.search, .feature),
-        .feature(.search, .interface)
+        .feature(.search, .interface),
+        .feature(.wishlist, .feature),
+        .feature(.wishlist, .interface),
+        .feature(.journey, .feature),
+        .feature(.journey, .interface),
+        .feature(.history, .feature),
+        .feature(.history, .interface),
       ],
       settings: .settings(
         base: [
@@ -99,7 +105,13 @@ let project = Project(
           .feature(.login, .feature),
           .feature(.login, .interface),
           .feature(.search, .feature),
-          .feature(.search, .interface)
+          .feature(.search, .interface),
+          .feature(.wishlist, .feature),
+          .feature(.wishlist, .interface),
+          .feature(.journey, .feature),
+          .feature(.journey, .interface),
+          .feature(.history, .feature),
+          .feature(.history, .interface),
         ],
         settings: .settings(
           base: [
