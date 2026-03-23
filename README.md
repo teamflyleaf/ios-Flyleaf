@@ -1,8 +1,9 @@
 # Flyleaf
 > 독서를 여행처럼
 <p align="center">
-  <img src="docs/images/promotion.png" width="1000"/>
+  <img src="Docs/Images/promotion.png" width="1000"/>
 </p>
+
 
 
 <p align="center">
@@ -118,12 +119,13 @@ Flyleaf 프로젝트는 Feature 중심의 Micro-Features Architecture를 기반�
 **전체 의존성 방향**
 
 <p align="center">
-  <img src="docs/images/dependency-ex.png" width="1000"/>
+  <img src="Docs/Images/dependency-ex.png" width="1000"/>
 </p>
+
 
 ### 2. Coordinator
 <p align="center">
-  <img src="docs/images/coordinator-flow.png" width="1000"/>
+  <img src="Docs/Images/coordinator-flow.png" width="1000"/>
 </p>
 
 Flyleaf 프로젝트는 화면 전환 로직을 Coordinator 패턴을 통해 관리하고 있습니다.</br>
