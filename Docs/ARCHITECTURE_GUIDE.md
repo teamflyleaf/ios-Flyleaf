@@ -143,8 +143,9 @@ Flyleaf는 모듈 간 결합도를 낮추기 위해 **단방향 의존성 구조
 
 ### 의존성 흐름
 <p align="center">
-  <img src="images/dependency-ex.png" width="1000"/>
+  <img src="Images/dependency-ex.png" width="1000"/>
 </p>
+
 
 ### 의존성 규칙
 
@@ -181,8 +182,9 @@ Core는 어떤 Feature에도 의존하지 않으며,
 Flyleaf는 구현이 아닌 인터페이스에 의존하도록 설계되어 있습니다.
 
 <p align="center">
-  <img src="images/dip-ex.png" width="1000"/>
+  <img src="Images/dip-ex.png" width="1000"/>
 </p>
+
 
 이를 통해, 테스트가 용이하고 모듈 간 독립성을 확보할 수 있습니다.
 
