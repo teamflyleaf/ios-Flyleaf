@@ -10,6 +10,6 @@ import UIKit
 
 public protocol WishlistBuildable {
   func build(
-    onTapCheckIn: @escaping (ReadingJourney) -> Void
+    onRoute: @escaping (WishlistRoute) -> Void
   ) -> UIViewController
 }

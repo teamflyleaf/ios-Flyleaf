@@ -11,7 +11,6 @@ import UIKit
 public protocol CheckInWishTicketBuildable {
   func build(
     journey: ReadingJourney,
-    onTapBack: @escaping () -> Void,
-    onUploadCompleted: @escaping () -> Void
+    onRoute: @escaping (CheckInWishTicketRoute) -> Void
   ) -> UIViewController
 }

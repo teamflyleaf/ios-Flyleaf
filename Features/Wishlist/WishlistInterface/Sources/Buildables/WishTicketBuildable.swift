@@ -11,7 +11,6 @@ import UIKit
 public protocol WishTicketBuildable {
   func build(
     payload: WishlistTicketPayload,
-    onTapBack: @escaping () -> Void,
-    onUploadCompleted: @escaping () -> Void
+    onRoute: @escaping (WishTicketRoute) -> Void
   ) -> UIViewController
 }

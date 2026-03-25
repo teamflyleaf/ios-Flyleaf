@@ -14,8 +14,7 @@ public final class WishTicketBuilder: WishTicketBuildable {
   
   public func build(
     payload: WishlistTicketPayload,
-    onTapBack: @escaping () -> Void,
-    onUploadCompleted: @escaping () -> Void
+    onRoute: @escaping (WishTicketRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let viewModel = WishTicketViewModel(
@@ -24,9 +23,7 @@ public final class WishTicketBuilder: WishTicketBuildable {
     )
     
     let viewController = WishTicketViewController(viewModel: viewModel)
-    viewController.onTapBack = onTapBack
-    viewController.onUploadCompleted = onUploadCompleted
-    
+    viewController.onRoute = onRoute
     return viewController
   }
 }

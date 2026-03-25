@@ -104,8 +104,11 @@ private extension AppCoordinator {
     let journeyVC = jourenyBuilder.build()
     
     let wishlistVC = wishlistBuilder.build(
-      onTapCheckIn: { [weak self] journey in
-        self?.startCheckInWishlistFlow(journey: journey)
+      onRoute: { [weak self] route in
+        switch route {
+        case .checkIn(let journey):
+          self?.startCheckInWishlistFlow(journey: journey)
+        }
       }
     )
     

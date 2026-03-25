@@ -52,25 +52,28 @@ final class WishlistCoordinator: Coordinator {
 private extension WishlistCoordinator {
   func showRegisterWishlist() {
     let registerWishlistVC = registerWishlistBuilder.build(
-      onTapBack: { [weak self] in
-        self?.finishFlow()
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.startBookSearch(onSelected: onSelected)
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.startDepartureAirportSearch(onSelected: onSelected)
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.startArrivalAirportSearch(onSelected: onSelected)
-      },
-      onTapCreateTicket: { [weak self] book, departure, destination, reason in
-        self?.showWishTicket(
-          book: book,
-          departure: departure,
-          destination: destination,
-          reason: reason
-        )
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishFlow()
+
+        case .bookSearch(let onSelected):
+          self?.startBookSearch(onSelected: onSelected)
+
+        case .departureSearch(let onSelected):
+          self?.startDepartureAirportSearch(onSelected: onSelected)
+
+        case .destinationSearch(let onSelected):
+          self?.startArrivalAirportSearch(onSelected: onSelected)
+
+        case .createTicket(let book, let departure, let destination, let reason):
+          self?.showWishTicket(
+            book: book,
+            departure: departure,
+            destination: destination,
+            reason: reason
+          )
+        }
       }
     )
     
@@ -93,15 +96,17 @@ private extension WishlistCoordinator {
     
     let ticketVC = wishTicketBuilder.build(
       payload: payload,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
-        self?.onFlowEvent?(.moveToWishlistTab)
-        self?.finishFlowToRoot()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.pop(animated: true)
+        case .uploadCompleted:
+          self?.onFlowEvent?(.moveToWishlistTab)
+          self?.finishFlowToRoot()
+        }
       }
     )
-
+    
     navigationController.pushViewController(ticketVC, animated: true)
   }
   
@@ -110,12 +115,14 @@ private extension WishlistCoordinator {
   ) {
     let viewController = checkInWishTicketBuilder.build(
       journey: journey,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
-        self?.onFlowEvent?(.moveToJourneyTab)
-        self?.finishFlowToRoot()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishFlow()
+        case .uploadCompleted:
+          self?.onFlowEvent?(.moveToJourneyTab)
+          self?.finishFlowToRoot()
+        }
       }
     )
     
