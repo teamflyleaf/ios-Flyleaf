@@ -15,6 +15,7 @@ final class JourneyCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let registerJourneyBuilder: RegisterJourneyBuildable
   private let journeyTicketBuilder: JourneyTicketBuildable
@@ -70,6 +71,7 @@ private extension JourneyCoordinator {
       }
     )
     
+    rootViewController = registerJourneyVC
     navigationController.pushViewController(registerJourneyVC, animated: true)
   }
   
@@ -132,7 +134,6 @@ private extension JourneyCoordinator {
 private extension JourneyCoordinator {
   func finishFlow() {
     navigationController.popViewController(animated: true)
-    parentCoordinator?.childDidFinish(self)
   }
   
   func finishFlowToRoot() {

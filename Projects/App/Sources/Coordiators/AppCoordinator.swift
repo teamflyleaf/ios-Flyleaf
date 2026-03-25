@@ -15,10 +15,11 @@ import JourneyInterface
 import UIKit
 
 @MainActor
-final class AppCoordinator: Coordinator {
+final class AppCoordinator: NSObject, Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let authService: AuthServicing
   private let homeBuilder: HomeBuildable
@@ -67,6 +68,10 @@ final class AppCoordinator: Coordinator {
     self.jourenyBuilder = jourenyBuilder
     self.historyBuilder = historyBuilder
     self.detailHistoryBuilder = detailHistoryBuilder
+    
+    super.init()
+    
+    self.navigationController.delegate = self
   }
   
   func start() {
@@ -126,6 +131,43 @@ private extension AppCoordinator {
     }
     navigationController.popToRootViewController(animated: false)
     tabBarController.selectedIndex = tab.rawValue
+  }
+}
+
+// MARK: - UINavigationControllerDelegate
+extension AppCoordinator: UINavigationControllerDelegate {
+  func navigationController(
+    _ navigationController: UINavigationController,
+    didShow viewController: UIViewController,
+    animated: Bool
+  ) {
+    guard let fromViewController = navigationController.transitionCoordinator?.viewController(forKey: .from) else { return }
+    
+    if navigationController.viewControllers.contains(fromViewController) {
+      return
+    }
+    
+    removeFinishedCoordinator(
+      from: childCoordinators,
+      poppedViewController: fromViewController
+    )
+  }
+  
+  private func removeFinishedCoordinator(
+    from coordinators: [Coordinator],
+    poppedViewController: UIViewController
+  ) {
+    for coordinator in coordinators {
+      if coordinator.rootViewController === poppedViewController {
+        childDidFinish(coordinator)
+        return
+      }
+      
+      removeFinishedCoordinator(
+        from: coordinator.childCoordinators,
+        poppedViewController: poppedViewController
+      )
+    }
   }
 }
 

@@ -15,6 +15,7 @@ final class WishlistCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let registerWishlistBuilder: RegisterWishlistBuildable
   private let wishTicketBuilder: WishTicketBuildable
@@ -73,6 +74,7 @@ private extension WishlistCoordinator {
       }
     )
     
+    rootViewController = registerWishlistVC
     navigationController.pushViewController(registerWishlistVC, animated: true)
   }
   
@@ -99,7 +101,7 @@ private extension WishlistCoordinator {
         self?.finishFlowToRoot()
       }
     )
-    
+
     navigationController.pushViewController(ticketVC, animated: true)
   }
   
@@ -117,6 +119,7 @@ private extension WishlistCoordinator {
       }
     )
     
+    rootViewController = viewController
     navigationController.pushViewController(viewController, animated: true)
   }
 }
@@ -157,7 +160,6 @@ extension WishlistCoordinator {
 private extension WishlistCoordinator {
   func finishFlow() {
     navigationController.popViewController(animated: true)
-    parentCoordinator?.childDidFinish(self)
   }
   
   func finishFlowToRoot() {

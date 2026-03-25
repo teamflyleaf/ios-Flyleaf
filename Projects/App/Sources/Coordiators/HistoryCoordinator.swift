@@ -16,6 +16,7 @@ final class HistoryCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let registerHistoryBuilder: RegisterHistoryBuildable
   private let detailHistoryBuilder: DetailHistoryBuildable
@@ -70,6 +71,7 @@ private extension HistoryCoordinator {
       }
     )
     
+    rootViewController = registerHistoryVC
     navigationController.pushViewController(registerHistoryVC, animated: true)
   }
   
@@ -81,6 +83,8 @@ private extension HistoryCoordinator {
       }
     )
     
+    
+    rootViewController = vc
     navigationController.pushViewController(vc, animated: true)
   }
 }
@@ -114,7 +118,6 @@ private extension HistoryCoordinator {
 private extension HistoryCoordinator {
   func finishFlow() {
     navigationController.popViewController(animated: true)
-    parentCoordinator?.childDidFinish(self)
   }
   
   func finishFlowToRoot() {

@@ -14,6 +14,7 @@ final class SearchCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let searchBuilder: SearchBuildable
   
@@ -72,6 +73,7 @@ private extension SearchCoordinator {
       onTapAirportItem: nil
     )
     
+    rootViewController = searchVC
     navigationController.pushViewController(searchVC, animated: true)
   }
   
@@ -89,6 +91,7 @@ private extension SearchCoordinator {
       }
     )
     
+    rootViewController = searchVC
     navigationController.pushViewController(searchVC, animated: true)
   }
   
@@ -106,11 +109,11 @@ private extension SearchCoordinator {
       }
     )
     
+    rootViewController = searchVC
     navigationController.pushViewController(searchVC, animated: true)
   }
   
   func finishByPop() {
     navigationController.popViewController(animated: true)
-    parentCoordinator?.childDidFinish(self)
   }
 }

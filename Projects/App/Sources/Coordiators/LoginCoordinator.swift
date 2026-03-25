@@ -13,6 +13,7 @@ final class LoginCoordinator: Coordinator {
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
+  var rootViewController: UIViewController?
   
   private let loginBuilder: LoginBuildable
   
@@ -31,6 +32,7 @@ final class LoginCoordinator: Coordinator {
       self?.onLoginCompleted?()
     }
     
+    rootViewController = loginVC
     navigationController.setViewControllers([loginVC], animated: true)
   }
 }
