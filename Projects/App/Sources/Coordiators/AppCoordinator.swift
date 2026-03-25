@@ -94,7 +94,7 @@ private extension AppCoordinator {
         self?.startWishlistFlow()
       },
       onTapJourney: { [weak self] in
-        self?.showRegisterJourney()
+        self?.startJourneyFlow()
       },
       onTapHistory: { [weak self] in
         self?.showRegisterHistory()
@@ -302,61 +302,28 @@ private extension AppCoordinator {
 
 // MARK: - Journey
 private extension AppCoordinator {
-  func showRegisterJourney() {
-    let registerJourneyVC = registerJourneyBuilder.build(
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.onBookItemSelected = onSelected
-        self?.showBookSearch()
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.onDepatureAirportSelected = onSelected
-        self?.showDepartureAirportSearch()
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.onDestinationAirportSelected = onSelected
-        self?.showArrivalAirportSearch()
-      },
-      onTapCreateTicket: { [weak self] book, departure, destination, startDate, currentPage in
-        self?.showJourneyTicket(
-          book: book,
-          departure: departure,
-          destination: destination,
-          startDate: startDate,
-          currentPage: currentPage
-        )
-      }
-    )
-    navigationController.pushViewController(registerJourneyVC, animated: true)
+  func startJourneyFlow() {
+    let coordinator = makeJourneyCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
   
-  func showJourneyTicket(
-    book: BookInfo,
-    departure: AirportInfo,
-    destination: AirportInfo,
-    startDate: Date,
-    currentPage: Int
-  ) {
-    let payload = JourneyPayload(
-      book: book,
-      startDate: startDate,
-      currentPage: currentPage,
-      departureAirport: departure,
-      destinationAirport: destination
+  func makeJourneyCoordinator() -> JourneyCoordinator {
+    let coordinator = JourneyCoordinator(
+      navigationController: navigationController,
+      registerJourneyBuilder: registerJourneyBuilder,
+      journeyTicketBuilder: journeyTicketBuilder,
+      searchBuilder: searchBuilder
     )
     
-    let ticketVC = journeyTicketBuilder.build(
-      payload: payload,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
+    coordinator.parentCoordinator = self
+    coordinator.onFlowEvent = { [weak self] event in
+      switch event {
+      case .moveToJourneyTab:
         self?.moveToJourneyTab()
       }
-    )
+    }
     
-    navigationController.pushViewController(ticketVC, animated: true)
+    return coordinator
   }
 }
