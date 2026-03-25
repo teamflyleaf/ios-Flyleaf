@@ -10,13 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import HistoryInterface
 
 public final class RegisterHistoryViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onTapRegisterBookSearch: ((@escaping (BookInfo) -> Void) -> Void)?
-  public var onTapSelectDepartureButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onTapSelectDestinationButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onUploadCompleted: (() -> Void)?
+  public var onRoute: ((RegisterHistoryRoute) -> Void)?
   
   private let viewModel: RegisterHistoryViewModel
   
@@ -121,7 +118,7 @@ public final class RegisterHistoryViewController: BaseViewController {
     
     viewModel.onUploadSuccess = { [weak self] _ in
       DispatchQueue.main.async {
-        self?.onUploadCompleted?()
+        self?.onRoute?(.uploadCompleted)
       }
     }
     
@@ -192,15 +189,15 @@ private extension RegisterHistoryViewController {
   
   func bindHeaderView() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
   }
   
   func bindRegisterHistoryView() {
     registerHistoryBookView.onRegisterBookSearchTap = { [weak self] in
-      self?.onTapRegisterBookSearch? { [weak self] item in
+      self?.onRoute?(.bookSearch { [weak self] item in
         self?.viewModel.updateSelectedBook(item)
-      }
+      })
     }
     
     registerHistoryBookView.onReviewTextChanged = { [weak self] text in
@@ -230,7 +227,7 @@ private extension RegisterHistoryViewController {
     }
     
     selectRouteView.onTapSelectDepartureButton = { [weak self] in
-      self?.onTapSelectDepartureButton? { [weak self] item in
+      self?.onRoute?(.departureSearch { [weak self] item in
         guard let self else { return }
         
         if self.viewModel.isSameAsDestination(item) {
@@ -242,7 +239,7 @@ private extension RegisterHistoryViewController {
         }
         
         self.viewModel.updateDepartureAirport(item)
-      }
+      })
     }
     
     selectRouteView.onTapSelectDestinationButton = { [weak self] in
@@ -256,7 +253,7 @@ private extension RegisterHistoryViewController {
         return
       }
       
-      self.onTapSelectDestinationButton? { [weak self] item in
+      self.onRoute?(.destinationSearch { [weak self] item in
         guard let self else { return }
         
         if self.viewModel.isSameAsDeparture(item) {
@@ -268,7 +265,7 @@ private extension RegisterHistoryViewController {
         }
         
         self.viewModel.updateDestinationAirport(item)
-      }
+      })
     }
   }
   

@@ -113,8 +113,11 @@ private extension AppCoordinator {
     )
     
     let historyVC = historyBuilder.build(
-      onTapHistory: { [weak self] journey in
-        self?.startDetailHistoryFlow(journey: journey)
+      onRoute: { [weak self] route in
+        switch route {
+        case .detail(let journey):
+          self?.startDetailHistoryFlow(journey: journey)
+        }
       }
     )
     

@@ -11,6 +11,6 @@ import UIKit
 public protocol DetailHistoryBuildable {
   func build(
     journey: ReadingJourney,
-    onTapBack: (() -> Void)?
+    onRoute: ((DetailHistoryRoute) -> Void)?
   ) -> UIViewController
 }

@@ -10,6 +10,6 @@ import UIKit
 
 public protocol HistoryBuildable {
   func build(
-    onTapHistory: ((ReadingJourney) -> Void)?
+    onRoute: ((HistoryRoute) -> Void)?
   ) -> UIViewController
 }

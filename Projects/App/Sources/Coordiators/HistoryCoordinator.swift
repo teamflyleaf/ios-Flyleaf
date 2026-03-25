@@ -53,21 +53,24 @@ final class HistoryCoordinator: Coordinator {
 private extension HistoryCoordinator {
   func showRegisterHistory() {
     let registerHistoryVC = registerHistoryBuilder.build(
-      onTapBack: { [weak self] in
-        self?.finishFlow()
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.startBookSearch(onSelected: onSelected)
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.startDepartureAirportSearch(onSelected: onSelected)
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.startArrivalAirportSearch(onSelected: onSelected)
-      },
-      onUploadCompleted: { [weak self] in
-        self?.onFlowEvent?(.moveToHistoryTab)
-        self?.finishFlowToRoot()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishFlow()
+          
+        case .bookSearch(let onSelected):
+          self?.startBookSearch(onSelected: onSelected)
+          
+        case .departureSearch(let onSelected):
+          self?.startDepartureAirportSearch(onSelected: onSelected)
+          
+        case .destinationSearch(let onSelected):
+          self?.startArrivalAirportSearch(onSelected: onSelected)
+          
+        case .uploadCompleted:
+          self?.onFlowEvent?(.moveToHistoryTab)
+          self?.finishFlowToRoot()
+        }
       }
     )
     
@@ -78,11 +81,13 @@ private extension HistoryCoordinator {
   func showDetailHistory(journey: ReadingJourney) {
     let vc = detailHistoryBuilder.build(
       journey: journey,
-      onTapBack: { [weak self] in
-        self?.finishFlow()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishFlow()
+        }
       }
     )
-    
     
     rootViewController = vc
     navigationController.pushViewController(vc, animated: true)
