@@ -16,10 +16,6 @@ final class JourneyCoordinator: Coordinator {
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
   
-  private var onBookItemSelected: ((BookInfo) -> Void)?
-  private var onDepartureAirportSelected: ((AirportInfo) -> Void)?
-  private var onDestinationAirportSelected: ((AirportInfo) -> Void)?
-  
   private let registerJourneyBuilder: RegisterJourneyBuildable
   private let journeyTicketBuilder: JourneyTicketBuildable
   private let searchBuilder: SearchBuildable
@@ -55,16 +51,13 @@ private extension JourneyCoordinator {
         self?.finishFlow()
       },
       onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.onBookItemSelected = onSelected
-        self?.showBookSearch()
+        self?.startBookSearch(onSelected: onSelected)
       },
       onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.onDepartureAirportSelected = onSelected
-        self?.showDepartureAirportSearch()
+        self?.startDepartureAirportSearch(onSelected: onSelected)
       },
       onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.onDestinationAirportSelected = onSelected
-        self?.showArrivalAirportSearch()
+        self?.startArrivalAirportSearch(onSelected: onSelected)
       },
       onTapCreateTicket: { [weak self] book, departure, destination, startDate, currentPage in
         self?.showJourneyTicket(
@@ -112,55 +105,26 @@ private extension JourneyCoordinator {
 
 // MARK: - Search Flow
 private extension JourneyCoordinator {
-  func showBookSearch() {
-    let searchVC = searchBuilder.build(
-      type: .book,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onBookItemSelected?(item)
-        self?.onBookItemSelected = nil
-      },
-      onTapAirportItem: nil
+  func makeSearchCoordinator() -> SearchCoordinator {
+    let coordinator = SearchCoordinator(
+      navigationController: navigationController,
+      searchBuilder: searchBuilder
     )
-    
-    navigationController.pushViewController(searchVC, animated: true)
+    coordinator.parentCoordinator = self
+    childCoordinators.append(coordinator)
+    return coordinator
   }
   
-  func showDepartureAirportSearch() {
-    let searchVC = searchBuilder.build(
-      type: .departureAirport,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onDepartureAirportSelected?(item)
-        self?.onDepartureAirportSelected = nil
-      }
-    )
-    
-    navigationController.pushViewController(searchVC, animated: true)
+  func startBookSearch(onSelected: @escaping (BookInfo) -> Void) {
+    makeSearchCoordinator().startBookSearch(onSelected: onSelected)
   }
   
-  func showArrivalAirportSearch() {
-    let searchVC = searchBuilder.build(
-      type: .arrivalAirport,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onDestinationAirportSelected?(item)
-        self?.onDestinationAirportSelected = nil
-      }
-    )
-    
-    navigationController.pushViewController(searchVC, animated: true)
+  func startDepartureAirportSearch(onSelected: @escaping (AirportInfo) -> Void) {
+    makeSearchCoordinator().startDepartureAirportSearch(onSelected: onSelected)
+  }
+  
+  func startArrivalAirportSearch(onSelected: @escaping (AirportInfo) -> Void) {
+    makeSearchCoordinator().startArrivalAirportSearch(onSelected: onSelected)
   }
 }
 

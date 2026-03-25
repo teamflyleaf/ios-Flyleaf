@@ -20,10 +20,6 @@ final class AppCoordinator: Coordinator {
   var childCoordinators: [Coordinator] = []
   let navigationController: UINavigationController
   
-  private var onBookItemSelected: ((BookInfo) -> Void)?
-  private var onDepatureAirportSelected: ((AirportInfo) -> Void)?
-  private var onDestinationAirportSelected: ((AirportInfo) -> Void)?
-  
   private let authService: AuthServicing
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
@@ -97,7 +93,7 @@ private extension AppCoordinator {
         self?.startJourneyFlow()
       },
       onTapHistory: { [weak self] in
-        self?.startJourneyFlow()
+        self?.startHistoryFlow()
       }
     )
     let journeyVC = jourenyBuilder.build()
@@ -124,31 +120,12 @@ private extension AppCoordinator {
     navigationController.setViewControllers([tabBarController], animated: true)
   }
   
-  func moveToJourneyTab() {
+  func moveToTab(_ tab: Tab) {
     guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
       return
     }
-    
     navigationController.popToRootViewController(animated: false)
-    tabBarController.selectedIndex = 1
-  }
-  
-  func moveToWishlistTab() {
-    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
-      return
-    }
-    
-    navigationController.popToRootViewController(animated: false)
-    tabBarController.selectedIndex = 2
-  }
-  
-  func moveToHistoryTab() {
-    guard let tabBarController = navigationController.viewControllers.first as? MainTabBarController else {
-      return
-    }
-    
-    navigationController.popToRootViewController(animated: false)
-    tabBarController.selectedIndex = 3
+    tabBarController.selectedIndex = tab.rawValue
   }
 }
 
@@ -171,60 +148,6 @@ private extension AppCoordinator {
   }
 }
 
-// MARK: - Search
-private extension AppCoordinator {
-  func showBookSearch() {
-    let searchVC = searchBuilder.build(
-      type: .book,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onBookItemSelected?(item)
-        self?.onBookItemSelected = nil
-      },
-      onTapAirportItem: nil
-    )
-    
-    navigationController.pushViewController(searchVC, animated: true)
-  }
-  
-  func showDepartureAirportSearch() {
-    let searchVC = searchBuilder.build(
-      type: .departureAirport,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onDepatureAirportSelected?(item)
-        self?.onDepatureAirportSelected = nil
-      }
-    )
-    
-    navigationController.pushViewController(searchVC, animated: true)
-  }
-  
-  func showArrivalAirportSearch() {
-    let searchVC = searchBuilder.build(
-      type: .arrivalAirport,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.pop(animated: true)
-        self?.onDestinationAirportSelected?(item)
-        self?.onDestinationAirportSelected = nil
-      }
-    )
-    
-    navigationController.pushViewController(searchVC, animated: true)
-  }
-}
-
 // MARK: - Wishlist
 private extension AppCoordinator {
   func startWishlistFlow() {
@@ -232,13 +155,13 @@ private extension AppCoordinator {
     childCoordinators.append(coordinator)
     coordinator.start()
   }
-
+  
   func startCheckInWishlistFlow(journey: ReadingJourney) {
     let coordinator = makeWishlistCoordinator()
     childCoordinators.append(coordinator)
     coordinator.startCheckInFlow(journey: journey)
   }
-
+  
   func makeWishlistCoordinator() -> WishlistCoordinator {
     let coordinator = WishlistCoordinator(
       navigationController: navigationController,
@@ -247,17 +170,18 @@ private extension AppCoordinator {
       checkInWishTicketBuilder: checkInWishTicketBuilder,
       searchBuilder: searchBuilder
     )
-
+    
     coordinator.parentCoordinator = self
     coordinator.onFlowEvent = { [weak self] event in
+      guard let self = self else { return }
       switch event {
       case .moveToWishlistTab:
-        self?.moveToWishlistTab()
+        self.moveToTab(.wishlist)
       case .moveToJourneyTab:
-        self?.moveToJourneyTab()
+        self.moveToTab(.journey)
       }
     }
-
+    
     return coordinator
   }
 }
@@ -288,7 +212,7 @@ private extension AppCoordinator {
     coordinator.onFlowEvent = { [weak self] event in
       switch event {
       case .moveToHistoryTab:
-        self?.moveToHistoryTab()
+        self?.moveToTab(.history)
       }
     }
     
@@ -316,7 +240,7 @@ private extension AppCoordinator {
     coordinator.onFlowEvent = { [weak self] event in
       switch event {
       case .moveToJourneyTab:
-        self?.moveToJourneyTab()
+        self?.moveToTab(.journey)
       }
     }
     
