@@ -39,6 +39,8 @@ final class AppCoordinator: Coordinator {
   private let historyBuilder: HistoryBuildable
   private let detailHistoryBuilder: DetailHistoryBuildable
   
+  // Child Coordinators
+  private var loginCoordinator: LoginCoordinator?
   init(
     navigationController: UINavigationController,
     authService: AuthServicing,
@@ -155,11 +157,19 @@ private extension AppCoordinator {
 // MARK: - Login
 private extension AppCoordinator {
   func showLogin() {
-    let loginVC = loginBuilder.build { [weak self] in
-      self?.showMainTabBar()
+    let coordinator = LoginCoordinator(
+      navigationController: navigationController,
+      loginBuilder: loginBuilder
+    )
+    coordinator.parentCoordinator = self
+    coordinator.onLoginCompleted = { [weak self] in
+      guard let self = self else { return }
+      self.showMainTabBar()
+      self.childDidFinish(coordinator)
     }
     
-    navigationController.setViewControllers([loginVC], animated: true)
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
 }
 
