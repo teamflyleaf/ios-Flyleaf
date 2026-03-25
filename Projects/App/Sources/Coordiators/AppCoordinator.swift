@@ -39,8 +39,6 @@ final class AppCoordinator: Coordinator {
   private let historyBuilder: HistoryBuildable
   private let detailHistoryBuilder: DetailHistoryBuildable
   
-  // Child Coordinators
-  private var loginCoordinator: LoginCoordinator?
   init(
     navigationController: UINavigationController,
     authService: AuthServicing,
@@ -93,7 +91,7 @@ private extension AppCoordinator {
   func showMainTabBar() {
     let homeVC = homeBuilder.build(
       onTapWishlist: { [weak self] in
-        self?.showRegisterWishlist()
+        self?.startWishlistFlow()
       },
       onTapJourney: { [weak self] in
         self?.showRegisterJourney()
@@ -106,7 +104,7 @@ private extension AppCoordinator {
     
     let wishlistVC = wishlistBuilder.build(
       onTapCheckIn: { [weak self] journey in
-        self?.showCheckInWishTicket(journey: journey)
+        self?.startCheckInWishlistFlow(journey: journey)
       }
     )
     
@@ -229,75 +227,38 @@ private extension AppCoordinator {
 
 // MARK: - Wishlist
 private extension AppCoordinator {
-  func showRegisterWishlist() {
-    let registerWishlistVC = registerWishlistBuilder.build(
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.onBookItemSelected = onSelected
-        self?.showBookSearch()
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.onDepatureAirportSelected = onSelected
-        self?.showDepartureAirportSearch()
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.onDestinationAirportSelected = onSelected
-        self?.showArrivalAirportSearch()
-      },
-      onTapCreateTicket: { [weak self] book, departure, destination, reason in
-        self?.showWishTicket(
-          book: book,
-          departure: departure,
-          destination: destination,
-          reason: reason
-        )
-      }
-    )
-    navigationController.pushViewController(registerWishlistVC, animated: true)
+  func startWishlistFlow() {
+    let coordinator = makeWishlistCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
-  
-  func showWishTicket(
-    book: BookInfo,
-    departure: AirportInfo,
-    destination: AirportInfo,
-    reason: String
-  ) {
-    let payload = WishlistTicketPayload(
-      book: book,
-      departure: departure,
-      destination: destination,
-      reason: reason
+
+  func startCheckInWishlistFlow(journey: ReadingJourney) {
+    let coordinator = makeWishlistCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.startCheckInFlow(journey: journey)
+  }
+
+  func makeWishlistCoordinator() -> WishlistCoordinator {
+    let coordinator = WishlistCoordinator(
+      navigationController: navigationController,
+      registerWishlistBuilder: registerWishlistBuilder,
+      wishTicketBuilder: wishTicketBuilder,
+      checkInWishTicketBuilder: checkInWishTicketBuilder,
+      searchBuilder: searchBuilder
     )
-    
-    let ticketVC = wishTicketBuilder.build(
-      payload: payload,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
+
+    coordinator.parentCoordinator = self
+    coordinator.onFlowEvent = { [weak self] event in
+      switch event {
+      case .moveToWishlistTab:
         self?.moveToWishlistTab()
-      }
-    )
-    
-    navigationController.pushViewController(ticketVC, animated: true)
-  }
-  
-  func showCheckInWishTicket(
-    journey: ReadingJourney
-  ) {
-    let viewController = checkInWishTicketBuilder.build(
-      journey: journey,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
+      case .moveToJourneyTab:
         self?.moveToJourneyTab()
       }
-    )
-    
-    navigationController.pushViewController(viewController, animated: true)
+    }
+
+    return coordinator
   }
 }
 
