@@ -11,8 +11,6 @@ import UIKit
 public protocol SearchBuildable {
   func build(
     type: SearchType,
-    onTapBack: @escaping () -> Void,
-    onTapBookItem: ((BookInfo) -> Void)?,
-    onTapAirportItem: ((AirportInfo) -> Void)?
+    onRoute: @escaping (SearchRoute) -> Void
   ) -> UIViewController
 }

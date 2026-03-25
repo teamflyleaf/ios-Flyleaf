@@ -62,15 +62,20 @@ private extension SearchCoordinator {
   func showBookSearch() {
     let searchVC = searchBuilder.build(
       type: .book,
-      onTapBack: { [weak self] in
-        self?.finishByPop()
-      },
-      onTapBookItem: { [weak self] item in
-        self?.onBookSelected?(item)
-        self?.onBookSelected = nil
-        self?.finishByPop()
-      },
-      onTapAirportItem: nil
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishByPop()
+          
+        case .book(let item):
+          self?.onBookSelected?(item)
+          self?.onBookSelected = nil
+          self?.finishByPop()
+          
+        case .airport:
+          break
+        }
+      }
     )
     
     rootViewController = searchVC
@@ -80,14 +85,19 @@ private extension SearchCoordinator {
   func showDepartureAirportSearch() {
     let searchVC = searchBuilder.build(
       type: .departureAirport,
-      onTapBack: { [weak self] in
-        self?.finishByPop()
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.onDepartureAirportSelected?(item)
-        self?.onDepartureAirportSelected = nil
-        self?.finishByPop()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishByPop()
+          
+        case .airport(let item):
+          self?.onDepartureAirportSelected?(item)
+          self?.onDepartureAirportSelected = nil
+          self?.finishByPop()
+          
+        case .book:
+          break
+        }
       }
     )
     
@@ -98,14 +108,19 @@ private extension SearchCoordinator {
   func showArrivalAirportSearch() {
     let searchVC = searchBuilder.build(
       type: .arrivalAirport,
-      onTapBack: { [weak self] in
-        self?.finishByPop()
-      },
-      onTapBookItem: nil,
-      onTapAirportItem: { [weak self] item in
-        self?.onArrivalAirportSelected?(item)
-        self?.onArrivalAirportSelected = nil
-        self?.finishByPop()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishByPop()
+          
+        case .airport(let item):
+          self?.onArrivalAirportSelected?(item)
+          self?.onArrivalAirportSelected = nil
+          self?.finishByPop()
+          
+        case .book:
+          break
+        }
       }
     )
     

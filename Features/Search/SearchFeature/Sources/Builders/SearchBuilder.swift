@@ -14,9 +14,7 @@ public final class SearchBuilder: SearchBuildable {
 
   public func build(
     type: SearchType,
-    onTapBack: @escaping () -> Void,
-    onTapBookItem: ((BookInfo) -> Void)?,
-    onTapAirportItem: ((AirportInfo) -> Void)?
+    onRoute: @escaping (SearchRoute) -> Void
   ) -> UIViewController {
     let bookSearchService = AladinBookSearchService()
     let airportSearchService = AirportSearchService(
@@ -34,9 +32,7 @@ public final class SearchBuilder: SearchBuildable {
     )
 
     let viewController = SearchViewController(viewModel: viewModel)
-    viewController.onTapBack = onTapBack
-    viewController.onTapBookItem = onTapBookItem
-    viewController.onTapAirportItem = onTapAirportItem
+    viewController.onRoute = onRoute
     return viewController
   }
 }
