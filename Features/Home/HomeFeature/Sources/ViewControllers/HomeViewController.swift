@@ -11,11 +11,10 @@ import MapKit
 import SnapKit
 import Then
 import UIKit
+import HomeInterface
 
 public final class HomeViewController: BaseViewController {
-  public var onTapWishlist: (() -> Void)?
-  public var onTapJourney: (() -> Void)?
-  public var onTapHistory: (() -> Void)?
+  public var onRoute: ((HomeRoute) -> Void)?
 
   private let viewModel: HomeViewModel
 
@@ -209,15 +208,15 @@ extension HomeViewController: MKMapViewDelegate {
 private extension HomeViewController {
   func configureAddMenu() {
     let wishlistAction = UIAction(title: "읽고 싶은 책") { [weak self] _ in
-      self?.onTapWishlist?()
+      self?.onRoute?(.wishlist)
     }
 
     let journeyAction = UIAction(title: "읽고 있는 책") { [weak self] _ in
-      self?.onTapJourney?()
+      self?.onRoute?(.journey)
     }
 
     let historyAction = UIAction(title: "다 읽은 책") { [weak self] _ in
-      self?.onTapHistory?()
+      self?.onRoute?(.history)
     }
 
     addButton.menu = UIMenu(children: [

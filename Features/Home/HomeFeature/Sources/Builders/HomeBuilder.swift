@@ -13,18 +13,14 @@ public final class HomeBuilder: HomeBuildable {
   public init() {}
 
   public func build(
-    onTapWishlist: @escaping () -> Void,
-    onTapJourney: @escaping () -> Void,
-    onTapHistory: @escaping () -> Void
+    onRoute: @escaping (HomeRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let viewModel = HomeViewModel(readingJourneyService: readingJourneyService)
     let viewController = HomeViewController(viewModel: viewModel)
-
-    viewController.onTapWishlist = onTapWishlist
-    viewController.onTapJourney = onTapJourney
-    viewController.onTapHistory = onTapHistory
-
+    
+    viewController.onRoute = onRoute
+    
     return viewController
   }
 }

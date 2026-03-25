@@ -91,16 +91,18 @@ final class AppCoordinator: NSObject, Coordinator {
 private extension AppCoordinator {
   func showMainTabBar() {
     let homeVC = homeBuilder.build(
-      onTapWishlist: { [weak self] in
-        self?.startWishlistFlow()
-      },
-      onTapJourney: { [weak self] in
-        self?.startJourneyFlow()
-      },
-      onTapHistory: { [weak self] in
-        self?.startHistoryFlow()
+      onRoute: { [weak self] route in
+        switch route {
+        case .wishlist:
+          self?.startWishlistFlow()
+        case .journey:
+          self?.startJourneyFlow()
+        case .history:
+          self?.startHistoryFlow()
+        }
       }
     )
+    
     let journeyVC = jourenyBuilder.build()
     
     let wishlistVC = wishlistBuilder.build(

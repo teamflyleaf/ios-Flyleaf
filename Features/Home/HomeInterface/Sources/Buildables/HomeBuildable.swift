@@ -9,8 +9,6 @@ import UIKit
 
 public protocol HomeBuildable {
   func build(
-    onTapWishlist: @escaping () -> Void,
-    onTapJourney: @escaping () -> Void,
-    onTapHistory: @escaping () -> Void
+    onRoute: @escaping (HomeRoute) -> Void
   ) -> UIViewController
 }
