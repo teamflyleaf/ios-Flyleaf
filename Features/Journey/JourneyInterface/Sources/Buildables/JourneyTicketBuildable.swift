@@ -11,7 +11,6 @@ import UIKit
 public protocol JourneyTicketBuildable {
   func build(
     payload: JourneyPayload,
-    onTapBack: @escaping () -> Void,
-    onUploadCompleted: @escaping () -> Void
+    onRoute: @escaping (JourneyTicketRoute) -> Void
   ) -> UIViewController
 }

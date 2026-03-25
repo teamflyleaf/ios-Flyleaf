@@ -14,8 +14,7 @@ public final class JourneyTicketBuilder: JourneyTicketBuildable {
   
   public func build(
     payload: JourneyPayload,
-    onTapBack: @escaping () -> Void,
-    onUploadCompleted: @escaping () -> Void
+    onRoute: @escaping (JourneyTicketRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let viewModel = JourneyTicketViewModel(
@@ -24,8 +23,7 @@ public final class JourneyTicketBuilder: JourneyTicketBuildable {
     )
     
     let viewController = JourneyTicketViewController(viewModel: viewModel)
-    viewController.onTapBack = onTapBack
-    viewController.onUploadCompleted = onUploadCompleted
+    viewController.onRoute = onRoute
     
     return viewController
   }

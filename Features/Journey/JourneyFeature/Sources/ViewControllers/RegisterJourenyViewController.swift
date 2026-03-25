@@ -10,13 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import JourneyInterface
 
 public final class RegisterJourenyViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onTapRegisterBookSearch: ((@escaping (BookInfo) -> Void) -> Void)?
-  public var onTapSelectDepartureButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onTapSelectDestinationButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onTapCreateTicket: ((BookInfo, AirportInfo, AirportInfo, Date, Int) -> Void)?
+  public var onRoute: ((RegisterJourneyRoute) -> Void)?
   
   private let viewModel: RegisterJourenyViewModel
   
@@ -169,15 +166,15 @@ private extension RegisterJourenyViewController {
   
   func bindHeaderView() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
   }
   
   func bindRegisterJourneyBookView() {
     registerJourneyBookView.onRegisterBookSearchTap = { [weak self] in
-      self?.onTapRegisterBookSearch? { [weak self] item in
+      self?.onRoute?(.bookSearch { [weak self] item in
         self?.viewModel.updateSelectedBook(item)
-      }
+      })
     }
     
     registerJourneyBookView.onStartDateChanged = { [weak self] date in
@@ -203,7 +200,7 @@ private extension RegisterJourenyViewController {
     }
     
     selectRouteView.onTapSelectDepartureButton = { [weak self] in
-      self?.onTapSelectDepartureButton? { [weak self] item in
+      self?.onRoute?(.departureSearch { [weak self] item in
         guard let self else { return }
         
         if self.viewModel.isSameAsDestination(item) {
@@ -215,7 +212,7 @@ private extension RegisterJourenyViewController {
         }
         
         self.viewModel.updateDepartureAirport(item)
-      }
+      })
     }
     
     selectRouteView.onTapSelectDestinationButton = { [weak self] in
@@ -229,7 +226,7 @@ private extension RegisterJourenyViewController {
         return
       }
       
-      self.onTapSelectDestinationButton? { [weak self] item in
+      self.onRoute?(.destinationSearch { [weak self] item in
         guard let self else { return }
         
         if self.viewModel.isSameAsDeparture(item) {
@@ -241,7 +238,7 @@ private extension RegisterJourenyViewController {
         }
         
         self.viewModel.updateDestinationAirport(item)
-      }
+      })
     }
   }
   
@@ -260,12 +257,14 @@ private extension RegisterJourenyViewController {
         let currentPage = self.viewModel.currentPage
       else { return }
       
-      self.onTapCreateTicket?(
-        book,
-        depature,
-        destination,
-        startDate,
-        currentPage
+      self.onRoute?(
+        .createTicket(
+          book,
+          depature,
+          destination,
+          startDate,
+          currentPage
+        )
       )
     }
   }

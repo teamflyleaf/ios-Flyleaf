@@ -48,26 +48,29 @@ final class JourneyCoordinator: Coordinator {
 private extension JourneyCoordinator {
   func showRegisterJourney() {
     let registerJourneyVC = registerJourneyBuilder.build(
-      onTapBack: { [weak self] in
-        self?.finishFlow()
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.startBookSearch(onSelected: onSelected)
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.startDepartureAirportSearch(onSelected: onSelected)
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.startArrivalAirportSearch(onSelected: onSelected)
-      },
-      onTapCreateTicket: { [weak self] book, departure, destination, startDate, currentPage in
-        self?.showJourneyTicket(
-          book: book,
-          departure: departure,
-          destination: destination,
-          startDate: startDate,
-          currentPage: currentPage
-        )
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.finishFlow()
+          
+        case .bookSearch(let onSelected):
+          self?.startBookSearch(onSelected: onSelected)
+          
+        case .departureSearch(let onSelected):
+          self?.startDepartureAirportSearch(onSelected: onSelected)
+          
+        case .destinationSearch(let onSelected):
+          self?.startArrivalAirportSearch(onSelected: onSelected)
+          
+        case .createTicket(let book, let departure, let destination, let startDate, let currentPage):
+          self?.showJourneyTicket(
+            book: book,
+            departure: departure,
+            destination: destination,
+            startDate: startDate,
+            currentPage: currentPage
+          )
+        }
       }
     )
     
@@ -92,12 +95,14 @@ private extension JourneyCoordinator {
     
     let ticketVC = journeyTicketBuilder.build(
       payload: payload,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onUploadCompleted: { [weak self] in
-        self?.onFlowEvent?(.moveToJourneyTab)
-        self?.finishFlowToRoot()
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.pop(animated: true)
+        case .uploadCompleted:
+          self?.onFlowEvent?(.moveToJourneyTab)
+          self?.finishFlowToRoot()
+        }
       }
     )
     
