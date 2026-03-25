@@ -97,7 +97,7 @@ private extension AppCoordinator {
         self?.startJourneyFlow()
       },
       onTapHistory: { [weak self] in
-        self?.showRegisterHistory()
+        self?.startJourneyFlow()
       }
     )
     let journeyVC = jourenyBuilder.build()
@@ -110,7 +110,7 @@ private extension AppCoordinator {
     
     let historyVC = historyBuilder.build(
       onTapHistory: { [weak self] journey in
-        self?.showDetailHistory(journey: journey)
+        self?.startDetailHistoryFlow(journey: journey)
       }
     )
     
@@ -264,39 +264,35 @@ private extension AppCoordinator {
 
 // MARK: - History
 private extension AppCoordinator {
-  func showRegisterHistory() {
-    let registerHistoryVC = registerHistoryBuilder.build(
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      },
-      onTapRegisterBookSearch: { [weak self] onSelected in
-        self?.onBookItemSelected = onSelected
-        self?.showBookSearch()
-      },
-      onTapSelectDepartureButton: { [weak self] onSelected in
-        self?.onDepatureAirportSelected = onSelected
-        self?.showDepartureAirportSearch()
-      },
-      onTapSelectDestinationButton: { [weak self] onSelected in
-        self?.onDestinationAirportSelected = onSelected
-        self?.showArrivalAirportSearch()
-      },
-      onUploadCompleted: { [weak self] in
-        self?.moveToHistoryTab()
-      }
-    )
-    navigationController.pushViewController(registerHistoryVC, animated: true)
+  func startHistoryFlow() {
+    let coordinator = makeHistoryCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
   
-  func showDetailHistory(journey: ReadingJourney) {
-    let vc = detailHistoryBuilder.build(
-      journey: journey,
-      onTapBack: { [weak self] in
-        self?.pop(animated: true)
-      }
+  func startDetailHistoryFlow(journey: ReadingJourney) {
+    let coordinator = makeHistoryCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.startDetailFlow(journey: journey)
+  }
+  
+  func makeHistoryCoordinator() -> HistoryCoordinator {
+    let coordinator = HistoryCoordinator(
+      navigationController: navigationController,
+      registerHistoryBuilder: registerHistoryBuilder,
+      detailHistoryBuilder: detailHistoryBuilder,
+      searchBuilder: searchBuilder
     )
     
-    navigationController.pushViewController(vc, animated: true)
+    coordinator.parentCoordinator = self
+    coordinator.onFlowEvent = { [weak self] event in
+      switch event {
+      case .moveToHistoryTab:
+        self?.moveToHistoryTab()
+      }
+    }
+    
+    return coordinator
   }
 }
 
