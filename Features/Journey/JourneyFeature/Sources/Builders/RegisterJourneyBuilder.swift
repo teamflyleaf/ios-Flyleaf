@@ -13,20 +13,12 @@ public final class RegisterJourneyBuilder: RegisterJourneyBuildable {
   public init() {}
 
   public func build(
-    onTapBack: (() -> Void)?,
-    onTapRegisterBookSearch: ((@escaping (BookInfo) -> Void) -> Void)?,
-    onTapSelectDepartureButton: ((@escaping (AirportInfo) -> Void) -> Void)?,
-    onTapSelectDestinationButton: ((@escaping (AirportInfo) -> Void) -> Void)?,
-    onTapCreateTicket: ((BookInfo, AirportInfo, AirportInfo, Date, Int) -> Void)?
+    onRoute: ((RegisterJourneyRoute) -> Void)?
   ) -> UIViewController {
     let viewModel = RegisterJourenyViewModel()
     let viewController = RegisterJourenyViewController(viewModel: viewModel)
 
-    viewController.onTapBack = onTapBack
-    viewController.onTapRegisterBookSearch = onTapRegisterBookSearch
-    viewController.onTapSelectDepartureButton = onTapSelectDepartureButton
-    viewController.onTapSelectDestinationButton = onTapSelectDestinationButton
-    viewController.onTapCreateTicket = onTapCreateTicket
+    viewController.onRoute = onRoute
     
     return viewController
   }

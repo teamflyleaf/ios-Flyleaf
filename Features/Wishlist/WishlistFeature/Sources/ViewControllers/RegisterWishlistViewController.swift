@@ -10,13 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import WishlistInterface
 
 public final class RegisterWishlistViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onTapRegisterBookSearch: ((@escaping (BookInfo) -> Void) -> Void)?
-  public var onTapSelectDepartureButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onTapSelectDestinationButton: ((@escaping (AirportInfo) -> Void) -> Void)?
-  public var onTapCreateTicket: ((BookInfo, AirportInfo, AirportInfo, String) -> Void)?
+  public var onRoute: ((RegisterWishlistRoute) -> Void)?
   
   private let viewModel: RegisterWishlistViewModel
   
@@ -162,15 +159,15 @@ private extension RegisterWishlistViewController {
   
   func bindHeaderView() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
   }
   
   func bindRegisterWishBookView() {
     registerWishBookView.onRegisterBookSearchTap = { [weak self] in
-      self?.onTapRegisterBookSearch? { [weak self] item in
+      self?.onRoute?(.bookSearch { [weak self] item in
         self?.viewModel.updateSelectedBook(item)
-      }
+      })
     }
     
     registerWishBookView.onReasonTextChanged = { [weak self] text in
@@ -192,7 +189,7 @@ private extension RegisterWishlistViewController {
     }
     
     selectRouteView.onTapSelectDepartureButton = { [weak self] in
-      self?.onTapSelectDepartureButton? { [weak self] item in
+      self?.onRoute?(.departureSearch { [weak self] item in
         guard let self else { return }
 
         if self.viewModel.isSameAsDestination(item) {
@@ -204,7 +201,7 @@ private extension RegisterWishlistViewController {
         }
 
         self.viewModel.updateDepartureAirport(item)
-      }
+      })
     }
     
     selectRouteView.onTapSelectDestinationButton = { [weak self] in
@@ -218,7 +215,7 @@ private extension RegisterWishlistViewController {
         return
       }
 
-      self.onTapSelectDestinationButton? { [weak self] item in
+      self.onRoute?(.destinationSearch { [weak self] item in
         guard let self else { return }
 
         if self.viewModel.isSameAsDeparture(item) {
@@ -230,7 +227,7 @@ private extension RegisterWishlistViewController {
         }
 
         self.viewModel.updateDestinationAirport(item)
-      }
+      })
     }
   }
   
@@ -247,11 +244,13 @@ private extension RegisterWishlistViewController {
         let destination = self.viewModel.destinationAirport
       else { return }
       
-      self.onTapCreateTicket?(
-        book,
-        depature,
-        destination,
-        self.viewModel.reasonText
+      self.onRoute?(
+        .createTicket(
+          book,
+          depature,
+          destination,
+          self.viewModel.reasonText
+        )
       )
     }
   }

@@ -15,11 +15,11 @@ public final class DetailHistoryBuilder: DetailHistoryBuildable {
   
   public func build(
     journey: ReadingJourney,
-    onTapBack: (() -> Void)? = nil
+    onRoute: ((DetailHistoryRoute) -> Void)? = nil
   ) -> UIViewController {
     let viewModel = DetailHistoryViewModel(journey: journey)
     let viewController = DetailHistoryViewController(viewModel: viewModel)
-    viewController.onTapBack = onTapBack
+    viewController.onRoute = onRoute
     return viewController
   }
 }

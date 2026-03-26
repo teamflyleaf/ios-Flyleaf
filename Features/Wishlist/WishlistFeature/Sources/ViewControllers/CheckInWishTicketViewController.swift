@@ -17,10 +17,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import WishlistInterface
 
 public final class CheckInWishTicketViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onUploadCompleted: (() -> Void)?
+  public var onRoute: ((CheckInWishTicketRoute) -> Void)?
   
   private let viewModel: CheckInWishTicketViewModel
   
@@ -94,7 +94,7 @@ public final class CheckInWishTicketViewController: BaseViewController {
   
   override public func bind() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
     
     printerView.isTearEnabled = true
@@ -118,7 +118,7 @@ public final class CheckInWishTicketViewController: BaseViewController {
     
     viewModel.onUploadSuccess = { [weak self] _ in
       DispatchQueue.main.async {
-        self?.onUploadCompleted?()
+        self?.onRoute?(.uploadCompleted)
       }
     }
     

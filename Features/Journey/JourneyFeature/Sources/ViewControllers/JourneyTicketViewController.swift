@@ -10,10 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import JourneyInterface
 
 public final class JourneyTicketViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onUploadCompleted: (() -> Void)?
+  public var onRoute: ((JourneyTicketRoute) -> Void)?
   
   private let viewModel: JourneyTicketViewModel
   
@@ -87,7 +87,7 @@ public final class JourneyTicketViewController: BaseViewController {
   
   override public func bind() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
     
     printerView.isTearEnabled = true
@@ -111,7 +111,7 @@ public final class JourneyTicketViewController: BaseViewController {
     
     viewModel.onUploadSuccess = { [weak self] _ in
       DispatchQueue.main.async {
-        self?.onUploadCompleted?()
+        self?.onRoute?(.uploadCompleted)
       }
     }
     

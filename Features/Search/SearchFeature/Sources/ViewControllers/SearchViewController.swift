@@ -11,11 +11,10 @@ import MapKit
 import SnapKit
 import Then
 import UIKit
+import SearchInterface
 
 public final class SearchViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
-  public var onTapBookItem: ((BookInfo) -> Void)?
-  public var onTapAirportItem: ((AirportInfo) -> Void)?
+  public var onRoute: ((SearchRoute) -> Void)?
   
   private let viewModel: SearchViewModel
   
@@ -208,7 +207,7 @@ private extension SearchViewController {
   
   func bindHeaderView() {
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
     
     headerView.setPlaceholder(viewModel.placeholder)
@@ -241,10 +240,10 @@ private extension SearchViewController {
     searchResultView.onTapItem = { [weak self] item in
       Task { [weak self] in
         guard let self else { return }
-
+        
         do {
           let bookInfo = try await self.viewModel.fetchBookDetail(for: item)
-          self.onTapBookItem?(bookInfo)
+          self.onRoute?(.book(bookInfo))
         } catch {
           let message = (error as? LocalizedError)?.errorDescription ?? "도서 상세 정보를 불러오지 못했습니다."
           self.presentAlert(title: "조회 실패", message: message)
@@ -255,7 +254,7 @@ private extension SearchViewController {
   
   func bindSearchAirportResultView() {
     searchAirportResultView.onTapItem = { [weak self] item in
-      self?.onTapAirportItem?(item)
+      self?.onRoute?(.airport(item))
     }
     
     searchAirportResultView.type = viewModel.type
