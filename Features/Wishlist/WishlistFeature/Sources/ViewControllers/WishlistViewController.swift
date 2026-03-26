@@ -10,9 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import WishlistInterface
 
 public final class WishlistViewController: BaseViewController {
-  public var onTapCheckIn: ((ReadingJourney) -> Void)?
+  public var onRoute: ((WishlistRoute) -> Void)?
   
   private let viewModel: WishlistViewModel
   private var isInitialLoading = true
@@ -211,7 +212,7 @@ extension WishlistViewController: UITableViewDataSource {
     )
     
     cell.onCheckInTriggered = { [weak self] in
-      self?.onTapCheckIn?(journey)
+      self?.onRoute?(.checkIn(journey))
     }
     
     cell.onLongPressTriggered = { [weak self] in

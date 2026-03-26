@@ -13,7 +13,7 @@ public final class WishlistBuilder: WishlistBuildable {
   public init() {}
   
   public func build(
-    onTapCheckIn: @escaping (ReadingJourney) -> Void
+    onRoute: @escaping (WishlistRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let viewModel = WishlistViewModel(
@@ -21,7 +21,7 @@ public final class WishlistBuilder: WishlistBuildable {
     )
     
     let viewController = WishlistViewController(viewModel: viewModel)
-    viewController.onTapCheckIn = onTapCheckIn
+    viewController.onRoute = onRoute
     
     return viewController
   }

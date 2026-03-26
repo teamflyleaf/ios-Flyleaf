@@ -7,8 +7,14 @@
 
 import UIKit
 
+enum Tab: Int {
+  case home = 0
+  case journey = 1
+  case wishlist = 2
+  case history = 3
+}
+
 final class MainTabBarController: UITabBarController {
-  
   init(
     homeViewController: UIViewController,
     journeyViewController: UIViewController,
@@ -37,16 +43,16 @@ private extension MainTabBarController {
   func configureAppearance() {
     let appearance = UITabBarAppearance()
     appearance.configureWithOpaqueBackground()
-
+    
     // 배경색
     appearance.backgroundColor = .n50
-
+    
     // 선택 상태
     appearance.stackedLayoutAppearance.selected.iconColor = .key0
     appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
       .foregroundColor: UIColor.key0
     ]
-
+    
     // 기본 상태
     appearance.stackedLayoutAppearance.normal.iconColor = .n20
     appearance.stackedLayoutAppearance.normal.titleTextAttributes = [

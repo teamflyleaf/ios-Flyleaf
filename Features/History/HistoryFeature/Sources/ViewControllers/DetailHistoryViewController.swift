@@ -10,9 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import HistoryInterface
 
 public final class DetailHistoryViewController: BaseViewController {
-  public var onTapBack: (() -> Void)?
+  public var onRoute: ((DetailHistoryRoute) -> Void)?
   
   private let viewModel: DetailHistoryViewModel
   
@@ -62,7 +63,7 @@ public final class DetailHistoryViewController: BaseViewController {
     detailHistoryView.configure(viewModel.journey)
     
     headerView.onTapBack = { [weak self] in
-      self?.onTapBack?()
+      self?.onRoute?(.back)
     }
   }
 }

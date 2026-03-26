@@ -10,9 +10,10 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import HistoryInterface
 
 public final class HistoryViewController: BaseViewController {
-  public var onTapHistory: ((ReadingJourney) -> Void)?
+  public var onRoute: ((HistoryRoute) -> Void)?
   
   private let viewModel: HistoryViewModel
   private var isInitialLoading = true
@@ -240,7 +241,7 @@ extension HistoryViewController: UITableViewDataSource {
     tableView.deselectRow(at: indexPath, animated: true)
     
     let journey = viewModel.journeys[indexPath.row]
-    onTapHistory?(journey)
+    onRoute?(.detail(journey))
   }
 }
 
