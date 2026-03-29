@@ -63,7 +63,7 @@ public final class HomeViewController: BaseViewController {
     $0.showsCompass = false
     $0.showsScale = false
     $0.pointOfInterestFilter = .excludingAll
-    $0.mapType = .hybridFlyover
+    $0.mapType = .satelliteFlyover
   }
 
   private let gradientOverlayView = GradientOverlayView()
@@ -267,8 +267,8 @@ private extension HomeViewController {
   func setupMapView() {
     mapView.delegate = self
     mapView.addSubview(gradientOverlayView)
-
-    let tileOverlay = MKTileOverlay(urlTemplate: MapTile.darkNolabels)
+    
+    let tileOverlay = CachedMapTileOverlay(urlTemplate: MapTile.darkNolabels)
     tileOverlay.canReplaceMapContent = true
     mapView.addOverlay(tileOverlay, level: .aboveRoads)
   }
