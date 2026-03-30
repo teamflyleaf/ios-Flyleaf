@@ -16,9 +16,11 @@ public final class JourneyBuilder: JourneyBuildable {
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let memoService = JourneyMemoService()
+    let tooltipService = TooltipDisplayService()
     let viewModel = JourneyViewModel(
       readingJourneyService: readingJourneyService,
-      memoService: memoService
+      memoService: memoService,
+      tooltipService: tooltipService
     )
     let viewController = JourneyViewController(viewModel: viewModel)
     

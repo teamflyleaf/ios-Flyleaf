@@ -408,6 +408,7 @@ private extension JourneyViewController {
       showContentView(bookInfoView)
     case 1:
       showContentView(journeyInfoView)
+      viewModel.checkCurrentPageTooltip()
     case 2:
       showContentView(memoView)
       guard viewModel.journeys.indices.contains(selectedIndex) else { return }
@@ -490,6 +491,12 @@ private extension JourneyViewController {
     
     journeyInfoView.onTapFinish = { [weak self] in
       self?.presentJourneyFinishSheet()
+    }
+    
+    viewModel.onShouldShowCurrentPageTooltip = { [weak self] in
+      DispatchQueue.main.async {
+        self?.journeyInfoView.showCurrentPageTooltip()
+      }
     }
   }
   
