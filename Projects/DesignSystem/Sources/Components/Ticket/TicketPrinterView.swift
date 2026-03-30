@@ -26,6 +26,7 @@ import Then
 ///   - 티켓은 하단 바코드 영역부터 먼저 출력되도록 구성되어 있습니다.
 ///   - 티켓은 고정 높이로 530 입니다.
 ///   - isTearEnabled가 true인 경우에만 프린트 완료 후 찢기 인터랙션이 활성화됩니다.
+///   - 찢기 인터랙션 활성화 후 2초간 사용자 입력이 없으면 찢기 유도 힌트 애니메이션이 자동으로 시작됩니다.
 public final class TicketPrinterView: BaseView {
   // 프린트 애니메이션 완료 시 호출되는 이벤트
   public var onPrintAnimationCompleted: (() -> Void)?
@@ -80,6 +81,21 @@ public final class TicketPrinterView: BaseView {
   // 점선 아래 바코드 영역을 스냅샷으로 분리한 뷰임. 실제로 찢기는 애니메는 이 뷰를 회전하고 이동시키며 구현
   private var bottomPieceView: UIView?
   
+  // 티켓 노출 높이를 제어하는 스냅킷 제약
+  private var revealHeightConstraint: Constraint?
+  
+  // 티켓의 고정 높이
+  private let ticketHeight: CGFloat = 530
+  
+  // 햅틱  타이머
+  private var hapticTimer: Timer?
+  
+  // 햅틱 제너레이터
+  private let hapticGenerator = UIImpactFeedbackGenerator(style: .heavy)
+  
+  // 힌트 애니메이션 노출 타이머 -> 2초 뒤 힌트 애니메이션 실행
+  private var hintAnimationTimer: Timer?
+  
   // MARK: - UI
   private let slotView = UIView().then {
     $0.backgroundColor = .n50
@@ -96,22 +112,20 @@ public final class TicketPrinterView: BaseView {
   
   private let ticketView = TicketView()
   
-  // 티켓 노출 높이를 제어하는 스냅킷 제약
-  private var revealHeightConstraint: Constraint?
-  
-  // 티켓의 고정 높이
-  private let ticketHeight: CGFloat = 530
-  
-  // 햅틱  타이머
-  private var hapticTimer: Timer?
-  
-  // 햅틱 제너레이터
-  private let hapticGenerator = UIImpactFeedbackGenerator(style: .heavy)
+  // 찢기 유도 원형 뷰
+  private let hintView = UIView().then {
+    $0.backgroundColor = UIColor.n0.withAlphaComponent(0.4)
+    $0.layer.cornerRadius = 20
+    $0.alpha = 0
+    $0.isUserInteractionEnabled = false
+    $0.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+  }
   
   public override func configureUI() {
     addSubview(slotView)
     addSubview(revealContainerView)
     revealContainerView.addSubview(ticketView)
+    revealContainerView.addSubview(hintView)
     
     // 프린트 완료 전까지 찢기는 제스처 비활성화
     panGesture.isEnabled = false
@@ -193,6 +207,8 @@ private extension TicketPrinterView {
   // 분리된 아래 조각 스냅샷 제거
   func reset() {
     stopHaptics()
+    // 찢기 힌트 애니메, 타이머 초기화
+    stopHintAnimation()
     
     isPrintCompleted = false
     isTearing = false
@@ -214,9 +230,11 @@ private extension TicketPrinterView {
   }
   
   // 찢기 기능이 활성화 되어 있으면 pan 제스처 활성화
+  // isTearEnabled가 true인 경우에만 힌트 애니메이션 타이머 시작
   func enableTearIfNeeded() {
     guard isTearEnabled else { return }
     panGesture.isEnabled = true
+    scheduleHintAnimation()
   }
   
   // 프린트 중 반복 햅틱 시작
@@ -300,7 +318,7 @@ private extension TicketPrinterView {
     
     // 진행도에 따라 아래 조각 더 많이 회전
     let rotation = -(normalized * 0.35)
-  
+    
     // 진행도에 비례해서 그림자 강하게
     piece.transform = CGAffineTransform(rotationAngle: rotation)
     piece.layer.shadowOpacity = Float(0.1 + normalized * 0.2)
@@ -370,6 +388,8 @@ private extension TicketPrinterView {
       isTearing = true
       panStartProgressX = tearProgressX
       tearHapticGenerator.prepare()
+      // 사용자가 찢기 시작하면 힌트 애니메이션 중지함
+      stopHintAnimation()
       
       // 좌우 translation을 진행도로 변환하고 ui 갱신함.
     case .changed:
@@ -429,5 +449,66 @@ private extension TicketPrinterView {
     lastHapticProgress = progress
     tearHapticGenerator.impactOccurred(intensity: 0.7)
     tearHapticGenerator.prepare()
+  }
+}
+
+// MARK: - HintAnimation
+private extension TicketPrinterView {
+  // 2초 후 힌트 애니메이션 예약
+  // 사용자가 스스로 찢기를 시작하면 타이머는 취소됨
+  func scheduleHintAnimation() {
+    hintAnimationTimer?.invalidate()
+    hintAnimationTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] _ in
+      self?.startHintAnimation()
+    }
+  }
+  
+  // 힌트 원형 뷰를 찢기 선 위에서 오른쪽으로 슥 미는 애니메이션 반복 실행
+  func startHintAnimation() {
+    guard !isTearCompleted else { return }
+    
+    let ticketFrame = ticketView.frame
+    let tearY = ticketFrame.minY + ticketView.bounds.height * tearLineYRatio
+    
+    let startX = ticketFrame.minX + 24
+    let endX = ticketFrame.maxX - 24
+    
+    hintView.center = CGPoint(x: startX, y: tearY)
+    hintView.alpha = 0
+    hintView.transform = .identity
+    
+    UIView.animateKeyframes(
+      withDuration: 2.0,
+      delay: 0,
+      options: [.repeat],
+      animations: {
+        // 페이드인
+        UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.15) {
+          self.hintView.alpha = 1
+        }
+        // 오른쪽으로 이동
+        UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.6) {
+          self.hintView.center = CGPoint(x: endX, y: tearY)
+        }
+        // 페이드아웃
+        UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25) {
+          self.hintView.alpha = 0
+        }
+      }
+    )
+  }
+  
+  // 힌트 애니메이션 중지 및 초기 상태로 리셋
+  // 사용자가 찢기 제스처를 시작하거나 reset() 호출 시 사용
+  func stopHintAnimation() {
+    hintAnimationTimer?.invalidate()
+    hintAnimationTimer = nil
+    hintView.layer.removeAllAnimations()
+    hintView.alpha = 0
+    
+    // 시작 위치로 리셋
+    let ticketFrame = ticketView.frame
+    let tearY = ticketFrame.minY + ticketView.bounds.height * tearLineYRatio
+    hintView.center = CGPoint(x: ticketFrame.minX + 24, y: tearY)
   }
 }
