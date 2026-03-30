@@ -7,4 +7,5 @@
 
 public enum TooltipKey: String {
   case journeyCurrentPage
+  case wishlistSwipeGuide
 }
