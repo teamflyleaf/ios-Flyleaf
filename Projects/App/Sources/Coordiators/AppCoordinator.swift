@@ -117,6 +117,8 @@ private extension AppCoordinator {
         switch route {
         case .checkIn(let journey):
           self?.startCheckInWishlistFlow(journey: journey)
+        case .addWish:
+          self?.startWishlistFlow()
         }
       }
     )
