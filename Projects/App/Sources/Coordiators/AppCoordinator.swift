@@ -128,6 +128,8 @@ private extension AppCoordinator {
         switch route {
         case .detail(let journey):
           self?.startDetailHistoryFlow(journey: journey)
+        case .addHistory:
+          self?.startHistoryFlow()
         }
       }
     )
