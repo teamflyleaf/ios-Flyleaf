@@ -10,10 +10,12 @@ import Foundation
 
 public final class WishlistViewModel {
   private let readingJourneyService: ReadingJourneyServicing
+  private let tooltipService: TooltipDisplayService
   
   var onJourneysChanged: (([ReadingJourney]) -> Void)?
   var onLoadingChanged: ((Bool) -> Void)?
   var onError: ((String) -> Void)?
+  var onShouldShowWishlistSwipeTooltip: (() -> Void)?
   
   private(set) var journeys: [ReadingJourney] = [] {
     didSet {
@@ -22,9 +24,11 @@ public final class WishlistViewModel {
   }
   
   public init(
-    readingJourneyService: ReadingJourneyServicing
+    readingJourneyService: ReadingJourneyServicing,
+    tooltipService: TooltipDisplayService
   ) {
     self.readingJourneyService = readingJourneyService
+    self.tooltipService = tooltipService
   }
   
   var numberOfItems: Int {
@@ -53,5 +57,11 @@ public final class WishlistViewModel {
       let message = (error as? LocalizedError)?.errorDescription ?? "예약 삭제에 실패했습니다."
       onError?(message)
     }
+  }
+  
+  func checkWishlistSwipeTooltip() {
+    guard tooltipService.shouldShowTooltip(for: .wishlistSwipeGuide) else { return }
+    tooltipService.markTooltipShown(for: .wishlistSwipeGuide)
+    onShouldShowWishlistSwipeTooltip?()
   }
 }

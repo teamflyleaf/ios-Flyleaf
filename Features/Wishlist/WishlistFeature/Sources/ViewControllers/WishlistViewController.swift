@@ -49,6 +49,11 @@ public final class WishlistViewController: BaseViewController {
     $0.showsVerticalScrollIndicator = false
   }
   
+  private let swipeTooltipView = NeutralTooltipView(tailPosition: .topLeft).then {
+    $0.configure(tip: "오른쪽으로 밀어 체크인할 수 있어요")
+    $0.isHidden = true
+  }
+  
   private let initialLoadingIndicatorView = UIActivityIndicatorView(style: .large).then {
     $0.color = .n0
     $0.hidesWhenStopped = true
@@ -79,7 +84,8 @@ public final class WishlistViewController: BaseViewController {
       dividerView,
       tableView,
       initialLoadingIndicatorView,
-      emptyView
+      emptyView,
+      swipeTooltipView
     ].forEach {
       view.addSubview($0)
     }
@@ -117,6 +123,12 @@ public final class WishlistViewController: BaseViewController {
       $0.top.equalTo(dividerView.snp.bottom).offset(20)
       $0.horizontalEdges.equalToSuperview().inset(20)
       $0.bottom.equalToSuperview()
+    }
+    
+    swipeTooltipView.snp.makeConstraints {
+      $0.top.equalTo(dividerView.snp.bottom).offset(268)
+      $0.leading.equalToSuperview().offset(20)
+      $0.trailing.lessThanOrEqualToSuperview().inset(20)
     }
     
     initialLoadingIndicatorView.snp.makeConstraints {
@@ -170,9 +182,15 @@ public final class WishlistViewController: BaseViewController {
         
         self.setEmptyState(false)
         self.tableView.reloadData()
+        self.viewModel.checkWishlistSwipeTooltip()
       }
     }
     
+    viewModel.onShouldShowWishlistSwipeTooltip = { [weak self] in
+      DispatchQueue.main.async {
+        self?.showSwipeTooltip()
+      }
+    }
     viewModel.onError = { [weak self] message in
       DispatchQueue.main.async { [weak self] in
         self?.presentAlert(title: "불러오기 실패", message: message)
@@ -259,5 +277,29 @@ private extension WishlistViewController {
     emptyView.isHidden = !isEmpty
     dividerView.isHidden = isEmpty
     tableView.isHidden = isEmpty
+    
+    if isEmpty {
+      swipeTooltipView.isHidden = true
+    }
+  }
+  
+  func showSwipeTooltip() {
+    swipeTooltipView.isHidden = false
+    swipeTooltipView.onTapClose = { [weak self] in
+      self?.swipeTooltipView.dismiss()
+    }
+    
+    // 외부 탭 시 닫기
+    let outsideTap = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideTooltip))
+    outsideTap.cancelsTouchesInView = false
+    view.addGestureRecognizer(outsideTap)
+  }
+  
+  @objc func didTapOutsideTooltip(_ gesture: UITapGestureRecognizer) {
+    let location = gesture.location(in: view)
+    guard !swipeTooltipView.frame.contains(location) else { return }
+    swipeTooltipView.dismiss { [weak self] in
+      self?.view.gestureRecognizers?.removeAll()
+    }
   }
 }

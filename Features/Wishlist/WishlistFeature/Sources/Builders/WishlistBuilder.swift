@@ -16,8 +16,10 @@ public final class WishlistBuilder: WishlistBuildable {
     onRoute: @escaping (WishlistRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
+    let tooltipService = TooltipDisplayService()
     let viewModel = WishlistViewModel(
-      readingJourneyService: readingJourneyService
+      readingJourneyService: readingJourneyService,
+      tooltipService: tooltipService
     )
     
     let viewController = WishlistViewController(viewModel: viewModel)

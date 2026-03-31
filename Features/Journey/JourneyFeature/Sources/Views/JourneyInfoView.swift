@@ -47,6 +47,10 @@ final class JourneyInfoView: BaseView {
     $0.isHidden = true
   }
   
+  private let currentPageToolTipView = NeutralTooltipView(tailPosition: .topLeft).then {
+    $0.isHidden = true
+  }
+  
   private let distanceSectionTitleLabel = UILabel().then {
     $0.text = "여행 거리"
     $0.font = .b1_sb
@@ -85,7 +89,8 @@ final class JourneyInfoView: BaseView {
       distanceLabel,
       remainingDistanceSectionTitleLabel,
       remainingDistanceLabel,
-      finishButton
+      finishButton,
+      currentPageToolTipView
     ].forEach {
       addSubview($0)
     }
@@ -134,6 +139,12 @@ final class JourneyInfoView: BaseView {
       $0.width.height.equalTo(0)
     }
     
+    currentPageToolTipView.snp.makeConstraints {
+      $0.top.equalTo(currentPageLabel.snp.bottom).offset(6)
+      $0.leading.equalToSuperview()
+      $0.trailing.lessThanOrEqualToSuperview()
+    }
+    
     distanceSectionTitleLabel.snp.makeConstraints {
       $0.top.equalTo(currentPageLabel.snp.bottom).offset(32)
       $0.leading.equalToSuperview()
@@ -179,6 +190,12 @@ final class JourneyInfoView: BaseView {
     
     currentPagePickerField.configure(maxPage: journey.book.itemPage)
     currentPagePickerField.setPage(journey.currentPage ?? 0)
+    
+    currentPageToolTipView.configure(tip: "읽은 페이지를 눌러 수정할 수 있어요")
+  }
+  
+  func showCurrentPageTooltip() {
+    currentPageToolTipView.isHidden = false
   }
 }
 
@@ -186,6 +203,21 @@ final class JourneyInfoView: BaseView {
 private extension JourneyInfoView {
   func bind() {
     finishButton.addTarget(self, action: #selector(didTapFinish), for: .touchUpInside)
+    currentPageToolTipView.onTapClose = { [weak self] in
+      self?.dismissTooltip()
+    }
+    
+    // 툴팁 외부 영역 터치 제스처
+    let outsideTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutside))
+    outsideTapGesture.cancelsTouchesInView = false
+    addGestureRecognizer(outsideTapGesture)
+  }
+  
+  func dismissTooltip() {
+    guard !currentPageToolTipView.isHidden else { return }
+    currentPageToolTipView.dismiss { [weak self] in
+      self?.currentPageToolTipView.isHidden = true
+    }
   }
   
   @objc func didTapCurrentPage() {
@@ -194,5 +226,12 @@ private extension JourneyInfoView {
   
   @objc func didTapFinish() {
     onTapFinish?()
+  }
+  
+  @objc private func didTapOutside(_ gesture: UITapGestureRecognizer) {
+    let location = gesture.location(in: self)
+    // 툴팁 영역 탭하면 무시
+    guard !currentPageToolTipView.frame.contains(location) else { return }
+    dismissTooltip()
   }
 }
