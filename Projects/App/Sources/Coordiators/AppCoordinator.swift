@@ -103,7 +103,14 @@ private extension AppCoordinator {
       }
     )
     
-    let journeyVC = jourenyBuilder.build()
+    let journeyVC = jourenyBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .addJourney:
+          self?.startJourneyFlow()
+        }
+      }
+    )
     
     let wishlistVC = wishlistBuilder.build(
       onRoute: { [weak self] route in

@@ -13,6 +13,7 @@ public final class JourneyBuilder: JourneyBuildable {
   public init() {}
   
   public func build(
+    onRoute: ((JourneyRoute) -> Void)?
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
     let memoService = JourneyMemoService()
@@ -23,7 +24,7 @@ public final class JourneyBuilder: JourneyBuildable {
       tooltipService: tooltipService
     )
     let viewController = JourneyViewController(viewModel: viewModel)
-    
+    viewController.onRoute = onRoute
     return viewController
   }
 }
