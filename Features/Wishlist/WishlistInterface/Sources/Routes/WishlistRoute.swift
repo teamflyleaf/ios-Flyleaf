@@ -10,4 +10,5 @@ import Foundation
 
 public enum WishlistRoute {
   case checkIn(ReadingJourney)
+  case addWish
 }

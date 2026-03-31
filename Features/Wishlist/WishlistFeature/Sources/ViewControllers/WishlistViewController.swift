@@ -41,6 +41,12 @@ public final class WishlistViewController: BaseViewController {
     $0.font = .h2
     $0.textColor = .n0
   }
+  
+  private let addWishButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
+  }
+  
   private let dividerView = DividerView()
   
   private let tableView = UITableView().then {
@@ -81,6 +87,7 @@ public final class WishlistViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addWishButton,
       dividerView,
       tableView,
       initialLoadingIndicatorView,
@@ -112,6 +119,12 @@ public final class WishlistViewController: BaseViewController {
     headerTitleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
       $0.leading.equalToSuperview().offset(20)
+    }
+    
+    addWishButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     dividerView.snp.makeConstraints {
@@ -191,11 +204,14 @@ public final class WishlistViewController: BaseViewController {
         self?.showSwipeTooltip()
       }
     }
+    
     viewModel.onError = { [weak self] message in
       DispatchQueue.main.async { [weak self] in
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
+    
+    addWishButton.addTarget(self, action: #selector(didAddWish), for: .touchUpInside)
   }
 }
 
@@ -268,6 +284,10 @@ extension WishlistViewController: UITableViewDelegate {
 
 // MARK: - Private
 private extension WishlistViewController {
+  @objc func didAddWish() {
+    onRoute?(.addWish)
+  }
+  
   func setContentHidden(_ isHidden: Bool) {
     dividerView.isHidden = isHidden
     tableView.isHidden = isHidden

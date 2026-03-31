@@ -10,4 +10,5 @@ import Foundation
 
 public enum HistoryRoute {
   case detail(ReadingJourney)
+  case addHistory
 }

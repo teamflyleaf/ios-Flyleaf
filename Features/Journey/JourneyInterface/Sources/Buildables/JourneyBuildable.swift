@@ -10,5 +10,6 @@ import UIKit
 
 public protocol JourneyBuildable {
   func build(
+    onRoute: ((JourneyRoute) -> Void)?
   ) -> UIViewController
 }

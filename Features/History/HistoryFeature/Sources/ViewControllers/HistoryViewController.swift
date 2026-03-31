@@ -42,6 +42,11 @@ public final class HistoryViewController: BaseViewController {
     $0.textColor = .n0
   }
   
+  private let addHistoryButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
+  }
+  
   private let dividerView = DividerView()
   
   private let tableView = UITableView().then {
@@ -77,6 +82,7 @@ public final class HistoryViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addHistoryButton,
       dividerView,
       tableView,
       initialLoadingIndicatorView,
@@ -107,6 +113,12 @@ public final class HistoryViewController: BaseViewController {
     headerTitleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
       $0.leading.equalToSuperview().offset(20)
+    }
+    
+    addHistoryButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     dividerView.snp.makeConstraints {
@@ -179,6 +191,8 @@ public final class HistoryViewController: BaseViewController {
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
+    
+    addHistoryButton.addTarget(self, action: #selector(didAddHistory), for: .touchUpInside)
   }
 }
 
@@ -256,6 +270,10 @@ extension HistoryViewController: UITableViewDelegate {
 
 // MARK: - Private
 private extension HistoryViewController {
+  @objc func didAddHistory() {
+    onRoute?(.addHistory)
+  }
+  
   func setContentHidden(_ isHidden: Bool) {
     dividerView.isHidden = isHidden
     tableView.isHidden = isHidden

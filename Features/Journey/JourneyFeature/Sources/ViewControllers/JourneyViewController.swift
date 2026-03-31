@@ -10,8 +10,11 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import JourneyInterface
 
 public final class JourneyViewController: BaseViewController {
+  public var onRoute: ((JourneyRoute) -> Void)?
+  
   // 현재 선택된 여행 인덱스
   private var selectedIndex: Int = 0
   // 현재 선택된 탭(세그먼트 버튼)
@@ -43,6 +46,11 @@ public final class JourneyViewController: BaseViewController {
     $0.text = "여행"
     $0.font = .h2
     $0.textColor = .n0
+  }
+  
+  private let addJourneyButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
   }
   
   private lazy var journeyCollectionView = UICollectionView(
@@ -123,6 +131,7 @@ public final class JourneyViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addJourneyButton,
       journeyCollectionView,
       dividerView,
       segmentScrollView,
@@ -165,6 +174,12 @@ public final class JourneyViewController: BaseViewController {
     headerTitleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
       $0.leading.equalToSuperview().offset(20)
+    }
+    
+    addJourneyButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     journeyCollectionView.snp.makeConstraints {
@@ -297,6 +312,8 @@ public final class JourneyViewController: BaseViewController {
         self?.memoView.configure(memos)
       }
     }
+    
+    addJourneyButton.addTarget(self, action: #selector(didAddJourney), for: .touchUpInside)
   }
 }
 
@@ -365,6 +382,10 @@ extension JourneyViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Private
 private extension JourneyViewController {
+  @objc func didAddJourney() {
+    onRoute?(.addJourney)
+  }
+  
   // 세그먼트 탭 초기 상태 설정
   func setupInitialContent() {
     updateSegmentSelection(index: 0)
