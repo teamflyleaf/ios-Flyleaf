@@ -11,11 +11,13 @@ import Foundation
 public final class JourneyViewModel {
   private let readingJourneyService: ReadingJourneyServicing
   private let memoService: JourneyMemoServicing
+  private let tooltipService: TooltipDisplayService
   
   var onMemosChanged: (([JourneyMemo]) -> Void)?
   var onJourneysChanged: (([ReadingJourney]) -> Void)?
   var onLoadingChanged: ((Bool) -> Void)?
   var onError: ((String) -> Void)?
+  var onShouldShowCurrentPageTooltip: (() -> Void)?
   
   var memos: [JourneyMemo] = [] {
     didSet {
@@ -31,10 +33,12 @@ public final class JourneyViewModel {
   
   public init(
     readingJourneyService: ReadingJourneyServicing,
-    memoService: JourneyMemoServicing
+    memoService: JourneyMemoServicing,
+    tooltipService: TooltipDisplayService,
   ) {
     self.readingJourneyService = readingJourneyService
     self.memoService = memoService
+    self.tooltipService = tooltipService
   }
   
   var numberOfItems: Int {
@@ -86,6 +90,16 @@ public final class JourneyViewModel {
       await loadReadingJourneys()
     } catch {
       onError?(error.localizedDescription)
+    }
+  }
+  
+  func deleteJourney(journeyId: String) async {
+    do {
+      try await readingJourneyService.deleteReadingJourney(journeyId: journeyId)
+      await loadReadingJourneys()
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "여행 삭제에 실패했습니다."
+      onError?(message)
     }
   }
   
@@ -144,5 +158,11 @@ public final class JourneyViewModel {
     } catch {
       onError?(error.localizedDescription)
     }
+  }
+  
+  func checkCurrentPageTooltip() {
+    guard tooltipService.shouldShowTooltip(for: .journeyCurrentPage) else { return }
+    tooltipService.markTooltipShown(for: .journeyCurrentPage)
+    onShouldShowCurrentPageTooltip?()
   }
 }

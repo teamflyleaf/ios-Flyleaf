@@ -41,12 +41,23 @@ public final class WishlistViewController: BaseViewController {
     $0.font = .h2
     $0.textColor = .n0
   }
+  
+  private let addWishButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
+  }
+  
   private let dividerView = DividerView()
   
   private let tableView = UITableView().then {
     $0.separatorStyle = .none
     $0.backgroundColor = .clear
     $0.showsVerticalScrollIndicator = false
+  }
+  
+  private let swipeTooltipView = NeutralTooltipView(tailPosition: .topLeft).then {
+    $0.configure(tip: "오른쪽으로 밀어 체크인할 수 있어요")
+    $0.isHidden = true
   }
   
   private let initialLoadingIndicatorView = UIActivityIndicatorView(style: .large).then {
@@ -76,10 +87,12 @@ public final class WishlistViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addWishButton,
       dividerView,
       tableView,
       initialLoadingIndicatorView,
-      emptyView
+      emptyView,
+      swipeTooltipView
     ].forEach {
       view.addSubview($0)
     }
@@ -108,6 +121,12 @@ public final class WishlistViewController: BaseViewController {
       $0.leading.equalToSuperview().offset(20)
     }
     
+    addWishButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
+    }
+    
     dividerView.snp.makeConstraints {
       $0.top.equalTo(headerTitleLabel.snp.bottom).offset(20)
       $0.horizontalEdges.equalToSuperview()
@@ -117,6 +136,12 @@ public final class WishlistViewController: BaseViewController {
       $0.top.equalTo(dividerView.snp.bottom).offset(20)
       $0.horizontalEdges.equalToSuperview().inset(20)
       $0.bottom.equalToSuperview()
+    }
+    
+    swipeTooltipView.snp.makeConstraints {
+      $0.top.equalTo(dividerView.snp.bottom).offset(268)
+      $0.leading.equalToSuperview().offset(20)
+      $0.trailing.lessThanOrEqualToSuperview().inset(20)
     }
     
     initialLoadingIndicatorView.snp.makeConstraints {
@@ -170,6 +195,13 @@ public final class WishlistViewController: BaseViewController {
         
         self.setEmptyState(false)
         self.tableView.reloadData()
+        self.viewModel.checkWishlistSwipeTooltip()
+      }
+    }
+    
+    viewModel.onShouldShowWishlistSwipeTooltip = { [weak self] in
+      DispatchQueue.main.async {
+        self?.showSwipeTooltip()
       }
     }
     
@@ -178,6 +210,8 @@ public final class WishlistViewController: BaseViewController {
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
+    
+    addWishButton.addTarget(self, action: #selector(didAddWish), for: .touchUpInside)
   }
 }
 
@@ -216,23 +250,11 @@ extension WishlistViewController: UITableViewDataSource {
     }
     
     cell.onLongPressTriggered = { [weak self] in
-      guard let self else { return }
-      
-      let alert = UIAlertController(
-        title: "삭제",
-        message: "이 예약을 삭제할까요?",
-        preferredStyle: .alert
-      )
-      
-      alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-      
-      alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
-        Task { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
           await self?.viewModel.deleteWishlistJourney(journeyId: journey.id)
         }
-      })
-      
-      self.present(alert, animated: true)
+      }
     }
     
     return cell
@@ -250,6 +272,10 @@ extension WishlistViewController: UITableViewDelegate {
 
 // MARK: - Private
 private extension WishlistViewController {
+  @objc func didAddWish() {
+    onRoute?(.addWish)
+  }
+  
   func setContentHidden(_ isHidden: Bool) {
     dividerView.isHidden = isHidden
     tableView.isHidden = isHidden
@@ -259,5 +285,29 @@ private extension WishlistViewController {
     emptyView.isHidden = !isEmpty
     dividerView.isHidden = isEmpty
     tableView.isHidden = isEmpty
+    
+    if isEmpty {
+      swipeTooltipView.isHidden = true
+    }
+  }
+  
+  func showSwipeTooltip() {
+    swipeTooltipView.isHidden = false
+    swipeTooltipView.onTapClose = { [weak self] in
+      self?.swipeTooltipView.dismiss()
+    }
+    
+    // 외부 탭 시 닫기
+    let outsideTap = UITapGestureRecognizer(target: self, action: #selector(didTapOutsideTooltip))
+    outsideTap.cancelsTouchesInView = false
+    view.addGestureRecognizer(outsideTap)
+  }
+  
+  @objc func didTapOutsideTooltip(_ gesture: UITapGestureRecognizer) {
+    let location = gesture.location(in: view)
+    guard !swipeTooltipView.frame.contains(location) else { return }
+    swipeTooltipView.dismiss { [weak self] in
+      self?.view.gestureRecognizers?.removeAll()
+    }
   }
 }

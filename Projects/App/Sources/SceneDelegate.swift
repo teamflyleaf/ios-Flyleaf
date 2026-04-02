@@ -27,6 +27,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     guard let windowScene = scene as? UIWindowScene else { return }
     
+    URLCache.shared = URLCache(
+      memoryCapacity: 30 * 1024 * 1024,
+      diskCapacity: 300 * 1024 * 1024
+    )
+    
     let navigationController = UINavigationController()
     navigationController.navigationBar.isHidden = true
     

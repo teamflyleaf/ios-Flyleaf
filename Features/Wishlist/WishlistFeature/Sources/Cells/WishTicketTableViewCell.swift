@@ -15,9 +15,9 @@ final class WishTicketTableViewCell: UITableViewCell {
   var onCheckInTriggered: (() -> Void)?
   var onLongPressTriggered: (() -> Void)?
   
-  private var panGesture: UIPanGestureRecognizer?
-  private var longPressGesture: UILongPressGestureRecognizer?
-  
+  private let panGesture = UIPanGestureRecognizer()
+  private let longPressGesture = UILongPressGestureRecognizer()
+  private let longPressHapticGenerator = UIImpactFeedbackGenerator(style: .medium)
   private let dragHapticGenerator = UIImpactFeedbackGenerator(style: .rigid)
   private let completeHapticGenerator = UIImpactFeedbackGenerator(style: .heavy)
   
@@ -94,18 +94,15 @@ final class WishTicketTableViewCell: UITableViewCell {
   
 
   private func setupGesture() {
-    let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-    containerView.addGestureRecognizer(pan)
-    panGesture = pan
-    pan.delegate = self
+    panGesture.addTarget(self, action: #selector(handlePan))
+    containerView.addGestureRecognizer(panGesture)
+    panGesture.delegate = self
 
-    let longPress = UILongPressGestureRecognizer(
-      target: self,
-      action: #selector(handleLongPress)
-    )
-    longPress.minimumPressDuration = 0.5
-    containerView.addGestureRecognizer(longPress)
-    longPressGesture = longPress
+    longPressGesture.addTarget(self, action: #selector(handleLongPress))
+    longPressGesture.minimumPressDuration = 0.5
+    containerView.addGestureRecognizer(longPressGesture)
+    
+    longPressHapticGenerator.prepare()
   }
   
   func configure(
@@ -166,6 +163,8 @@ private extension WishTicketTableViewCell {
   
   @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
     if gesture.state == .began {
+      longPressHapticGenerator.impactOccurred()
+      longPressHapticGenerator.prepare()
       onLongPressTriggered?()
     }
   }

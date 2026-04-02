@@ -10,8 +10,11 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import JourneyInterface
 
 public final class JourneyViewController: BaseViewController {
+  public var onRoute: ((JourneyRoute) -> Void)?
+  
   // 현재 선택된 여행 인덱스
   private var selectedIndex: Int = 0
   // 현재 선택된 탭(세그먼트 버튼)
@@ -43,6 +46,11 @@ public final class JourneyViewController: BaseViewController {
     $0.text = "여행"
     $0.font = .h2
     $0.textColor = .n0
+  }
+  
+  private let addJourneyButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
   }
   
   private lazy var journeyCollectionView = UICollectionView(
@@ -85,6 +93,11 @@ public final class JourneyViewController: BaseViewController {
     $0.distribution = .fill
   }
   
+  private let deleteJourneyButton = UIButton().then {
+    $0.setImage(.trash, for: .normal)
+    $0.tintColor = .n0
+  }
+  
   private let scrollView = UIScrollView().then {
     $0.showsVerticalScrollIndicator = false
   }
@@ -123,9 +136,11 @@ public final class JourneyViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addJourneyButton,
       journeyCollectionView,
       dividerView,
       segmentScrollView,
+      deleteJourneyButton,
       scrollView,
       initialLoadingIndicatorView,
       emptyView
@@ -167,6 +182,12 @@ public final class JourneyViewController: BaseViewController {
       $0.leading.equalToSuperview().offset(20)
     }
     
+    addJourneyButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
+    }
+    
     journeyCollectionView.snp.makeConstraints {
       $0.top.equalTo(headerTitleLabel.snp.bottom).offset(27)
       $0.horizontalEdges.equalToSuperview().inset(20)
@@ -180,8 +201,15 @@ public final class JourneyViewController: BaseViewController {
     
     segmentScrollView.snp.makeConstraints {
       $0.top.equalTo(dividerView.snp.bottom).offset(20)
-      $0.leading.trailing.equalToSuperview()
+      $0.leading.equalToSuperview()
+      $0.trailing.equalTo(deleteJourneyButton.snp.leading).offset(-20)
       $0.height.equalTo(36)
+    }
+
+    deleteJourneyButton.snp.makeConstraints {
+      $0.centerY.equalTo(segmentScrollView)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     segmentStackView.snp.makeConstraints {
@@ -297,6 +325,9 @@ public final class JourneyViewController: BaseViewController {
         self?.memoView.configure(memos)
       }
     }
+    
+    addJourneyButton.addTarget(self, action: #selector(didAddJourney), for: .touchUpInside)
+    deleteJourneyButton.addTarget(self, action: #selector(didDeleteJourney), for: .touchUpInside)
   }
 }
 
@@ -331,6 +362,13 @@ extension JourneyViewController: UICollectionViewDataSource {
     let isSelected = indexPath.item == selectedIndex
     cell.setSelected(isSelected)
     
+    cell.onLongPressTriggered = { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
+          await self?.viewModel.deleteJourney(journeyId: journey.id)
+        }
+      }
+    }
     return cell
   }
 }
@@ -365,9 +403,19 @@ extension JourneyViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Private
 private extension JourneyViewController {
-  // 세그먼트 탭 초기 상태 설정
-  func setupInitialContent() {
-    updateSegmentSelection(index: 0)
+  @objc func didAddJourney() {
+    onRoute?(.addJourney)
+  }
+  
+  @objc func didDeleteJourney() {
+    guard viewModel.journeys.indices.contains(selectedIndex) else { return }
+    let journey = viewModel.journeys[selectedIndex]
+    
+    presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+      Task {
+        await self?.viewModel.deleteJourney(journeyId: journey.id)
+      }
+    }
   }
   
   // 컨텐츠 숨김 처리
@@ -376,6 +424,7 @@ private extension JourneyViewController {
     dividerView.isHidden = isHidden
     segmentScrollView.isHidden = isHidden
     scrollView.isHidden = isHidden
+    deleteJourneyButton.isHidden = isHidden
   }
   
   // Empty 상태 처리
@@ -386,6 +435,7 @@ private extension JourneyViewController {
     dividerView.isHidden = isEmpty
     segmentScrollView.isHidden = isEmpty
     scrollView.isHidden = isEmpty
+    deleteJourneyButton.isHidden = isEmpty
   }
   
   // 세그먼트 버튼 클릭 시 업데이트
@@ -408,6 +458,7 @@ private extension JourneyViewController {
       showContentView(bookInfoView)
     case 1:
       showContentView(journeyInfoView)
+      viewModel.checkCurrentPageTooltip()
     case 2:
       showContentView(memoView)
       guard viewModel.journeys.indices.contains(selectedIndex) else { return }
@@ -490,6 +541,12 @@ private extension JourneyViewController {
     
     journeyInfoView.onTapFinish = { [weak self] in
       self?.presentJourneyFinishSheet()
+    }
+    
+    viewModel.onShouldShowCurrentPageTooltip = { [weak self] in
+      DispatchQueue.main.async {
+        self?.journeyInfoView.showCurrentPageTooltip()
+      }
     }
   }
   

@@ -17,7 +17,11 @@ public final class DetailHistoryBuilder: DetailHistoryBuildable {
     journey: ReadingJourney,
     onRoute: ((DetailHistoryRoute) -> Void)? = nil
   ) -> UIViewController {
-    let viewModel = DetailHistoryViewModel(journey: journey)
+    let readingJourneyService = FirebaseReadingJourneyService()
+    let viewModel = DetailHistoryViewModel(
+      journey: journey,
+      readingJourneyService: readingJourneyService
+    )
     let viewController = DetailHistoryViewController(viewModel: viewModel)
     viewController.onRoute = onRoute
     return viewController

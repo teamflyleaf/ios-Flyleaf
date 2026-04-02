@@ -70,6 +70,42 @@ open class BaseViewController: UIViewController {
     
     present(alert, animated: true)
   }
+  
+  /// 삭제 확인 Alert을 표시합니다.
+  ///
+  /// 기본적으로 "취소"와 "삭제" 버튼이 포함된 Alert을 표시하며,
+  /// 사용자가 삭제를 선택한 경우 `onDelete` 클로저가 실행됩니다.
+  ///
+  /// - Parameters:
+  ///   - title: Alert의 제목 (기본값: "삭제")
+  ///   - message: 삭제 여부를 확인하기 위한 안내 메시지
+  ///   - deleteTitle: 삭제 버튼의 제목 (기본값: "삭제")
+  ///   - onDelete: 삭제 버튼 탭 시 실행할 클로저
+  ///
+  /// - Note:
+  ///   - 삭제 버튼은 `.destructive` 스타일로 표시됩니다.
+  public func presentDeleteAlert(
+    title: String = "삭제",
+    message: String,
+    deleteTitle: String = "삭제",
+    onDelete: @escaping () -> Void
+  ) {
+    let alert = UIAlertController(
+      title: title,
+      message: message,
+      preferredStyle: .alert
+    )
+    
+    let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+    let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
+      onDelete()
+    }
+    
+    alert.addAction(cancelAction)
+    alert.addAction(deleteAction)
+    
+    present(alert, animated: true)
+  }
 }
 
 // MARK: - Keyboard

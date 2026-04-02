@@ -13,6 +13,11 @@ import UIKit
 final class JourneyProgressButtonCell: UICollectionViewCell {
   static let identifier = "JourneyProgressButtonCell"
   
+  var onLongPressTriggered: (() -> Void)?
+  
+  private let longPressGesture = UILongPressGestureRecognizer()
+  private let hapticGenerator = UIImpactFeedbackGenerator(style: .medium)
+  
   // MARK: - UI
   private let progressButton = JourneyProgressButton()
   
@@ -20,6 +25,7 @@ final class JourneyProgressButtonCell: UICollectionViewCell {
     super.init(frame: frame)
     configureUI()
     setupLayout()
+    setupGesture()
   }
   
   required init?(coder: NSCoder) {
@@ -60,6 +66,25 @@ private extension JourneyProgressButtonCell {
   func setupLayout() {
     progressButton.snp.makeConstraints {
       $0.edges.equalToSuperview()
+    }
+  }
+  
+  func setupGesture() {
+    longPressGesture.addTarget(self, action: #selector(handleLongPress))
+    longPressGesture.minimumPressDuration = 0.5
+    progressButton.addGestureRecognizer(longPressGesture)
+    
+    hapticGenerator.prepare()
+  }
+}
+
+// MARK: - Gesture
+private extension JourneyProgressButtonCell {
+  @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+    if gesture.state == .began {
+      hapticGenerator.impactOccurred()
+      hapticGenerator.prepare()
+      onLongPressTriggered?()
     }
   }
 }

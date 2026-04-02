@@ -103,13 +103,22 @@ private extension AppCoordinator {
       }
     )
     
-    let journeyVC = jourenyBuilder.build()
+    let journeyVC = jourenyBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .addJourney:
+          self?.startJourneyFlow()
+        }
+      }
+    )
     
     let wishlistVC = wishlistBuilder.build(
       onRoute: { [weak self] route in
         switch route {
         case .checkIn(let journey):
           self?.startCheckInWishlistFlow(journey: journey)
+        case .addWish:
+          self?.startWishlistFlow()
         }
       }
     )
@@ -119,6 +128,8 @@ private extension AppCoordinator {
         switch route {
         case .detail(let journey):
           self?.startDetailHistoryFlow(journey: journey)
+        case .addHistory:
+          self?.startHistoryFlow()
         }
       }
     )

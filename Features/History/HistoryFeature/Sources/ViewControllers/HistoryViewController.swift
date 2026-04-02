@@ -27,11 +27,10 @@ public final class HistoryViewController: BaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-    Task { [weak self] in
-      await self?.viewModel.loadFinishedJourneys()
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Task {
+      await viewModel.loadFinishedJourneys()
     }
   }
   
@@ -40,6 +39,11 @@ public final class HistoryViewController: BaseViewController {
     $0.text = "기록"
     $0.font = .h2
     $0.textColor = .n0
+  }
+  
+  private let addHistoryButton = UIButton().then {
+    $0.setImage(.plus, for: .normal)
+    $0.tintColor = .n0
   }
   
   private let dividerView = DividerView()
@@ -77,6 +81,7 @@ public final class HistoryViewController: BaseViewController {
   public override func configureUI() {
     [
       headerTitleLabel,
+      addHistoryButton,
       dividerView,
       tableView,
       initialLoadingIndicatorView,
@@ -107,6 +112,12 @@ public final class HistoryViewController: BaseViewController {
     headerTitleLabel.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
       $0.leading.equalToSuperview().offset(20)
+    }
+    
+    addHistoryButton.snp.makeConstraints {
+      $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     dividerView.snp.makeConstraints {
@@ -179,6 +190,8 @@ public final class HistoryViewController: BaseViewController {
         self?.presentAlert(title: "불러오기 실패", message: message)
       }
     }
+    
+    addHistoryButton.addTarget(self, action: #selector(didAddHistory), for: .touchUpInside)
   }
 }
 
@@ -212,23 +225,11 @@ extension HistoryViewController: UITableViewDataSource {
     )
     
     cell.onLongPressTriggered = { [weak self] in
-      guard let self else { return }
-      
-      let alert = UIAlertController(
-        title: "삭제",
-        message: "이 기록을 삭제할까요?",
-        preferredStyle: .alert
-      )
-      
-      alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-      
-      alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
-        Task { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
           await self?.viewModel.deleteFinishedJourney(journeyId: journey.id)
         }
-      })
-      
-      self.present(alert, animated: true)
+      }
     }
     
     return cell
@@ -256,6 +257,10 @@ extension HistoryViewController: UITableViewDelegate {
 
 // MARK: - Private
 private extension HistoryViewController {
+  @objc func didAddHistory() {
+    onRoute?(.addHistory)
+  }
+  
   func setContentHidden(_ isHidden: Bool) {
     dividerView.isHidden = isHidden
     tableView.isHidden = isHidden
