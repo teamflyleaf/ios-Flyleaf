@@ -93,6 +93,11 @@ public final class JourneyViewController: BaseViewController {
     $0.distribution = .fill
   }
   
+  private let deleteJourneyButton = UIButton().then {
+    $0.setImage(.trash, for: .normal)
+    $0.tintColor = .n0
+  }
+  
   private let scrollView = UIScrollView().then {
     $0.showsVerticalScrollIndicator = false
   }
@@ -135,6 +140,7 @@ public final class JourneyViewController: BaseViewController {
       journeyCollectionView,
       dividerView,
       segmentScrollView,
+      deleteJourneyButton,
       scrollView,
       initialLoadingIndicatorView,
       emptyView
@@ -195,8 +201,15 @@ public final class JourneyViewController: BaseViewController {
     
     segmentScrollView.snp.makeConstraints {
       $0.top.equalTo(dividerView.snp.bottom).offset(20)
-      $0.leading.trailing.equalToSuperview()
+      $0.leading.equalToSuperview()
+      $0.trailing.equalTo(deleteJourneyButton.snp.leading).offset(-20)
       $0.height.equalTo(36)
+    }
+
+    deleteJourneyButton.snp.makeConstraints {
+      $0.centerY.equalTo(segmentScrollView)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.height.equalTo(24)
     }
     
     segmentStackView.snp.makeConstraints {
@@ -314,6 +327,7 @@ public final class JourneyViewController: BaseViewController {
     }
     
     addJourneyButton.addTarget(self, action: #selector(didAddJourney), for: .touchUpInside)
+    deleteJourneyButton.addTarget(self, action: #selector(didDeleteJourney), for: .touchUpInside)
   }
 }
 
@@ -348,6 +362,13 @@ extension JourneyViewController: UICollectionViewDataSource {
     let isSelected = indexPath.item == selectedIndex
     cell.setSelected(isSelected)
     
+    cell.onLongPressTriggered = { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
+          await self?.viewModel.deleteJourney(journeyId: journey.id)
+        }
+      }
+    }
     return cell
   }
 }
@@ -386,9 +407,15 @@ private extension JourneyViewController {
     onRoute?(.addJourney)
   }
   
-  // 세그먼트 탭 초기 상태 설정
-  func setupInitialContent() {
-    updateSegmentSelection(index: 0)
+  @objc func didDeleteJourney() {
+    guard viewModel.journeys.indices.contains(selectedIndex) else { return }
+    let journey = viewModel.journeys[selectedIndex]
+    
+    presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+      Task {
+        await self?.viewModel.deleteJourney(journeyId: journey.id)
+      }
+    }
   }
   
   // 컨텐츠 숨김 처리
@@ -397,6 +424,7 @@ private extension JourneyViewController {
     dividerView.isHidden = isHidden
     segmentScrollView.isHidden = isHidden
     scrollView.isHidden = isHidden
+    deleteJourneyButton.isHidden = isHidden
   }
   
   // Empty 상태 처리
@@ -407,6 +435,7 @@ private extension JourneyViewController {
     dividerView.isHidden = isEmpty
     segmentScrollView.isHidden = isEmpty
     scrollView.isHidden = isEmpty
+    deleteJourneyButton.isHidden = isEmpty
   }
   
   // 세그먼트 버튼 클릭 시 업데이트

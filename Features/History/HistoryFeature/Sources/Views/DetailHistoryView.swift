@@ -12,6 +12,10 @@ import Then
 import UIKit
 
 final class DetailHistoryView: BaseView {
+  var onStartDateChanged: ((Date) -> Void)?
+  var onFinishDateChanged: ((Date) -> Void)?
+  var onTapReview: (() -> Void)?
+  
   // MARK: - UI
   private let scrollView = UIScrollView().then {
     $0.showsVerticalScrollIndicator = false
@@ -37,7 +41,7 @@ final class DetailHistoryView: BaseView {
   
   private let isbn13SectionTitleLabel = UILabel().then {
     $0.font = .b1_sb
-    $0.text = "책정보"
+    $0.text = "ISBN13"
     $0.textColor = .n0
   }
   
@@ -56,14 +60,7 @@ final class DetailHistoryView: BaseView {
     $0.textColor = .n0
   }
   
-  private let startDayLabel = NeutralPaddingLabel().then {
-    $0.font = .c2
-    $0.textColor = .n0
-    $0.backgroundColor = .n60
-    $0.layer.cornerRadius = 16
-    $0.clipsToBounds = true
-    $0.numberOfLines = 0
-  }
+  private let startDateField = NeutralDatePickerField(placeholder: "-")
   
   private let finishSectionTitleLabel = UILabel().then {
     $0.font = .b1_sb
@@ -71,14 +68,7 @@ final class DetailHistoryView: BaseView {
     $0.textColor = .n0
   }
   
-  private let finishDayLabel = NeutralPaddingLabel().then {
-    $0.font = .c2
-    $0.textColor = .n0
-    $0.backgroundColor = .n60
-    $0.layer.cornerRadius = 16
-    $0.clipsToBounds = true
-    $0.numberOfLines = 0
-  }
+  private let finishDateField = NeutralDatePickerField(placeholder: "-")
   
   private let reviewSectionTitleLabel = UILabel().then {
     $0.font = .b1_sb
@@ -94,6 +84,7 @@ final class DetailHistoryView: BaseView {
     $0.clipsToBounds = true
     $0.numberOfLines = 0
   }
+  
   override func configureUI() {
     addSubview(scrollView)
     scrollView.addSubview(contentView)
@@ -105,9 +96,9 @@ final class DetailHistoryView: BaseView {
       isbn13SectionTitleLabel,
       isbn13Label,
       startSectionTitleLabel,
-      startDayLabel,
+      startDateField,
       finishSectionTitleLabel,
-      finishDayLabel,
+      finishDateField,
       reviewSectionTitleLabel,
       reviewLabel
     ].forEach {
@@ -115,6 +106,7 @@ final class DetailHistoryView: BaseView {
     }
     
     backgroundColor = .clear
+    bind()
   }
   
   override func setupLayout() {
@@ -158,23 +150,23 @@ final class DetailHistoryView: BaseView {
       $0.leading.equalToSuperview()
     }
     
-    startDayLabel.snp.makeConstraints {
+    startDateField.snp.makeConstraints {
       $0.top.equalTo(startSectionTitleLabel.snp.bottom).offset(14)
       $0.horizontalEdges.equalToSuperview()
     }
     
     finishSectionTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(startDayLabel.snp.bottom).offset(20)
+      $0.top.equalTo(startDateField.snp.bottom).offset(20)
       $0.leading.equalToSuperview()
     }
     
-    finishDayLabel.snp.makeConstraints {
+    finishDateField.snp.makeConstraints {
       $0.top.equalTo(finishSectionTitleLabel.snp.bottom).offset(14)
       $0.horizontalEdges.equalToSuperview()
     }
     
     reviewSectionTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(finishDayLabel.snp.bottom).offset(20)
+      $0.top.equalTo(finishDateField.snp.bottom).offset(20)
       $0.horizontalEdges.equalToSuperview()
     }
     
@@ -195,8 +187,44 @@ final class DetailHistoryView: BaseView {
     
     descriptionLabel.text = journey.book.description
     isbn13Label.text = journey.book.isbn13
-    startDayLabel.text = journey.startedAt?.formattedDot ?? "-"
-    finishDayLabel.text = journey.finishedAt?.formattedDot ?? "-"
+    if let startedAt = journey.startedAt {
+      startDateField.setDate(startedAt)
+    } else {
+      startDateField.clear()
+    }
+
+    if let finishedAt = journey.finishedAt {
+      finishDateField.setDate(finishedAt)
+    } else {
+      finishDateField.clear()
+    }
+    
+    startDateField.maximumDate = journey.finishedAt
+    finishDateField.minimumDate = journey.startedAt
+    finishDateField.maximumDate = Date()
+    
     reviewLabel.text = journey.review ?? "-"
+  }
+}
+
+private extension DetailHistoryView {
+  @objc func didTapReview() {
+    onTapReview?()
+  }
+  
+  func bind() {
+    startDateField.onDateChanged = { [weak self] date in
+      self?.finishDateField.minimumDate = date
+      self?.onStartDateChanged?(date)
+    }
+    
+    finishDateField.onDateChanged = { [weak self] date in
+      self?.startDateField.maximumDate = date
+      self?.onFinishDateChanged?(date)
+    }
+    
+    reviewLabel.isUserInteractionEnabled = true
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapReview))
+    reviewLabel.addGestureRecognizer(tapGesture)
   }
 }
