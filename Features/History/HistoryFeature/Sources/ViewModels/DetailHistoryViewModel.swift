@@ -9,9 +9,50 @@ import Core
 import Foundation
 
 public final class DetailHistoryViewModel {
-  let journey: ReadingJourney
+  var onJourneyChanged: ((ReadingJourney) -> Void)?
+  var onError: ((String) -> Void)?
   
-  public init(journey: ReadingJourney) {
+  private let readingJourneyService: ReadingJourneyServicing
+  private(set) var journey: ReadingJourney
+  
+  public init(
+    journey: ReadingJourney,
+    readingJourneyService: ReadingJourneyServicing
+  ) {
     self.journey = journey
+    self.readingJourneyService = readingJourneyService
+  }
+  
+  // MARK: - Public
+  func updateFinishedJourneyDates(
+    startDate: Date,
+    finishDate: Date
+  ) async {
+    do {
+      let updatedJourney = try await readingJourneyService.updateFinishedJourneyDates(
+        journeyId: journey.id,
+        startDate: startDate,
+        finishDate: finishDate
+      )
+      
+      self.journey = updatedJourney
+      onJourneyChanged?(updatedJourney)
+    } catch {
+      onError?(error.localizedDescription)
+    }
+  }
+  
+  func updateFinishedJourneyReview(_ review: String) async {
+    do {
+      let updatedJourney = try await readingJourneyService.updateFinishedJourneyReview(
+        journeyId: journey.id,
+        review: review
+      )
+      
+      self.journey = updatedJourney
+      onJourneyChanged?(updatedJourney)
+    } catch {
+      onError?(error.localizedDescription)
+    }
   }
 }

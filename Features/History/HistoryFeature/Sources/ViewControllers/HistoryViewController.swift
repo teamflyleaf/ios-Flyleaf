@@ -27,11 +27,10 @@ public final class HistoryViewController: BaseViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-    Task { [weak self] in
-      await self?.viewModel.loadFinishedJourneys()
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Task {
+      await viewModel.loadFinishedJourneys()
     }
   }
   
