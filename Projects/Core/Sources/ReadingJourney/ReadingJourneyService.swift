@@ -704,6 +704,134 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     
     try await documentRef.delete()
   }
+  
+  /// 히스토리(`finished`) 상태의 독서 여행 날짜를 수정합니다.
+  ///
+  /// - Parameters:
+  ///   - journeyId: 수정할 독서 여행 문서 ID
+  ///   - startDate: 수정할 시작일
+  ///   - finishDate: 수정할 종료일
+  /// - Returns: 날짜가 갱신된 `ReadingJourney`
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 필수 데이터가 올바르지 않은 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 수정 대상이 `finished` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/저장 오류
+  ///
+  /// - Important:
+  ///   - `finished` 상태의 문서만 수정할 수 있습니다.
+  ///   - `startDate`는 `finishDate`보다 늦을 수 없습니다.
+  ///   - 날짜 수정 시 `progressUpdatedAt`, `updatedAt`, `lastUpdatedAt`도 함께 갱신됩니다.
+  public func updateFinishedJourneyDates(
+    journeyId: String,
+    startDate: Date,
+    finishDate: Date
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    guard startDate <= finishDate else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    guard
+      let statusRaw = data["status"] as? String,
+      let status = ReadingJourneyStatusType(rawValue: statusRaw),
+      status == .finished
+    else {
+      throw ReadingJourneyError.invalidStatus
+    }
+    
+    let now = Date()
+    
+    try await documentRef.updateData([
+      "startedAt": startDate,
+      "finishedAt": finishDate,
+      "progressUpdatedAt": finishDate,
+      "updatedAt": now,
+      "lastUpdatedAt": now
+    ])
+    
+    let updatedSnapshot = try await documentRef.getDocument()
+    
+    guard let updatedData = updatedSnapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    return try readingJourney(from: journeyId, data: updatedData)
+  }
+  
+  /// 히스토리(`finished`) 상태의 독서 여행 감상평을 수정합니다.
+  ///
+  /// - Parameters:
+  ///   - journeyId: 수정할 독서 여행 문서 ID
+  ///   - review: 수정할 감상평
+  /// - Returns: 감상평이 갱신된 `ReadingJourney`
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 필수 데이터가 올바르지 않은 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 수정 대상이 `finished` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/저장 오류
+  public func updateFinishedJourneyReview(
+    journeyId: String,
+    review: String
+  ) async throws -> ReadingJourney {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    guard
+      let statusRaw = data["status"] as? String,
+      let status = ReadingJourneyStatusType(rawValue: statusRaw),
+      status == .finished
+    else {
+      throw ReadingJourneyError.invalidStatus
+    }
+    
+    let trimmedReview = review.trimmingCharacters(in: .whitespacesAndNewlines)
+    let now = Date()
+    
+    try await documentRef.updateData([
+      "review": trimmedReview.isEmpty ? NSNull() : trimmedReview,
+      "updatedAt": now,
+      "lastUpdatedAt": now
+    ])
+    
+    let updatedSnapshot = try await documentRef.getDocument()
+    
+    guard let updatedData = updatedSnapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    return try readingJourney(from: journeyId, data: updatedData)
+  }
 }
 
 // MARK: - Helper
