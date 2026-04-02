@@ -14,7 +14,8 @@ final class HistoryTicketTableViewCell: UITableViewCell {
   
   var onLongPressTriggered: (() -> Void)?
   
-  private var longPressGesture: UILongPressGestureRecognizer?
+  private let longPressGesture = UILongPressGestureRecognizer()
+  private let hapticGenerator = UIImpactFeedbackGenerator(style: .medium)
   
   // MARK: - UI
   private let containerView = UIView()
@@ -64,13 +65,11 @@ final class HistoryTicketTableViewCell: UITableViewCell {
   }
   
   private func setupGesture() {
-    let longPress = UILongPressGestureRecognizer(
-      target: self,
-      action: #selector(handleLongPress)
-    )
-    longPress.minimumPressDuration = 0.5
-    containerView.addGestureRecognizer(longPress)
-    longPressGesture = longPress
+    longPressGesture.addTarget(self, action: #selector(handleLongPress))
+    longPressGesture.minimumPressDuration = 0.5
+    containerView.addGestureRecognizer(longPressGesture)
+    
+    hapticGenerator.prepare()
   }
   
   // MARK: - Public
@@ -93,6 +92,8 @@ final class HistoryTicketTableViewCell: UITableViewCell {
 private extension HistoryTicketTableViewCell {
   @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
     if gesture.state == .began {
+      hapticGenerator.impactOccurred()
+      hapticGenerator.prepare()
       onLongPressTriggered?()
     }
   }
