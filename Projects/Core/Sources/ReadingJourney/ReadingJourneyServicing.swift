@@ -42,6 +42,10 @@ public protocol ReadingJourneyServicing {
     currentPage: Int
   ) async throws -> ReadingJourney
   
+  func deleteReadingJourney(
+    journeyId: String
+  ) async throws
+  
   func deleteWishlistJourney(
     journeyId: String
   ) async throws

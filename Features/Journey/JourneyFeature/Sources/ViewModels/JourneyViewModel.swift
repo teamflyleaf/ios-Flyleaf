@@ -93,6 +93,16 @@ public final class JourneyViewModel {
     }
   }
   
+  func deleteJourney(journeyId: String) async {
+    do {
+      try await readingJourneyService.deleteReadingJourney(journeyId: journeyId)
+      await loadReadingJourneys()
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "여행 삭제에 실패했습니다."
+      onError?(message)
+    }
+  }
+  
   func saveMemo(
     journeyId: String,
     memo: JourneyMemo

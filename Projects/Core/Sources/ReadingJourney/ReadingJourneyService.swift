@@ -580,6 +580,49 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
     return try readingJourney(from: journeyId, data: updatedData)
   }
   
+  /// 진행 중(`reading`) 상태의 독서 여행을 삭제합니다.
+  ///
+  /// - Parameter journeyId: 삭제할 독서 여행 문서 ID
+  ///
+  /// - Throws:
+  ///   - `ReadingJourneyError.unauthenticated`: 로그인된 사용자가 없는 경우
+  ///   - `ReadingJourneyError.invalidDocument`: 문서가 존재하지 않거나 데이터를 읽을 수 없는 경우
+  ///   - `ReadingJourneyError.invalidStatus`: 삭제 대상이 `reading` 상태가 아닌 경우
+  ///   - 기타 Firestore 네트워크/삭제 오류
+  ///
+  /// - Important:
+  ///   - `reading` 상태의 문서만 삭제할 수 있습니다.
+  ///   - `wishlist`, `finished` 상태의 여행은 이 메서드로 삭제되지 않습니다.
+  public func deleteReadingJourney(
+    journeyId: String
+  ) async throws {
+    guard let uid = auth.currentUser?.uid else {
+      throw ReadingJourneyError.unauthenticated
+    }
+    
+    let documentRef = db
+      .collection("users")
+      .document(uid)
+      .collection("readingJourneys")
+      .document(journeyId)
+    
+    let snapshot = try await documentRef.getDocument()
+    
+    guard let data = snapshot.data() else {
+      throw ReadingJourneyError.invalidDocument
+    }
+    
+    guard
+      let statusRaw = data["status"] as? String,
+      let status = ReadingJourneyStatusType(rawValue: statusRaw),
+      status == .reading
+    else {
+      throw ReadingJourneyError.invalidStatus
+    }
+    
+    try await documentRef.delete()
+  }
+  
   /// 위시리스트(`wishlist`) 상태의 독서 여행을 삭제합니다.
   ///
   /// - Parameter journeyId: 삭제할 독서 여행 문서 ID

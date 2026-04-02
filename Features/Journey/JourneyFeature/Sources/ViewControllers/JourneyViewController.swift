@@ -348,6 +348,13 @@ extension JourneyViewController: UICollectionViewDataSource {
     let isSelected = indexPath.item == selectedIndex
     cell.setSelected(isSelected)
     
+    cell.onLongPressTriggered = { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
+          await self?.viewModel.deleteJourney(journeyId: journey.id)
+        }
+      }
+    }
     return cell
   }
 }
