@@ -250,23 +250,11 @@ extension WishlistViewController: UITableViewDataSource {
     }
     
     cell.onLongPressTriggered = { [weak self] in
-      guard let self else { return }
-      
-      let alert = UIAlertController(
-        title: "삭제",
-        message: "이 예약을 삭제할까요?",
-        preferredStyle: .alert
-      )
-      
-      alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-      
-      alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
-        Task { [weak self] in
+      self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
+        Task {
           await self?.viewModel.deleteWishlistJourney(journeyId: journey.id)
         }
-      })
-      
-      self.present(alert, animated: true)
+      }
     }
     
     return cell
