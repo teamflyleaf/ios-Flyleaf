@@ -7,6 +7,7 @@
 
 import Core
 import SearchInterface
+import SearchHistoryImplementation
 import UIKit
 
 public final class SearchBuilder: SearchBuildable {
@@ -20,7 +21,7 @@ public final class SearchBuilder: SearchBuildable {
     let airportSearchService = AirportSearchService(
       bundle: Bundle(for: AirportSearchService.self)
     )
-    let recentSearchStorage = RecentSearchStorage()
+    let searchHistoryService = SearchHistoryService()
 
     try? airportSearchService.loadAirports()
     
@@ -28,7 +29,7 @@ public final class SearchBuilder: SearchBuildable {
       type: type,
       bookSearchService: bookSearchService,
       airportSearchService: airportSearchService,
-      recentSearchStorage: recentSearchStorage
+      searchHistoryService: searchHistoryService
     )
 
     let viewController = SearchViewController(viewModel: viewModel)

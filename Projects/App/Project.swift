@@ -24,6 +24,8 @@ let project = Project(
         "UIUserInterfaceStyle": "Dark",
         "CFBundleDisplayName": "Flyleaf Dev",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
+        "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+        "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "UIApplicationSceneManifest": [
           "UIApplicationSupportsMultipleScenes": false,
           "UISceneConfigurations": [
@@ -103,6 +105,8 @@ let project = Project(
         "UIUserInterfaceStyle": "Dark",
         "CFBundleDisplayName": "Flyleaf",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
+        "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+        "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "UIApplicationSceneManifest": [
           "UIApplicationSupportsMultipleScenes": false,
           "UISceneConfigurations": [

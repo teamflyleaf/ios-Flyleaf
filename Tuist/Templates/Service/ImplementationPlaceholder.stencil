@@ -1,0 +1,13 @@
+//
+//  {{ name }}Service.swift
+//  {{ name }}Implementation
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+import Foundation
+import {{ name }}Interface
+
+public final class {{ name }}Service: {{ name }}Servicing {
+  public init() {}
+}

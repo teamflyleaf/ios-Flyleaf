@@ -16,6 +16,16 @@ public extension TargetDependency {
     .project(target: Targets.designSystem, path: .relativeToRoot("Projects/DesignSystem"))
   }
   
+  static func service(
+    _ name: ServiceName,
+    _ module: ServiceModule
+  ) -> TargetDependency {
+    .project(
+      target: Targets.service(name, module),
+      path: .relativeToRoot("Services/\(name.rawValue)")
+    )
+  }
+  
   static func feature(
     _ name: FeatureName,
     _ module: MicroModule
