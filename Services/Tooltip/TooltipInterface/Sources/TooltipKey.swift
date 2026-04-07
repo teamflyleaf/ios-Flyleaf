@@ -1,8 +1,8 @@
 //
 //  TooltipKey.swift
-//  Core
+//  Tooltip
 //
-//  Created by 여성일 on 3/30/26.
+//  Created by 여성일 on 4/8/26.
 //
 
 public enum TooltipKey: String {

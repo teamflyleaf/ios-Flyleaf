@@ -11,7 +11,13 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Journey",
   targets: [
-    .microFeature(.journey),
+    .microFeature(
+      .journey,
+      dependencies: [
+        .service(.tooltip, .interface),
+        .service(.tooltip, .implementation)
+      ]
+    ),
     .microInterface(.journey),
     .microTests(.journey),
     .microTesting(.journey),

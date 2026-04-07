@@ -27,6 +27,7 @@ public enum MicroModule: String {
 // MARK: - Service Module
 public enum ServiceName: String, CaseIterable {
   case searchHistory = "SearchHistory"
+  case tooltip = "Tooltip"
 }
 
 public enum ServiceModule: String {
