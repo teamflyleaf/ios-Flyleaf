@@ -15,7 +15,8 @@ let project = Project(
       .search,
       dependencies: [
         .kingfisher(),
-        .service(.searchHistory, .interface)
+        .service(.searchHistory, .interface),
+        .service(.searchHistory, .implementation)
       ]
     ),
     .microInterface(.search),
