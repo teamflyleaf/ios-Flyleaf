@@ -7,10 +7,11 @@
 
 import Core
 import Foundation
+import TooltipInterface
 
 public final class WishlistViewModel {
   private let readingJourneyService: ReadingJourneyServicing
-  private let tooltipService: TooltipDisplayService
+  private let tooltipService: TooltipServicing
   
   var onJourneysChanged: (([ReadingJourney]) -> Void)?
   var onLoadingChanged: ((Bool) -> Void)?
@@ -25,7 +26,7 @@ public final class WishlistViewModel {
   
   public init(
     readingJourneyService: ReadingJourneyServicing,
-    tooltipService: TooltipDisplayService
+    tooltipService: TooltipServicing
   ) {
     self.readingJourneyService = readingJourneyService
     self.tooltipService = tooltipService

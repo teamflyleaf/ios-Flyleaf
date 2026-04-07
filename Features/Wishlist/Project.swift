@@ -11,7 +11,13 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Wishlist",
   targets: [
-    .microFeature(.wishlist),
+    .microFeature(
+      .wishlist,
+      dependencies: [
+        .service(.tooltip, .interface),
+        .service(.tooltip, .implementation)
+      ]
+    ),
     .microInterface(.wishlist),
     .microTests(.wishlist),
     .microTesting(.wishlist),

@@ -7,11 +7,12 @@
 
 import Core
 import Foundation
+import TooltipInterface
 
 public final class JourneyViewModel {
   private let readingJourneyService: ReadingJourneyServicing
   private let memoService: JourneyMemoServicing
-  private let tooltipService: TooltipDisplayService
+  private let tooltipService: TooltipServicing
   
   var onMemosChanged: (([JourneyMemo]) -> Void)?
   var onJourneysChanged: (([ReadingJourney]) -> Void)?
@@ -34,7 +35,7 @@ public final class JourneyViewModel {
   public init(
     readingJourneyService: ReadingJourneyServicing,
     memoService: JourneyMemoServicing,
-    tooltipService: TooltipDisplayService,
+    tooltipService: TooltipServicing,
   ) {
     self.readingJourneyService = readingJourneyService
     self.memoService = memoService

@@ -1,11 +1,12 @@
 //
-//  TooltipDisplayService.swift
-//  Core
+//  TooltipService.swift
+//  TooltipImplementation
 //
-//  Created by 여성일 on 3/30/26.
+//  Created by 여성일 on now.
 //
 
 import Foundation
+import TooltipInterface
 
 /// 툴팁 노출 여부를 관리하는 서비스입니다.
 ///
@@ -15,20 +16,19 @@ import Foundation
 /// 주로 "최초 1회만 보여줘야 하는 UI(온보딩, 가이드 등)"에 사용됩니다.
 ///
 /// ```swift
-/// let service = TooltipDisplayService()
+/// let service = TooltipService()
 ///
 /// if service.shouldShowTooltip(for: .homeGuide) {
 ///   // 툴팁 표시
 ///   service.markTooltipShown(for: .homeGuide)
 /// }
 /// ```
-public final class TooltipDisplayService: TooltipDisplayServicing {
+public final class TooltipService: TooltipServicing {
   private let userDefaults: UserDefaults
   
   public init(userDefaults: UserDefaults = .standard) {
     self.userDefaults = userDefaults
   }
-  
   
   /// 해당 툴팁을 표시해야 하는지 여부를 반환합니다.
   ///
