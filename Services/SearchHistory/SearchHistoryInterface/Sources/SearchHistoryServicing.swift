@@ -1,13 +1,14 @@
 //
-//  RecentSearchStoring.swift
-//  Core
+//  SearchHistoryServicing.swift
+//  SearchHistoryInterface
 //
-//  Created by 여성일 on 3/13/26.
+//  Created by 여성일 on now.
 //
 
+import Core
 import Foundation
 
-public protocol RecentSearchStoring {
+public protocol SearchHistoryServicing {
   func fetch(type: SearchType) -> [String]
   func save(_ query: String, type: SearchType)
   func delete(_ query: String, type: SearchType)

@@ -8,12 +8,13 @@
 import Core
 import Foundation
 import SearchInterface
+import SearchHistoryInterface
 
 public final class SearchViewModel {
   private(set) var type: SearchType
   private let bookSearchService: BookSearchServicing
   private let airportSearchService: AirportSearchServicing
-  private let recentSearchStorage: RecentSearchStoring
+  private let searchHistoryService: SearchHistoryServicing
   
   var onBooksChanged: (([BookSearchItem]) -> Void)?
   var onAirportsChanged: (([AirportInfo]) -> Void)?
@@ -68,14 +69,14 @@ public final class SearchViewModel {
     type: SearchType,
     bookSearchService: BookSearchServicing,
     airportSearchService: AirportSearchServicing,
-    recentSearchStorage: RecentSearchStoring
+    searchHistoryService: SearchHistoryServicing
   ) {
     self.type = type
     self.bookSearchService = bookSearchService
     self.airportSearchService = airportSearchService
-    self.recentSearchStorage = recentSearchStorage
+    self.searchHistoryService = searchHistoryService
     
-    recentSearches = recentSearchStorage.fetch(type: type)
+    recentSearches = searchHistoryService.fetch(type: type)
     
     do {
       try airportSearchService.loadAirports()
@@ -102,7 +103,7 @@ public final class SearchViewModel {
     books = []
     airports = []
     
-    recentSearchStorage.save(query, type: type)
+    searchHistoryService.save(query, type: type)
     loadRecentSearches()
     
     switch type {
@@ -125,19 +126,19 @@ public final class SearchViewModel {
   
   /// 특정 최근 검색어 삭제
   func deleteRecentSearch(_ query: String) {
-    recentSearchStorage.delete(query, type: type)
+    searchHistoryService.delete(query, type: type)
     loadRecentSearches()
   }
   
   /// 전체 최근 검색어 삭제
   func deleteAllRecentSearch() {
-    recentSearchStorage.deleteAll(type: type)
+    searchHistoryService.deleteAll(type: type)
     recentSearches = []
   }
   
   /// 최근 검색어 로드
   func loadRecentSearches() {
-    recentSearches = recentSearchStorage.fetch(type: type)
+    recentSearches = searchHistoryService.fetch(type: type)
   }
   
   /// 선택한 도서의 상세 정보를 조회합니다.

@@ -1,8 +1,8 @@
 //
 //  SearchType.swift
-//  Search
+//  Core
 //
-//  Created by 여성일 on 3/12/26.
+//  Created by 여성일 on 4/7/26.
 //
 
 public enum SearchType {

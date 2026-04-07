@@ -1,0 +1,25 @@
+//
+//  {{ name }}ServiceTests.swift
+//  {{ name }}Tests
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+import XCTest
+@testable import {{ name }}Implementation
+@testable import {{ name }}Interface
+@testable import {{ name }}Testing
+
+final class {{ name }}ServiceTests: XCTestCase {
+  private var sut: {{ name }}Service!
+  
+  override func setUp() {
+    super.setUp()
+    sut = {{ name }}Service()
+  }
+  
+  override func tearDown() {
+    sut = nil
+    super.tearDown()
+  }
+}

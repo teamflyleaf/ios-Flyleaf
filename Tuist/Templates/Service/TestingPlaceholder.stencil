@@ -1,0 +1,13 @@
+//
+//  Mock{{ name }}Service.swift
+//  {{ name }}Testing
+//
+//  Created by 여성일 on {{ "now" }}.
+//
+
+import Foundation
+import {{ name }}Interface
+
+public final class Mock{{ name }}Service: {{ name }}Servicing {
+  public init() {}
+}
