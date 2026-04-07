@@ -14,7 +14,8 @@ let project = Project(
     .microFeature(
       .search,
       dependencies: [
-        .kingfisher()
+        .kingfisher(),
+        .service(.searchHistory, .interface)
       ]
     ),
     .microInterface(.search),
