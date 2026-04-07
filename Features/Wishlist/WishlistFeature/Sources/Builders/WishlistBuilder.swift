@@ -8,6 +8,7 @@
 import Core
 import UIKit
 import WishlistInterface
+import TooltipImplementation
 
 public final class WishlistBuilder: WishlistBuildable {
   public init() {}
@@ -16,7 +17,7 @@ public final class WishlistBuilder: WishlistBuildable {
     onRoute: @escaping (WishlistRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = FirebaseReadingJourneyService()
-    let tooltipService = TooltipDisplayService()
+    let tooltipService = TooltipService()
     let viewModel = WishlistViewModel(
       readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
