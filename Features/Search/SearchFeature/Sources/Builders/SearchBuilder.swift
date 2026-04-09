@@ -6,6 +6,8 @@
 //
 
 import Core
+import AirportSearchInterface
+import AirportSearchImplementation
 import SearchInterface
 import SearchHistoryImplementation
 import UIKit
