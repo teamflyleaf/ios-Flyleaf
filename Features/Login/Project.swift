@@ -11,7 +11,13 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Login",
   targets: [
-    .microFeature(.login),
+    .microFeature(
+      .login,
+      dependencies: [
+        .service(.auth, .interface),
+        .service(.auth, .implementation)
+      ]
+    ),
     .microInterface(.login),
     .microTests(.login),
     .microTesting(.login),

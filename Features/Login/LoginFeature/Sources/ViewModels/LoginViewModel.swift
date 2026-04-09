@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/6/26.
 //
 
+import AuthInterface
 import Core
 
 public final class LoginViewModel {
@@ -14,7 +15,7 @@ public final class LoginViewModel {
     self.authService = authService
   }
   
-  var onLoginSuccess: ((User) -> Void)?
+  var onLoginSuccess: ((AppUser) -> Void)?
   var onLoginFailure: ((String) -> Void)?
   
   @MainActor

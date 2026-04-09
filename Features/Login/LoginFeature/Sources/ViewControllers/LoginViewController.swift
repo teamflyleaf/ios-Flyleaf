@@ -6,6 +6,7 @@
 //
 
 import AuthenticationServices
+import AuthInterface
 import Core
 import UIKit
 import DesignSystem

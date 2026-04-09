@@ -30,6 +30,7 @@ public enum ServiceName: String, CaseIterable {
   case tooltip = "Tooltip"
   case airportSearch = "AirportSearch"
   case bookSearch = "BookSearch"
+  case auth = "Auth"
 }
 
 public enum ServiceModule: String {
