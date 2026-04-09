@@ -5,12 +5,13 @@
 //  Created by 여성일 on 3/17/26.
 //
 
+import Core
 import Foundation
 
-struct AladinBookDetailResponseDTO: Decodable {
+public struct AladinBookDetailResponseDTO: Decodable {
   let item: [AladinBookDetailItemDTO]
 
-  func toModel() throws -> BookInfo {
+  public func toModel() throws -> BookInfo {
     guard let first = item.first else {
       throw BookSearchError.missingBookDetail
     }
@@ -18,7 +19,7 @@ struct AladinBookDetailResponseDTO: Decodable {
   }
 }
 
-struct AladinBookDetailItemDTO: Decodable {
+public struct AladinBookDetailItemDTO: Decodable {
   let title: String
   let author: String
   let cover: String
@@ -27,7 +28,7 @@ struct AladinBookDetailItemDTO: Decodable {
   let description: String
   let subInfo: AladinBookSubInfoDTO?
 
-  func toModel() throws -> BookInfo {
+  public func toModel() throws -> BookInfo {
     guard let itemPage = subInfo?.itemPage else {
       throw BookSearchError.missingItemPage
     }
@@ -44,6 +45,6 @@ struct AladinBookDetailItemDTO: Decodable {
   }
 }
 
-struct AladinBookSubInfoDTO: Decodable {
+public struct AladinBookSubInfoDTO: Decodable {
   let itemPage: Int?
 }

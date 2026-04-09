@@ -11,6 +11,7 @@ import Kingfisher
 import SnapKit
 import Then
 import UIKit
+import BookSearchInterface
 
 final class BookSearchResultCell: UICollectionViewCell {
   static let identifier = "BookSearchResultCell"

@@ -7,9 +7,10 @@
 
 import Core
 import Foundation
+import AirportSearchInterface
+import BookSearchInterface
 import SearchInterface
 import SearchHistoryInterface
-import AirportSearchInterface
 
 public final class SearchViewModel {
   private(set) var type: SearchType
