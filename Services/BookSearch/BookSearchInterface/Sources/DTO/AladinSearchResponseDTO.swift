@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AladinSearchResponseDTO: Decodable {
+public struct AladinSearchResponseDTO: Decodable {
   let totalResults: Int
   let startIndex: Int
   let itemsPerPage: Int
@@ -15,7 +15,7 @@ struct AladinSearchResponseDTO: Decodable {
 }
 
 extension AladinSearchResponseDTO {
-  func toModel() -> BookSearchPage {
+  public func toModel() -> BookSearchPage {
     BookSearchPage(
       items: item.map { $0.toModel() },
       totalResults: totalResults,

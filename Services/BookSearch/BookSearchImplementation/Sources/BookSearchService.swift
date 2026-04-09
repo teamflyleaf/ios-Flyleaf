@@ -1,11 +1,13 @@
 //
-//  AladinBookSearchService.swift
-//  Core
+//  BookSearchService.swift
+//  BookSearchImplementation
 //
-//  Created by 여성일 on 3/12/26.
+//  Created by 여성일 on now.
 //
 
+import Core
 import Foundation
+import BookSearchInterface
 
 /// 알라딘 Open API를 이용해 도서 검색 및 상세 조회 기능을 제공하는 서비스입니다.
 ///
@@ -13,17 +15,24 @@ import Foundation
 /// 상세 API(`ItemLookUp`)를 통해 선택한 도서의 상세 정보를 조회합니다.
 ///
 /// ```swift
-/// let service = AladinBookSearchService()
+/// let service = BookSearchService()
 /// let page = try await service.searchBooks(query: "설국", start: 1)
 /// let detail = try await service.fetchBookDetail(isbn13: "9788937460616")
 /// ```
-public final class AladinBookSearchService: BookSearchServicing {
+///
+/// - Note:
+///   - API 키는 기본적으로 `APIKey.aladin` 값을 사용합니다.
+///   - 테스트 환경에서는 `apiKey`를 직접 주입하여 `Bundle.main` 의존 없이 사용할 수 있습니다.
+public final class BookSearchService: BookSearchServicing {
   private let session: URLSession
+  private let apiKey: String
   
   public init(
-    session: URLSession = .shared
+    session: URLSession = .shared,
+    apiKey: String = APIKey.aladin
   ) {
     self.session = session
+    self.apiKey = apiKey
   }
   
   /// 주어진 검색어로 도서를 조회하고 페이지 단위 검색 결과를 반환합니다.
@@ -45,14 +54,14 @@ public final class AladinBookSearchService: BookSearchServicing {
   ///     페이지 수(`itemPage`) 같은 상세 정보는 포함되지 않을 수 있습니다.
   public func searchBooks(
     query: String,
-    start: Int,
+    start: Int
   ) async throws -> BookSearchPage {
     guard var components = URLComponents(string: "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx") else {
       throw BookSearchError.invalidURL
     }
     
     components.queryItems = [
-      .init(name: "ttbkey", value: APIKey.aladin),
+      .init(name: "ttbkey", value: apiKey),
       .init(name: "Query", value: query),
       .init(name: "QueryType", value: "Keyword"),
       .init(name: "MaxResults", value: "10"),
@@ -60,23 +69,23 @@ public final class AladinBookSearchService: BookSearchServicing {
       .init(name: "SearchTarget", value: "Book"),
       .init(name: "output", value: "js"),
       .init(name: "Version", value: "20131101"),
-      .init(name: "Cover", value: "Big"),
+      .init(name: "Cover", value: "Big")
     ]
     
     guard let url = components.url else {
       throw BookSearchError.invalidURL
     }
-
+    
     let (data, response) = try await session.data(from: url)
-
+    
     guard let httpResponse = response as? HTTPURLResponse else {
       throw BookSearchError.invalidResponse
     }
-
+    
     guard 200..<300 ~= httpResponse.statusCode else {
       throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
     }
-
+    
     let dto = try JSONDecoder().decode(AladinSearchResponseDTO.self, from: data)
     return dto.toModel()
   }
@@ -96,38 +105,38 @@ public final class AladinBookSearchService: BookSearchServicing {
   ///
   /// - Important:
   ///   - 이 메서드는 알라딘 `ItemLookUp` API를 사용합니다.
-   public func fetchBookDetail(
-     isbn13: String
-   ) async throws -> BookInfo {
-     guard var components = URLComponents(string: "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx") else {
-       throw BookSearchError.invalidURL
-     }
-
-     components.queryItems = [
-       .init(name: "ttbkey", value: APIKey.aladin),
-       .init(name: "ItemIdType", value: "ISBN"),
-       .init(name: "ItemId", value: isbn13),
-       .init(name: "output", value: "js"),
-       .init(name: "Version", value: "20131101"),
-       .init(name: "OptResult", value: "ebookList,usedList,reviewList"),
-       .init(name: "Cover", value: "Big")
-     ]
-
-     guard let url = components.url else {
-       throw BookSearchError.invalidURL
-     }
-
-     let (data, response) = try await session.data(from: url)
-
-     guard let httpResponse = response as? HTTPURLResponse else {
-       throw BookSearchError.invalidResponse
-     }
-
-     guard 200..<300 ~= httpResponse.statusCode else {
-       throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
-     }
-
-     let dto = try JSONDecoder().decode(AladinBookDetailResponseDTO.self, from: data)
-     return try dto.toModel()
-   }
+  public func fetchBookDetail(
+    isbn13: String
+  ) async throws -> BookInfo {
+    guard var components = URLComponents(string: "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx") else {
+      throw BookSearchError.invalidURL
+    }
+    
+    components.queryItems = [
+      .init(name: "ttbkey", value: apiKey),
+      .init(name: "ItemIdType", value: "ISBN"),
+      .init(name: "ItemId", value: isbn13),
+      .init(name: "output", value: "js"),
+      .init(name: "Version", value: "20131101"),
+      .init(name: "OptResult", value: "ebookList,usedList,reviewList"),
+      .init(name: "Cover", value: "Big")
+    ]
+    
+    guard let url = components.url else {
+      throw BookSearchError.invalidURL
+    }
+    
+    let (data, response) = try await session.data(from: url)
+    
+    guard let httpResponse = response as? HTTPURLResponse else {
+      throw BookSearchError.invalidResponse
+    }
+    
+    guard 200..<300 ~= httpResponse.statusCode else {
+      throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
+    }
+    
+    let dto = try JSONDecoder().decode(AladinBookDetailResponseDTO.self, from: data)
+    return try dto.toModel()
+  }
 }

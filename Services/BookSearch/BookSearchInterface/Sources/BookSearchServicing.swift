@@ -1,10 +1,11 @@
 //
 //  BookSearchServicing.swift
-//  Core
+//  BookSearchInterface
 //
-//  Created by 여성일 on 3/12/26.
+//  Created by 여성일 on now.
 //
 
+import Core
 import Foundation
 
 public protocol BookSearchServicing {
