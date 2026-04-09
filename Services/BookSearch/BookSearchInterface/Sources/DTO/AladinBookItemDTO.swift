@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AladinBookItemDTO: Decodable {
+public struct AladinBookItemDTO: Decodable {
   let title: String
   let author: String
   let cover: String
@@ -16,7 +16,7 @@ struct AladinBookItemDTO: Decodable {
 }
 
 extension AladinBookItemDTO {
-  func toModel() -> BookSearchItem {
+  public func toModel() -> BookSearchItem {
     BookSearchItem(
       title: title,
       author: author,
