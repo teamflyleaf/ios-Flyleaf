@@ -27,6 +27,10 @@ let template = Template(
       templatePath: "ImplementationPlaceholder.stencil"
     ),
     .file(
+      path: "Services/{{ name }}/{{ name }}Implementation/Resources/{{ name }}Resources.swift",
+      templatePath: "resourcesPlaceholder.stencil"
+    ),
+    .file(
       path: "Services/{{ name }}/{{ name }}Testing/Sources/Mock{{ name }}Service.swift",
       templatePath: "TestingPlaceholder.stencil"
     ),
