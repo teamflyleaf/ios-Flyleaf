@@ -1,8 +1,8 @@
 //
-//  AirportSearchError.swift
-//  Core
+//  AirportSearchServiceError.swift
+//  AirportSearch
 //
-//  Created by 여성일 on 3/15/26.
+//  Created by 여성일 on 4/9/26.
 //
 
 import Foundation

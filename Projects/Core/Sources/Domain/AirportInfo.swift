@@ -1,8 +1,8 @@
 //
 //  AirportInfo.swift
-//  Core
+//  AirportSearch
 //
-//  Created by 여성일 on 3/10/26.
+//  Created by 여성일 on 4/9/26.
 //
 
 import CoreLocation
