@@ -8,6 +8,8 @@
 import Core
 import AirportSearchInterface
 import AirportSearchImplementation
+import BookSearchInterface
+import BookSearchImplementation
 import SearchInterface
 import SearchHistoryImplementation
 import UIKit
@@ -19,7 +21,7 @@ public final class SearchBuilder: SearchBuildable {
     type: SearchType,
     onRoute: @escaping (SearchRoute) -> Void
   ) -> UIViewController {
-    let bookSearchService = AladinBookSearchService()
+    let bookSearchService = BookSearchService()
     let airportSearchService = AirportSearchService(
       bundle: Bundle(for: AirportSearchService.self)
     )

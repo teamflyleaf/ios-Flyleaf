@@ -18,7 +18,9 @@ let project = Project(
         .service(.searchHistory, .interface),
         .service(.searchHistory, .implementation),
         .service(.airportSearch, .interface),
-        .service(.airportSearch, .implementation)
+        .service(.airportSearch, .implementation),
+        .service(.bookSearch, .interface),
+        .service(.bookSearch, .implementation)
       ]
     ),
     .microInterface(.search),

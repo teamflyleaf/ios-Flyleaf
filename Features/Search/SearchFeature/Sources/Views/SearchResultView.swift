@@ -10,6 +10,7 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import BookSearchInterface
 
 final class SearchResultView: BaseView {
   var onTapItem: ((BookSearchItem) -> Void)?
