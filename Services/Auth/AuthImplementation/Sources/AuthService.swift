@@ -1,15 +1,17 @@
 //
-//  FirebaseAuthService.swift
-//  Core
+//  AuthService.swift
+//  AuthImplementation
 //
-//  Created by 여성일 on 3/7/26.
+//  Created by 여성일 on now.
 //
 
 import AuthenticationServices
+import AuthInterface
+import Core
 import FirebaseAuth
 import FirebaseCore
 
-public final class FirebaseAuthService: AuthServicing {
+public final class AuthService: AuthServicing {
   public init() {}
 
   public var isSignedIn: Bool {
@@ -18,7 +20,7 @@ public final class FirebaseAuthService: AuthServicing {
   
   public func signInWithApple(
     payload: AppleLoginPayload
-  ) async throws -> User {
+  ) async throws -> AppUser {
     let firebaseCredential = OAuthProvider.appleCredential(
       withIDToken: payload.idToken,
       rawNonce: payload.rawNonce,
@@ -33,7 +35,7 @@ public final class FirebaseAuthService: AuthServicing {
       throw AuthError.signInFailed
     }
     
-    return User(
+    return AppUser(
       id: result.user.uid,
       name: payload.name,
       email: payload.email
