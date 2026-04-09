@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/1/26.
 //
 
+import AuthImplementation
 import Core
 import HomeFeature
 import LoginFeature
@@ -35,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let navigationController = UINavigationController()
     navigationController.navigationBar.isHidden = true
     
-    let authService = FirebaseAuthService()
+    let authService = AuthService()
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder()

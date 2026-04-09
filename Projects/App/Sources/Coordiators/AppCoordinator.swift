@@ -6,6 +6,7 @@
 //
 
 import Core
+import AuthInterface
 import HomeInterface
 import LoginInterface
 import SearchInterface

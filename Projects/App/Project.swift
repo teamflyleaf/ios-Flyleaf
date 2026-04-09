@@ -59,6 +59,8 @@ let project = Project(
         .feature(.journey, .interface),
         .feature(.history, .feature),
         .feature(.history, .interface),
+        .service(.auth, .interface),
+        .service(.auth, .implementation)
       ],
       settings: .settings(
         configurations: [
