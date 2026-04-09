@@ -19,6 +19,7 @@ public extension Target {
       product: .framework,
       bundleId: "com.yeo.flyleaf.\(base.lowercased()).implementation",
       sources: ["\(base)Implementation/Sources/**"],
+      resources: ["\(base)Implementation/Resources/**"],
       dependencies: [
         .service(name, .interface),
         .core()
