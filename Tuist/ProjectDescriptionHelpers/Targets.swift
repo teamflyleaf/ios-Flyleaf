@@ -31,6 +31,7 @@ public enum ServiceName: String, CaseIterable {
   case airportSearch = "AirportSearch"
   case bookSearch = "BookSearch"
   case auth = "Auth"
+  case readingJourney = "ReadingJourney"
 }
 
 public enum ServiceModule: String {
