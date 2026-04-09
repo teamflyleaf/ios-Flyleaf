@@ -9,6 +9,7 @@ import Core
 import Foundation
 import SearchInterface
 import SearchHistoryInterface
+import AirportSearchInterface
 
 public final class SearchViewModel {
   private(set) var type: SearchType
