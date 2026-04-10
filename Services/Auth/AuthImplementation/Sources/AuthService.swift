@@ -9,7 +9,6 @@ import AuthenticationServices
 import AuthInterface
 import Core
 import FirebaseAuth
-import FirebaseCore
 
 public final class AuthService: AuthServicing {
   public init() {}
