@@ -12,7 +12,13 @@ let project = Project(
   name: "ReadingJourney",
   targets: [
     .serviceInterface(.readingJourney),
-    .serviceImplementation(.readingJourney),
+    .serviceImplementation(
+      .readingJourney,
+      dependencies: [
+        .firebaseFirestore(),
+        .firebaseAuth()
+      ]
+    ),
     .serviceTesting(.readingJourney),
     .serviceTests(.readingJourney)
   ]

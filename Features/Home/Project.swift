@@ -11,8 +11,19 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Home",
   targets: [
-    .microFeature(.home),
-    .microInterface(.home),
+    .microFeature(
+      .home,
+      dependencies: [
+        .service(.readingJourney, .interface),
+        .service(.readingJourney, .implementation)
+      ]
+    ),
+    .microInterface(
+      .home,
+      dependencies: [
+        .service(.readingJourney, .interface),
+      ]
+    ),
     .microTests(.home),
     .microTesting(.home),
     .microExample(.home)

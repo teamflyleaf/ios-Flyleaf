@@ -15,8 +15,7 @@ let project = Project(
     .serviceImplementation(
       .auth,
       dependencies: [
-        .firebaseAuth(),
-        .firebaseCore()
+        .firebaseAuth()
       ]
     ),
     .serviceTesting(.auth),

@@ -11,8 +11,19 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "History",
   targets: [
-    .microFeature(.history),
-    .microInterface(.history),
+    .microFeature(
+      .history,
+      dependencies: [
+        .service(.readingJourney, .interface),
+        .service(.readingJourney, .implementation)
+      ]
+    ),
+    .microInterface(
+      .history,
+      dependencies: [
+        .service(.readingJourney, .interface),
+      ]
+    ),
     .microTests(.history),
     .microTesting(.history),
     .microExample(.history)
