@@ -8,6 +8,7 @@
 import Core
 import UIKit
 import HistoryInterface
+import ReadingJourneyImplementation
 
 public final class RegisterHistoryBuilder: RegisterHistoryBuildable {
   public init() {}
@@ -15,7 +16,7 @@ public final class RegisterHistoryBuilder: RegisterHistoryBuildable {
   public func build(
     onRoute: ((RegisterHistoryRoute) -> Void)?
   ) -> UIViewController {
-    let readingJourneyService = FirebaseReadingJourneyService()
+    let readingJourneyService = ReadingJourneyService()
     let viewModel = RegisterHistoryViewModel(readingJourneyService: readingJourneyService)
     
     let viewController = RegisterHistoryViewController(viewModel: viewModel)

@@ -15,10 +15,17 @@ let project = Project(
       .journey,
       dependencies: [
         .service(.tooltip, .interface),
-        .service(.tooltip, .implementation)
+        .service(.tooltip, .implementation),
+        .service(.readingJourney, .interface),
+        .service(.readingJourney, .implementation)
       ]
     ),
-    .microInterface(.journey),
+    .microInterface(
+      .journey,
+      dependencies: [
+        .service(.readingJourney, .interface),
+      ]
+    ),
     .microTests(.journey),
     .microTesting(.journey),
     .microExample(.journey)

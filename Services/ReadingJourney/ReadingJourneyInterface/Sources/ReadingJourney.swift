@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/10/26.
 //
 
+import Core
 import Foundation
 
 public struct ReadingJourney: Codable, Equatable, Sendable {

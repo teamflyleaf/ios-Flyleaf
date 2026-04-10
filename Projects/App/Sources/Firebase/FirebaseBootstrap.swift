@@ -7,8 +7,8 @@
 
 import FirebaseCore
 
-public enum FirebaseBootstrap {
-  public static func configure() {
+enum FirebaseBootstrap {
+  static func configure() {
     FirebaseApp.configure()
   }
 }

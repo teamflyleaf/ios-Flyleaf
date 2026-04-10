@@ -13,6 +13,7 @@ import SearchInterface
 import WishlistInterface
 import HistoryInterface
 import JourneyInterface
+import ReadingJourneyInterface
 import UIKit
 
 @MainActor

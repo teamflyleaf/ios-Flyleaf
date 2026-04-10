@@ -1,6 +1,6 @@
 //
 //  Project.swift
-//  Auth
+//  ReadingJourney
 //
 //  Created by 여성일 on now.
 //
@@ -9,16 +9,17 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project(
-  name: "Auth",
+  name: "ReadingJourney",
   targets: [
-    .serviceInterface(.auth),
+    .serviceInterface(.readingJourney),
     .serviceImplementation(
-      .auth,
+      .readingJourney,
       dependencies: [
+        .firebaseFirestore(),
         .firebaseAuth()
       ]
     ),
-    .serviceTesting(.auth),
-    .serviceTests(.auth)
+    .serviceTesting(.readingJourney),
+    .serviceTests(.readingJourney)
   ]
 )

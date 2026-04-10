@@ -9,6 +9,7 @@ import Core
 import UIKit
 import JourneyInterface
 import TooltipImplementation
+import ReadingJourneyImplementation
 
 public final class JourneyBuilder: JourneyBuildable {
   public init() {}
@@ -16,7 +17,7 @@ public final class JourneyBuilder: JourneyBuildable {
   public func build(
     onRoute: ((JourneyRoute) -> Void)?
   ) -> UIViewController {
-    let readingJourneyService = FirebaseReadingJourneyService()
+    let readingJourneyService = ReadingJourneyService()
     let memoService = JourneyMemoService()
     let tooltipService = TooltipService()
     let viewModel = JourneyViewModel(

@@ -13,10 +13,11 @@ public extension Target {
     dependencies: [TargetDependency] = []
   ) -> Target {
     let base = name.rawValue
+    let product: Product = name == .airportSearch ? .framework : .staticFramework
     return .target(
       name: Targets.service(name, .implementation),
       destinations: .iOS,
-      product: .framework,
+      product: product,
       bundleId: "com.yeo.flyleaf.\(base.lowercased()).implementation",
       sources: ["\(base)Implementation/Sources/**"],
       resources: ["\(base)Implementation/Resources/**"],

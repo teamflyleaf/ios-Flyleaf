@@ -7,6 +7,7 @@
 
 import Core
 import Foundation
+import ReadingJourneyInterface
 
 public final class HistoryViewModel {
   private let readingJourneyService: ReadingJourneyServicing
@@ -22,7 +23,7 @@ public final class HistoryViewModel {
   }
   
   public init(
-    readingJourneyService: ReadingJourneyServicing = FirebaseReadingJourneyService()
+    readingJourneyService: ReadingJourneyServicing
   ) {
     self.readingJourneyService = readingJourneyService
   }

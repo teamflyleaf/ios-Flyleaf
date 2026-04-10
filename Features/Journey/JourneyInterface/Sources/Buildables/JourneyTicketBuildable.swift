@@ -7,6 +7,7 @@
 
 import Core
 import UIKit
+import ReadingJourneyInterface
 
 public protocol JourneyTicketBuildable {
   func build(

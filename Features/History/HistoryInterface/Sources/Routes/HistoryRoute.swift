@@ -7,6 +7,7 @@
 
 import Core
 import Foundation
+import ReadingJourneyInterface
 
 public enum HistoryRoute {
   case detail(ReadingJourney)

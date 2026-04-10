@@ -73,7 +73,7 @@ public final class AirportSearchService: AirportSearchServicing {
       throw AirportSearchError.decodeFailed
     }
   }
-
+  
   /// 입력된 검색어를 기반으로 공항 목록을 필터링합니다.
   ///
   /// - Parameter query: 사용자 입력 검색어

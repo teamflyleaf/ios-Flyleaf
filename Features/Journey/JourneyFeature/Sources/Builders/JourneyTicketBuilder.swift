@@ -8,6 +8,8 @@
 import Core
 import UIKit
 import JourneyInterface
+import ReadingJourneyInterface
+import ReadingJourneyImplementation
 
 public final class JourneyTicketBuilder: JourneyTicketBuildable {
   public init() {}
@@ -16,7 +18,7 @@ public final class JourneyTicketBuilder: JourneyTicketBuildable {
     payload: JourneyPayload,
     onRoute: @escaping (JourneyTicketRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = FirebaseReadingJourneyService()
+    let readingJourneyService = ReadingJourneyService()
     let viewModel = JourneyTicketViewModel(
       payload: payload,
       readingJourneyService: readingJourneyService

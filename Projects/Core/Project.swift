@@ -20,11 +20,6 @@ let project = Project(
       resources: [
         "Resources/**"
       ],
-      dependencies: [
-        .firebaseAuth(),
-        .firebaseCore(),
-        .firebaseFirestore()
-      ],
       settings: .settings(
         base: [
           "OTHER_LDFLAGS": "$(inherited) -ObjC"
