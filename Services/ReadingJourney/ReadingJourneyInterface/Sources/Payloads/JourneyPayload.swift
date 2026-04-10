@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/19/26.
 //
 
+import Core
 import Foundation
 
 public struct JourneyPayload: Sendable, Equatable {
