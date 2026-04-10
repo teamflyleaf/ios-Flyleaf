@@ -10,6 +10,7 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import ReadingJourneyInterface
 
 final class DetailHistoryView: BaseView {
   var onStartDateChanged: ((Date) -> Void)?

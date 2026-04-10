@@ -7,6 +7,7 @@
 
 import Core
 import Foundation
+import ReadingJourneyInterface
 
 public final class DetailHistoryViewModel {
   var onJourneyChanged: ((ReadingJourney) -> Void)?

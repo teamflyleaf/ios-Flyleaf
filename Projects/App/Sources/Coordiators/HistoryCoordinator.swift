@@ -9,6 +9,7 @@
 import Core
 import HistoryInterface
 import SearchInterface
+import ReadingJourneyInterface
 import UIKit
 
 @MainActor
