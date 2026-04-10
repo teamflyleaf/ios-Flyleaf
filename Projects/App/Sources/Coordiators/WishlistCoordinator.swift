@@ -7,8 +7,9 @@
 
 import Core
 import SearchInterface
-import UIKit
 import WishlistInterface
+import ReadingJourneyInterface
+import UIKit
 
 @MainActor
 final class WishlistCoordinator: Coordinator {

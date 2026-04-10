@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/22/26.
 //
 
+import ReadingJourneyInterface
 import FirebaseAuth
 import FirebaseFirestore
 import Foundation

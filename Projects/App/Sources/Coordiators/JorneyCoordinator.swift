@@ -8,6 +8,7 @@
 import Core
 import JourneyInterface
 import SearchInterface
+import ReadingJourneyInterface
 import UIKit
 
 @MainActor

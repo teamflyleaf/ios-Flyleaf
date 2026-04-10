@@ -8,6 +8,7 @@
 import Core
 import UIKit
 import HistoryInterface
+import ReadingJourneyImplementation
 
 public final class HistoryBuilder: HistoryBuildable {
   public init() {}
@@ -15,7 +16,10 @@ public final class HistoryBuilder: HistoryBuildable {
   public func build(
     onRoute: ((HistoryRoute) -> Void)?
   ) -> UIViewController {
-    let viewModel = HistoryViewModel()
+    let readingJourneyService = ReadingJourneyService()
+    let viewModel = HistoryViewModel(
+      readingJourneyService: readingJourneyService
+    )
     let viewController = HistoryViewController(viewModel: viewModel)
     viewController.onRoute = onRoute
     return viewController

@@ -7,6 +7,7 @@
 
 import Core
 import Foundation
+import ReadingJourneyInterface
 
 public enum WishlistRoute {
   case checkIn(ReadingJourney)

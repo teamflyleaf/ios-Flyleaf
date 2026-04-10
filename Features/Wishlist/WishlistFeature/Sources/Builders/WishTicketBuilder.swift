@@ -8,6 +8,8 @@
 import Core
 import UIKit
 import WishlistInterface
+import ReadingJourneyImplementation
+import ReadingJourneyInterface
 
 public final class WishTicketBuilder: WishTicketBuildable {
   public init() {}
@@ -16,7 +18,7 @@ public final class WishTicketBuilder: WishTicketBuildable {
     payload: WishlistTicketPayload,
     onRoute: @escaping (WishTicketRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = FirebaseReadingJourneyService()
+    let readingJourneyService = ReadingJourneyService()
     let viewModel = WishTicketViewModel(
       payload: payload,
       readingJourneyService: readingJourneyService

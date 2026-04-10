@@ -5,6 +5,8 @@
 //  Created by 여성일 on 3/17/26.
 //
 
+import Core
+import ReadingJourneyInterface
 import FirebaseAuth
 import FirebaseFirestore
 import Foundation
@@ -12,7 +14,7 @@ import Foundation
 /// Firestore를 이용해 독서 여행을 생성 및 관리하는 서비스입니다.
 ///
 /// ```swift
-/// let service = FirebaseReadingJourneyService()
+/// let service = ReadingJourneyService()
 /// let journey = try await service.createWishlistJourney(payload: payload)
 /// ```
 ///
@@ -22,7 +24,7 @@ import Foundation
 ///     `wishlist` 또는 `reading` 상태의 여행이 이미 존재하면 생성이 제한됩니다.
 ///   - 문서 ID(`journeyId`)는 Firestore에서 자동 생성됩니다.
 ///
-public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
+public final class ReadingJourneyService: ReadingJourneyServicing {
   private let auth: Auth
   private let db: Firestore
   
@@ -835,7 +837,7 @@ public final class FirebaseReadingJourneyService: ReadingJourneyServicing {
 }
 
 // MARK: - Helper
-private extension FirebaseReadingJourneyService {
+private extension ReadingJourneyService {
   // AirportInfo를 Firestore 저장용 딕셔너리로 변환
   func departureAirportDictionary(_ airport: AirportInfo) -> [String: Any] {
     [

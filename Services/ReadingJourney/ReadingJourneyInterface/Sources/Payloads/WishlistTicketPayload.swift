@@ -5,6 +5,7 @@
 //  Created by 여성일 on 3/17/26.
 //
 
+import Core
 import Foundation
 
 public struct WishlistTicketPayload: Sendable {

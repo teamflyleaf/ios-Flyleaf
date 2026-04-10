@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import UIKit
 import JourneyInterface
+import ReadingJourneyInterface
 
 public final class JourneyViewController: BaseViewController {
   public var onRoute: ((JourneyRoute) -> Void)?

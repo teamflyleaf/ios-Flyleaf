@@ -8,6 +8,7 @@
 import Core
 import Foundation
 import TooltipInterface
+import ReadingJourneyInterface
 
 public final class WishlistViewModel {
   private let readingJourneyService: ReadingJourneyServicing

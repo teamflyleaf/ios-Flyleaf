@@ -9,8 +9,8 @@
 ///
 /// - Note:
 ///   - `reason`이 공백인 경우, 이 리스트 중 하나가 랜덤으로 선택됩니다.
-enum ReasonProvider {
-  static let fallbackReasons: [String] = [
+public enum ReasonProvider {
+  public static let fallbackReasons: [String] = [
     "아무 이유 없이 떠나도 괜찮아요",
     "이 여행, 그냥 끌리지 않나요?",
     "이 여행의 이야기를 만나보세요",
@@ -23,7 +23,7 @@ enum ReasonProvider {
   ]
 
   /// fallback 문구 중 하나를 랜덤으로 반환합니다.
-  static func random() -> String {
+  public static func random() -> String {
     fallbackReasons.randomElement() ?? ""
   }
 }

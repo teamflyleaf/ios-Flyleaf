@@ -45,6 +45,7 @@ let project = Project(
       ],
       entitlements: .file(path: "Flyleaf.entitlements"),
       dependencies: [
+        .firebaseCore(),
         .core(),
         .designSystem(),
         .feature(.home, .feature),
@@ -60,9 +61,13 @@ let project = Project(
         .feature(.history, .feature),
         .feature(.history, .interface),
         .service(.auth, .interface),
-        .service(.auth, .implementation)
+        .service(.auth, .implementation),
+        .service(.airportSearch, .implementation)
       ],
       settings: .settings(
+        base: [
+          "OTHER_LDFLAGS": "$(inherited) -ObjC"
+        ],
         configurations: [
           .debug(
             name: "Debug",
@@ -89,7 +94,7 @@ let project = Project(
               "CURRENT_PROJECT_VERSION": "2"
             ],
             xcconfig: "../../Configs/DevRelease.xcconfig"
-          )
+          ),
         ]
       )
     ),
@@ -128,6 +133,7 @@ let project = Project(
       ],
       entitlements: .file(path: "Flyleaf.entitlements"),
       dependencies: [
+        .firebaseCore(),
         .core(),
         .designSystem(),
         .feature(.home, .feature),
@@ -142,8 +148,14 @@ let project = Project(
         .feature(.journey, .interface),
         .feature(.history, .feature),
         .feature(.history, .interface),
+        .service(.auth, .interface),
+        .service(.auth, .implementation),
+        .service(.airportSearch, .implementation)
       ],
       settings: .settings(
+        base: [
+          "OTHER_LDFLAGS": "$(inherited) -ObjC"
+        ],
         configurations: [
           .debug(
             name: "Debug",

@@ -8,7 +8,8 @@
 import Core
 import UIKit
 import HistoryInterface
-
+import ReadingJourneyInterface
+import ReadingJourneyImplementation
 
 public final class DetailHistoryBuilder: DetailHistoryBuildable {
   public init() {}
@@ -17,7 +18,7 @@ public final class DetailHistoryBuilder: DetailHistoryBuildable {
     journey: ReadingJourney,
     onRoute: ((DetailHistoryRoute) -> Void)? = nil
   ) -> UIViewController {
-    let readingJourneyService = FirebaseReadingJourneyService()
+    let readingJourneyService = ReadingJourneyService()
     let viewModel = DetailHistoryViewModel(
       journey: journey,
       readingJourneyService: readingJourneyService
