@@ -16,7 +16,7 @@ public extension Target {
     return .target(
       name: Targets.feature(name, .feature),
       destinations: .iOS,
-      product: .framework,
+      product: .staticFramework,
       bundleId: "com.yeo.flyleaf.\(base.lowercased()).feature",
       sources: ["\(base)Feature/Sources/**"],
       resources: ["\(base)Feature/Resources/**"],
