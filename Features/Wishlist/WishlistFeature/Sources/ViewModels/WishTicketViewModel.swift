@@ -7,6 +7,7 @@
 
 import Core
 import Foundation
+import ReadingJourneyInterface
 
 public final class WishTicketViewModel {
   public let payload: WishlistTicketPayload
