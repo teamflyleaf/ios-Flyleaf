@@ -10,6 +10,7 @@ import DesignSystem
 import SnapKit
 import Then
 import UIKit
+import ReadingJourneyInterface
 
 // 메모 작성 바텀시트용 뷰컨트롤러
 public final class MemoWriteViewController: BaseViewController {

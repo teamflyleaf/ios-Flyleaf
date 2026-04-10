@@ -9,6 +9,7 @@ import Core
 import SnapKit
 import Then
 import UIKit
+import ReadingJourneyInterface
 
 final class MemoTableViewCell: UITableViewCell {
   static let identifier = "MemoTableViewCell"

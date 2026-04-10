@@ -8,6 +8,7 @@
 import Core
 import Foundation
 import TooltipInterface
+import ReadingJourneyInterface
 
 public final class JourneyViewModel {
   private let readingJourneyService: ReadingJourneyServicing
