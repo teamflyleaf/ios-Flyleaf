@@ -8,17 +8,23 @@
 import Core
 import UIKit
 import WishlistInterface
-import TooltipImplementation
+import TooltipInterface
 import ReadingJourneyImplementation
 
 public final class WishlistBuilder: WishlistBuildable {
-  public init() {}
+  let tooltipService: TooltipServicing
+  
+  public init(
+    tooltipService: TooltipServicing
+  ) {
+    self.tooltipService = tooltipService
+  }
   
   public func build(
     onRoute: @escaping (WishlistRoute) -> Void
   ) -> UIViewController {
     let readingJourneyService = ReadingJourneyService()
-    let tooltipService = TooltipService()
+    let tooltipService = tooltipService
     let viewModel = WishlistViewModel(
       readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
