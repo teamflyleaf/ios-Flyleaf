@@ -12,13 +12,18 @@ import ReadingJourneyImplementation
 import ReadingJourneyInterface
 
 public final class WishTicketBuilder: WishTicketBuildable {
-  public init() {}
+  let readingJourneyService: ReadingJourneyServicing
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
   
   public func build(
     payload: WishlistTicketPayload,
     onRoute: @escaping (WishTicketRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
     let viewModel = WishTicketViewModel(
       payload: payload,
       readingJourneyService: readingJourneyService

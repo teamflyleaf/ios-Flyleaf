@@ -71,7 +71,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       tooltipService: tooltipService
     )
     let registerWishlistBuilder = RegisterWishlistBuilder()
-    let wishTicketBuilder = WishTicketBuilder()
+    let wishTicketBuilder = WishTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let checkInWishTicketBuilder = CheckInWishTicketBuilder(
       readingJourneyService: readingJourneyService
     )
