@@ -14,6 +14,7 @@ import SearchFeature
 import WishlistFeature
 import HistoryFeature
 import JourneyFeature
+import TooltipImplementation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -36,18 +37,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let navigationController = UINavigationController()
     navigationController.navigationBar.isHidden = true
     
+    // MARK: - Service
     let authService = AuthService()
+    let tooltipService = TooltipService()
+    // MARK: - Builder
+
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder()
-    let wishlistBuilder = WishlistBuilder()
+    let wishlistBuilder = WishlistBuilder(
+      tooltipService: tooltipService
+    )
     let registerWishlistBuilder = RegisterWishlistBuilder()
     let wishTicketBuilder = WishTicketBuilder()
     let checkInWishTicketBuilder = CheckInWishTicketBuilder()
     let registerHistoryBuilder = RegisterHistoryBuilder()
     let registerJourneyBuilder = RegisterJourneyBuilder()
     let journeyTicketBuilder = JourneyTicketBuilder()
-    let journeyBuilder = JourneyBuilder()
+    let journeyBuilder = JourneyBuilder(
+      tooltipService: tooltipService
+    )
     let historyBuilder = HistoryBuilder()
     let detailHistoryBuilder = DetailHistoryBuilder()
     
