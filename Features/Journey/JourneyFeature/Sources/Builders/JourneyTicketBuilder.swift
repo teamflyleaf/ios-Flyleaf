@@ -9,16 +9,20 @@ import Core
 import UIKit
 import JourneyInterface
 import ReadingJourneyInterface
-import ReadingJourneyImplementation
 
 public final class JourneyTicketBuilder: JourneyTicketBuildable {
-  public init() {}
+  private let readingJourneyService: ReadingJourneyServicing
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
   
   public func build(
     payload: JourneyPayload,
     onRoute: @escaping (JourneyTicketRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
     let viewModel = JourneyTicketViewModel(
       payload: payload,
       readingJourneyService: readingJourneyService

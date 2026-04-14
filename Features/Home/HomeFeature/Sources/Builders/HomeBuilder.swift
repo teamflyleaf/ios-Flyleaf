@@ -9,15 +9,19 @@ import Core
 import HomeInterface
 import UIKit
 import ReadingJourneyInterface
-import ReadingJourneyImplementation
 
 public final class HomeBuilder: HomeBuildable {
-  public init() {}
+  let readingJourneyService: ReadingJourneyServicing
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
 
   public func build(
     onRoute: @escaping (HomeRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
     let viewModel = HomeViewModel(readingJourneyService: readingJourneyService)
     let viewController = HomeViewController(viewModel: viewModel)
     

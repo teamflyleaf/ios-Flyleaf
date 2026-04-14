@@ -18,6 +18,7 @@ import JourneyFeature
 import AirportSearchImplementation
 import AuthImplementation
 import BookSearchImplementation
+import ReadingJourneyImplementation
 import SearchHistoryImplementation
 import TooltipImplementation
 
@@ -50,6 +51,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let authService = AuthService()
     let bookSearchService = BookSearchService()
+    let journeymemoService = JourneyMemoService()
+    let readingJourneyService = ReadingJourneyService()
     let searchHistoryService = SearchHistoryService()
     let tooltipService = TooltipService()
     
@@ -64,19 +67,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       searchHistoryService: searchHistoryService
     )
     let wishlistBuilder = WishlistBuilder(
+      readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
     )
     let registerWishlistBuilder = RegisterWishlistBuilder()
-    let wishTicketBuilder = WishTicketBuilder()
-    let checkInWishTicketBuilder = CheckInWishTicketBuilder()
-    let registerHistoryBuilder = RegisterHistoryBuilder()
+    let wishTicketBuilder = WishTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let checkInWishTicketBuilder = CheckInWishTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let registerHistoryBuilder = RegisterHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let registerJourneyBuilder = RegisterJourneyBuilder()
-    let journeyTicketBuilder = JourneyTicketBuilder()
+    let journeyTicketBuilder = JourneyTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let journeyBuilder = JourneyBuilder(
+      journeyMemoService: journeymemoService,
+      readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
     )
-    let historyBuilder = HistoryBuilder()
-    let detailHistoryBuilder = DetailHistoryBuilder()
+    let historyBuilder = HistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let detailHistoryBuilder = DetailHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     
     let coordinator = AppCoordinator(
       navigationController: navigationController,
