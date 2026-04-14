@@ -15,6 +15,7 @@ import WishlistFeature
 import HistoryFeature
 import JourneyFeature
 import TooltipImplementation
+import BookSearchImplementation
 import SearchHistoryImplementation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -42,11 +43,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let authService = AuthService()
     let tooltipService = TooltipService()
     let searchHistoryService = SearchHistoryService()
+    let bookSearchService = BookSearchService()
     
     // MARK: - Builder
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder(
+      bookSearchService: bookSearchService,
       searchHistoryService: searchHistoryService
     )
     let wishlistBuilder = WishlistBuilder(
