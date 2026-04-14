@@ -51,6 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let authService = AuthService()
     let bookSearchService = BookSearchService()
+    let journeymemoService = JourneyMemoService()
     let readingJourneyService = ReadingJourneyService()
     let searchHistoryService = SearchHistoryService()
     let tooltipService = TooltipService()
@@ -77,6 +78,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let registerJourneyBuilder = RegisterJourneyBuilder()
     let journeyTicketBuilder = JourneyTicketBuilder()
     let journeyBuilder = JourneyBuilder(
+      journeyMemoService: journeymemoService,
+      readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
     )
     let historyBuilder = HistoryBuilder(
