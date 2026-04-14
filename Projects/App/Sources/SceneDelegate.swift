@@ -71,7 +71,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let registerWishlistBuilder = RegisterWishlistBuilder()
     let wishTicketBuilder = WishTicketBuilder()
     let checkInWishTicketBuilder = CheckInWishTicketBuilder()
-    let registerHistoryBuilder = RegisterHistoryBuilder()
+    let registerHistoryBuilder = RegisterHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let registerJourneyBuilder = RegisterJourneyBuilder()
     let journeyTicketBuilder = JourneyTicketBuilder()
     let journeyBuilder = JourneyBuilder(
