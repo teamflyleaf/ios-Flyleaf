@@ -5,7 +5,7 @@
 //  Created by 여성일 on 3/1/26.
 //
 
-import AuthImplementation
+
 import Core
 import HomeFeature
 import LoginFeature
@@ -14,7 +14,9 @@ import SearchFeature
 import WishlistFeature
 import HistoryFeature
 import JourneyFeature
+
 import AirportSearchImplementation
+import AuthImplementation
 import BookSearchImplementation
 import SearchHistoryImplementation
 import TooltipImplementation
@@ -44,7 +46,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let airportSearchService = AirportSearchService(
       bundle: Bundle(for: AirportSearchService.self)
     )
-    
     try? airportSearchService.loadAirports()
     
     let authService = AuthService()
@@ -54,7 +55,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // MARK: - Builder
     let homeBuilder = HomeBuilder()
-    let loginBuilder = LoginBuilder()
+    let loginBuilder = LoginBuilder(
+      authService: authService
+    )
     let searchBuilder = SearchBuilder(
       airportSearchService: airportSearchService,
       bookSearchService: bookSearchService,
