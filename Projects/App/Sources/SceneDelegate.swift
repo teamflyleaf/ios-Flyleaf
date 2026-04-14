@@ -18,6 +18,7 @@ import JourneyFeature
 import AirportSearchImplementation
 import AuthImplementation
 import BookSearchImplementation
+import ReadingJourneyImplementation
 import SearchHistoryImplementation
 import TooltipImplementation
 
@@ -50,6 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let authService = AuthService()
     let bookSearchService = BookSearchService()
+    let readingJourneyService = ReadingJourneyService()
     let searchHistoryService = SearchHistoryService()
     let tooltipService = TooltipService()
     
@@ -76,7 +78,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       tooltipService: tooltipService
     )
     let historyBuilder = HistoryBuilder()
-    let detailHistoryBuilder = DetailHistoryBuilder()
+    let detailHistoryBuilder = DetailHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     
     let coordinator = AppCoordinator(
       navigationController: navigationController,
