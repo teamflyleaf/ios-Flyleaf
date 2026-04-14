@@ -14,9 +14,10 @@ import SearchFeature
 import WishlistFeature
 import HistoryFeature
 import JourneyFeature
-import TooltipImplementation
+import AirportSearchImplementation
 import BookSearchImplementation
 import SearchHistoryImplementation
+import TooltipImplementation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -40,15 +41,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     navigationController.navigationBar.isHidden = true
     
     // MARK: - Service
+    let airportSearchService = AirportSearchService(
+      bundle: Bundle(for: AirportSearchService.self)
+    )
+    
+    try? airportSearchService.loadAirports()
+    
     let authService = AuthService()
-    let tooltipService = TooltipService()
-    let searchHistoryService = SearchHistoryService()
     let bookSearchService = BookSearchService()
+    let searchHistoryService = SearchHistoryService()
+    let tooltipService = TooltipService()
     
     // MARK: - Builder
     let homeBuilder = HomeBuilder()
     let loginBuilder = LoginBuilder()
     let searchBuilder = SearchBuilder(
+      airportSearchService: airportSearchService,
       bookSearchService: bookSearchService,
       searchHistoryService: searchHistoryService
     )

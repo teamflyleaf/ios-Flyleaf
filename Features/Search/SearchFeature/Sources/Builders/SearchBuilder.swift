@@ -7,20 +7,22 @@
 
 import Core
 import AirportSearchInterface
-import AirportSearchImplementation
 import BookSearchInterface
 import SearchInterface
 import SearchHistoryInterface
 import UIKit
 
 public final class SearchBuilder: SearchBuildable {
+  let airportSearchService: AirportSearchServicing
   let bookSearchService: BookSearchServicing
   let searchHistoryService: SearchHistoryServicing
   
   public init(
+    airportSearchService: AirportSearchServicing,
     bookSearchService: BookSearchServicing,
     searchHistoryService: SearchHistoryServicing
   ) {
+    self.airportSearchService = airportSearchService
     self.bookSearchService = bookSearchService
     self.searchHistoryService = searchHistoryService
   }
@@ -29,11 +31,6 @@ public final class SearchBuilder: SearchBuildable {
     type: SearchType,
     onRoute: @escaping (SearchRoute) -> Void
   ) -> UIViewController {
-    let airportSearchService = AirportSearchService(
-      bundle: Bundle(for: AirportSearchService.self)
-    )
-    try? airportSearchService.loadAirports()
-    
     let viewModel = SearchViewModel(
       type: type,
       bookSearchService: bookSearchService,
