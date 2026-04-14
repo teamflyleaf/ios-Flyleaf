@@ -76,7 +76,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       readingJourneyService: readingJourneyService
     )
     let registerJourneyBuilder = RegisterJourneyBuilder()
-    let journeyTicketBuilder = JourneyTicketBuilder()
+    let journeyTicketBuilder = JourneyTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let journeyBuilder = JourneyBuilder(
       journeyMemoService: journeymemoService,
       readingJourneyService: readingJourneyService,
