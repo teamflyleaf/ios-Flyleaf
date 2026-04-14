@@ -67,6 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       searchHistoryService: searchHistoryService
     )
     let wishlistBuilder = WishlistBuilder(
+      readingJourneyService: readingJourneyService,
       tooltipService: tooltipService
     )
     let registerWishlistBuilder = RegisterWishlistBuilder()
