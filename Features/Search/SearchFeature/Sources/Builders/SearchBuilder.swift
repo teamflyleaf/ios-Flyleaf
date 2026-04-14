@@ -11,11 +11,17 @@ import AirportSearchImplementation
 import BookSearchInterface
 import BookSearchImplementation
 import SearchInterface
-import SearchHistoryImplementation
+import SearchHistoryInterface
 import UIKit
 
 public final class SearchBuilder: SearchBuildable {
-  public init() {}
+  let searchHistoryService: SearchHistoryServicing
+  
+  public init(
+    searchHistoryService: SearchHistoryServicing
+  ) {
+    self.searchHistoryService = searchHistoryService
+  }
 
   public func build(
     type: SearchType,
@@ -25,8 +31,6 @@ public final class SearchBuilder: SearchBuildable {
     let airportSearchService = AirportSearchService(
       bundle: Bundle(for: AirportSearchService.self)
     )
-    let searchHistoryService = SearchHistoryService()
-
     try? airportSearchService.loadAirports()
     
     let viewModel = SearchViewModel(
