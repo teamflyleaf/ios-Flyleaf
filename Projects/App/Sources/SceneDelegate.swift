@@ -77,7 +77,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let journeyBuilder = JourneyBuilder(
       tooltipService: tooltipService
     )
-    let historyBuilder = HistoryBuilder()
+    let historyBuilder = HistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let detailHistoryBuilder = DetailHistoryBuilder(
       readingJourneyService: readingJourneyService
     )
