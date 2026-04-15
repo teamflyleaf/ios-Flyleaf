@@ -57,7 +57,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let tooltipService = TooltipService()
     
     // MARK: - Builder
-    let homeBuilder = HomeBuilder()
+    let homeBuilder = HomeBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let loginBuilder = LoginBuilder(
       authService: authService
     )
