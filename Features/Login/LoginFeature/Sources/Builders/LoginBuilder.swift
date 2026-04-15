@@ -12,10 +12,15 @@ import LoginInterface
 import UIKit
 
 public final class LoginBuilder: LoginBuildable {
-  public init() {}
+  let authService: AuthServicing
+  
+  public init(
+    authService: AuthServicing
+  ) {
+    self.authService = authService
+  }
   
   public func build(onLoginSuccess: @escaping () -> Void) -> UIViewController {
-    let authService = AuthService()
     let viewModel = LoginViewModel(authService: authService)
     let viewController = LoginViewController(viewModel: viewModel)
     viewController.onLoginSuccess = onLoginSuccess

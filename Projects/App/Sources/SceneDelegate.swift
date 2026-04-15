@@ -5,7 +5,7 @@
 //  Created by 여성일 on 3/1/26.
 //
 
-import AuthImplementation
+
 import Core
 import HomeFeature
 import LoginFeature
@@ -14,6 +14,13 @@ import SearchFeature
 import WishlistFeature
 import HistoryFeature
 import JourneyFeature
+
+import AirportSearchImplementation
+import AuthImplementation
+import BookSearchImplementation
+import ReadingJourneyImplementation
+import SearchHistoryImplementation
+import TooltipImplementation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -36,20 +43,60 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let navigationController = UINavigationController()
     navigationController.navigationBar.isHidden = true
     
+    // MARK: - Service
+    let airportSearchService = AirportSearchService(
+      bundle: Bundle(for: AirportSearchService.self)
+    )
+    try? airportSearchService.loadAirports()
+    
     let authService = AuthService()
-    let homeBuilder = HomeBuilder()
-    let loginBuilder = LoginBuilder()
-    let searchBuilder = SearchBuilder()
-    let wishlistBuilder = WishlistBuilder()
+    let bookSearchService = BookSearchService()
+    let journeymemoService = JourneyMemoService()
+    let readingJourneyService = ReadingJourneyService()
+    let searchHistoryService = SearchHistoryService()
+    let tooltipService = TooltipService()
+    
+    // MARK: - Builder
+    let homeBuilder = HomeBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let loginBuilder = LoginBuilder(
+      authService: authService
+    )
+    let searchBuilder = SearchBuilder(
+      airportSearchService: airportSearchService,
+      bookSearchService: bookSearchService,
+      searchHistoryService: searchHistoryService
+    )
+    let wishlistBuilder = WishlistBuilder(
+      readingJourneyService: readingJourneyService,
+      tooltipService: tooltipService
+    )
     let registerWishlistBuilder = RegisterWishlistBuilder()
-    let wishTicketBuilder = WishTicketBuilder()
-    let checkInWishTicketBuilder = CheckInWishTicketBuilder()
-    let registerHistoryBuilder = RegisterHistoryBuilder()
+    let wishTicketBuilder = WishTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let checkInWishTicketBuilder = CheckInWishTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let registerHistoryBuilder = RegisterHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     let registerJourneyBuilder = RegisterJourneyBuilder()
-    let journeyTicketBuilder = JourneyTicketBuilder()
-    let journeyBuilder = JourneyBuilder()
-    let historyBuilder = HistoryBuilder()
-    let detailHistoryBuilder = DetailHistoryBuilder()
+    let journeyTicketBuilder = JourneyTicketBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let journeyBuilder = JourneyBuilder(
+      journeyMemoService: journeymemoService,
+      readingJourneyService: readingJourneyService,
+      tooltipService: tooltipService
+    )
+    let historyBuilder = HistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
+    let detailHistoryBuilder = DetailHistoryBuilder(
+      readingJourneyService: readingJourneyService
+    )
     
     let coordinator = AppCoordinator(
       navigationController: navigationController,

@@ -7,28 +7,30 @@
 
 import Core
 import AirportSearchInterface
-import AirportSearchImplementation
 import BookSearchInterface
-import BookSearchImplementation
 import SearchInterface
-import SearchHistoryImplementation
+import SearchHistoryInterface
 import UIKit
 
 public final class SearchBuilder: SearchBuildable {
-  public init() {}
+  let airportSearchService: AirportSearchServicing
+  let bookSearchService: BookSearchServicing
+  let searchHistoryService: SearchHistoryServicing
+  
+  public init(
+    airportSearchService: AirportSearchServicing,
+    bookSearchService: BookSearchServicing,
+    searchHistoryService: SearchHistoryServicing
+  ) {
+    self.airportSearchService = airportSearchService
+    self.bookSearchService = bookSearchService
+    self.searchHistoryService = searchHistoryService
+  }
 
   public func build(
     type: SearchType,
     onRoute: @escaping (SearchRoute) -> Void
   ) -> UIViewController {
-    let bookSearchService = BookSearchService()
-    let airportSearchService = AirportSearchService(
-      bundle: Bundle(for: AirportSearchService.self)
-    )
-    let searchHistoryService = SearchHistoryService()
-
-    try? airportSearchService.loadAirports()
-    
     let viewModel = SearchViewModel(
       type: type,
       bookSearchService: bookSearchService,

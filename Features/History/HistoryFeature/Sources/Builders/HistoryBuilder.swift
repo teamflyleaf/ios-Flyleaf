@@ -8,15 +8,20 @@
 import Core
 import UIKit
 import HistoryInterface
-import ReadingJourneyImplementation
+import ReadingJourneyInterface
 
 public final class HistoryBuilder: HistoryBuildable {
-  public init() {}
+  let readingJourneyService: ReadingJourneyServicing
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
   
   public func build(
     onRoute: ((HistoryRoute) -> Void)?
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
     let viewModel = HistoryViewModel(
       readingJourneyService: readingJourneyService
     )

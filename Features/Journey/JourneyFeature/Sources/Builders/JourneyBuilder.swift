@@ -8,21 +8,30 @@
 import Core
 import UIKit
 import JourneyInterface
-import TooltipImplementation
-import ReadingJourneyImplementation
+import ReadingJourneyInterface
+import TooltipInterface
 
 public final class JourneyBuilder: JourneyBuildable {
-  public init() {}
+  private let journeyMemoService: JourneyMemoServicing
+  private let readingJourneyService: ReadingJourneyServicing
+  private let tooltipService: TooltipServicing
+
+  public init(
+    journeyMemoService: JourneyMemoServicing,
+    readingJourneyService: ReadingJourneyServicing,
+    tooltipService: TooltipServicing
+  ) {
+    self.journeyMemoService = journeyMemoService
+    self.readingJourneyService = readingJourneyService
+    self.tooltipService = tooltipService
+  }
   
   public func build(
     onRoute: ((JourneyRoute) -> Void)?
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
-    let memoService = JourneyMemoService()
-    let tooltipService = TooltipService()
     let viewModel = JourneyViewModel(
       readingJourneyService: readingJourneyService,
-      memoService: memoService,
+      memoService: journeyMemoService,
       tooltipService: tooltipService
     )
     let viewController = JourneyViewController(viewModel: viewModel)

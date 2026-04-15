@@ -9,16 +9,20 @@ import Core
 import UIKit
 import WishlistInterface
 import ReadingJourneyInterface
-import ReadingJourneyImplementation
 
 public final class CheckInWishTicketBuilder: CheckInWishTicketBuildable {
-  public init() {}
+  let readingJourneyService: ReadingJourneyServicing
+  
+  public init(
+    readingJourneyService: ReadingJourneyServicing
+  ) {
+    self.readingJourneyService = readingJourneyService
+  }
   
   public func build(
     journey: ReadingJourney,
     onRoute: @escaping (CheckInWishTicketRoute) -> Void
   ) -> UIViewController {
-    let readingJourneyService = ReadingJourneyService()
     let viewModel = CheckInWishTicketViewModel(
       journey: journey,
       readingJourneyService: readingJourneyService
