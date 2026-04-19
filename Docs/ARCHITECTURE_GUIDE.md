@@ -11,11 +11,13 @@ Flyleaf는 Micro-Features Architecture + Coordinator + MVVM 구조를 기반으�
 3. [Micro-Features Architecture](#3-micro-features-architecture)
 4. [의존성 설계](#4-의존성-설계)
 5. [Interface 모듈](#5-interface-모듈)
-6. [Builder 패턴](#6-builder-패턴)
-7. [Coordinator](#7-coordinator)
-8. [MVVM](#8-mvvm)
-9. [전체 흐름](#9-전체-흐름)
-10. [설계 장점](#10-설계-장점)
+6. [Service 모듈](#6-service-모듈)
+7. [Builder 패턴](#7-builder-패턴)
+8. [Coordinator](#8-coordinator)
+9. [MVVM](#9-mvvm)
+10. [DIContainer](#10-dicontainer)
+11. [전체 흐름](#11-전체-흐름)
+12. [설계 장점](#12-설계-장점)
 
 ---
 
@@ -37,7 +39,15 @@ Root
 ├── Projects/
 │   ├── App/              메인 앱 타겟 (앱 진입점)
 │   ├── Core/             공통 비즈니스 로직 및 유틸리티 (도메인 모델, 서비스 등)
+│   ├── DIContainer/      의존성 주입 컨테이너 (App 레이어 전용)
 │   └── DesignSystem/     UI 컴포넌트 및 스타일 (에셋, 폰트, 컬러 등)
+├── Services/
+│   ├── AirportSearch/ 
+│   │   ├── Implementation/      AirportSearch 기능 구현 (실제 서비스 구현체)
+│   │   ├── Interface/           외부에서 사용하는 인터페이스
+│   │   ├── Tests/               Implementation 테스트 코드
+│   │   └── Testing/             테스트 유틸 또는 Mock
+│   └── ...      
 ├── Features/
 │   ├── Home/
 │   │   ├── Feature/      Home 기능 구현 (실제 구현체 구현 ViewController, ViewModel 등)
@@ -47,7 +57,7 @@ Root
 │   │   └── Example/      예제 앱 및 프리뷰 코드
 │   ├── Login/
 │   ├── Search/
-│   └── …
+│   └── ...
 ```
 
 ---
@@ -143,8 +153,9 @@ Flyleaf는 모듈 간 결합도를 낮추기 위해 **단방향 의존성 구조
 
 ### 의존성 흐름
 <p align="center">
-  <img src="Images/dependency-ex.png" width="1000"/>
+  <img src="Images/dependency-ex.svg" width="1000"/>
 </p>
+
 
 
 ### 의존성 규칙
@@ -184,6 +195,7 @@ Flyleaf는 구현이 아닌 인터페이스에 의존하도록 설계되어 있�
 <p align="center">
   <img src="Images/dip-ex.png" width="1000"/>
 </p>
+
 
 
 이를 통해, 테스트가 용이하고 모듈 간 독립성을 확보할 수 있습니다.
@@ -226,7 +238,67 @@ Interface 모듈은 다음 역할을 담당합니다.
 
 ---
 
-## 6. Builder 패턴
+## 6. Service 모듈
+
+Flyleaf는 비즈니스 로직을 담당하는 Service를 Feature와 독립된 `Services/` 디렉토리에서 관리합니다.
+
+각 Service는 Feature의 Interface/Implementation 분리 원칙과 동일한 구조를 따릅니다.
+
+### 구조 예시
+```
+ReadingJourney
+├── ReadingJourneyInterface        프로토콜 정의 (Servicing)
+├── ReadingJourneyImplementation   실제 구현체 (Firebase, URLSession 등)
+├── ReadingJourneyTesting          테스트용 Mock 객체
+└── ReadingJourneyTests            서비스 동작 검증 테스트
+```
+
+### 각 모듈의 역할
+
+#### 1. Interface
+외부에 공개하는 프로토콜(`Servicing`)을 정의합니다.  
+Feature는 이 Interface 모듈에만 의존하며, 구현체를 직접 알지 않습니다.
+
+#### 2. Implementation
+Interface에 정의된 프로토콜의 실제 구현체가 위치합니다.  
+Firebase, URLSession, UserDefaults 등 외부 의존성은 이 모듈 안에서만 사용됩니다.  
+**Implementation은 App 레이어(SceneDelegate)에서만 import됩니다.**
+
+#### 3. Testing
+테스트에서 사용하는 Mock 객체가 위치합니다.  
+Feature의 Tests 모듈에서 이 모듈을 의존해 Mock을 주입받습니다.
+
+#### 4. Tests
+Service 자체의 동작을 검증하는 테스트 코드가 위치합니다.
+
+### 현재 Service 목록
+
+| Service | 설명 | Scope |
+|---|---|---|
+| Auth | Firebase Auth 기반 인증 | singleton |
+| ReadingJourney | Firestore 기반 독서 기록 관리 | singleton |
+| BookSearch | 알라딘 API 기반 도서 검색 | transient |
+| AirportSearch | 번들 JSON 기반 공항 검색 | singleton |
+| SearchHistory | UserDefaults 기반 검색 기록 관리 | singleton |
+| Tooltip | UserDefaults 기반 툴팁 상태 관리 | singleton |
+
+### 설계 원칙
+
+Feature는 ServiceInterface만 import합니다. ServiceImplementation은 절대 import하지 않습니다.  
+App 레이어(SceneDelegate)만이 Implementation을 import하고, DIContainer를 통해 Feature의 Builder에 주입합니다.  
+이를 통해 Feature는 서비스의 구체적인 구현 방식(Firebase인지, UserDefaults인지)을 전혀 알지 않아도 됩니다.
+
+```swift
+// Feature에서 올바른 사용
+import ReadingJourneyInterface  
+
+// Feature에서 잘못된 사용
+import ReadingJourneyImplementation 
+```
+
+---
+
+## 7. Builder 패턴
 
 Flyleaf는 각 Feature를 생성할 때 **Builder 패턴**을 사용합니다.
 
@@ -290,7 +362,7 @@ HomeBuilder
 
 ---
 
-## 7. Coordinator
+## 8. Coordinator
 
 Flyleaf는 화면 전환 로직을 분리하기 위해 **Coordinator 패턴**을 사용합니다.
 
@@ -349,7 +421,7 @@ Coordinator
 
 ---
 
-## 8. MVVM
+## 9. MVVM
 
 Flyleaf는 각 Feature 내부에서 **MVVM 패턴**을 사용하여  
 UI와 비즈니스 로직을 분리합니다.
@@ -383,9 +455,50 @@ Core (Model / Service)
 
 ---
 
-## 9. 전체 흐름
+## 10. DIContainer
 
-Flyleaf는 **App → Coordinator → Feature → Core**로 이어지는  
+Flyleaf는 의존성 주입을 위한 커스텀 DIContainer를 사용합니다.
+
+### 역할
+
+DIContainer는 앱 시작 시점(SceneDelegate)에서 서비스 객체의 생성과 생명주기를 관리하고, Builder에 필요한 의존성을 조립하는 **Composition Root** 역할을 담당합니다.
+
+### Scope
+
+DIContainer는 두 가지 스코프를 지원합니다.
+
+- `.singleton` — 처음 resolve된 인스턴스를 캐시하여 이후에도 동일한 인스턴스를 반환합니다. 상태를 가지거나 생성 비용이 큰 객체에 사용합니다.
+- `.transient` — resolve할 때마다 새 인스턴스를 생성합니다. 상태 없는 순수 팩토리 객체에 사용합니다.
+
+```swift
+// 등록
+container.register(ReadingJourneyServicing.self, scope: .singleton) {
+    ReadingJourneyService()
+}
+
+// 주입
+container.resolve(ReadingJourneyServicing.self)
+```
+
+### 설계 원칙
+
+DIContainer는 **App 레이어(SceneDelegate)에서만 사용합니다.**  
+Feature 모듈은 DIContainer를 직접 참조하지 않으며, Builder를 통해 이미 조립된 의존성을 전달받습니다.  
+이를 통해 Service Locator 안티패턴을 방지하고, 의존성 흐름을 단방향으로 유지합니다.
+
+```
+SceneDelegate (DIContainer)
+ ↓ 서비스 생성 및 Builder에 주입
+Builder
+ ↓ ViewController / ViewModel 조립
+Feature
+```
+
+---
+
+## 11. 전체 흐름
+
+Flyleaf는 **App → Coordinator → Feature → ServiceInterface → Core**로 이어지는  
 명확한 계층 구조를 기반으로 동작합니다.
 
 각 계층은 자신의 역할에만 집중하며, 단방향 의존성을 유지합니다.
@@ -393,15 +506,16 @@ Flyleaf는 **App → Coordinator → Feature → Core**로 이어지는
 ### 전체 아키텍처 흐름
 
 ```
-App
- ↓
-Coordinator
+[앱 시작]
+SceneDelegate
+ ↓ DIContainer로 의존성 구성 (Service 생성 및 Builder에 주입)
+AppCoordinator
  ↓
 Feature (View / ViewModel)
  ↓
-Interface
+ServiceInterface  ←  ServiceImplementation (App에서 주입)
  ↓
-Core (Domain / Service)
+Core (Domain Model)
 ```
 
 ### 사용자 이벤트 흐름
@@ -409,8 +523,8 @@ Core (Domain / Service)
 User Action
 -> View
 -> ViewModel
--> Interface
--> Core (API / Service)
+-> ServiceInterface
+-> ServiceImplementation (API / DB 호출)
 -> 결과 반환
 -> ViewModel 상태 업데이트
 -> View 반영
@@ -421,14 +535,14 @@ User Action
 User Action
 -> ViewModel
 -> Coordinator
--> Builder
+-> Builder (DIContainer가 주입한 Service 보유)
 -> 다음 Feature 생성
 -> Navigation (push / present)
 ```
 
 ---
 
-## 10. 설계 장점
+## 12. 설계 장점
 
 Flyleaf의 아키텍처는 모듈화, 의존성 분리, 테스트 용이성을 중심으로 설계되었습니다.
 
@@ -447,8 +561,10 @@ Flyleaf의 아키텍처는 모듈화, 의존성 분리, 테스트 용이성을 �
 
 ### 3. 명확한 책임 분리
 
+- DIContainer -> 의존성 등록 및 생명주기 관리 (Composition Root)
 - Coordinator -> 화면 흐름 관리
-- Builder -> 객체 생성 및 DI
+- Builder -> 객체 생성 (의존성은 DIContainer에서 주입받음)
+- Service (Interface/Implementation) -> 비즈니스 로직 및 외부 연동
 - ViewModel -> 상태 및 로직
 - View -> UI
 
