@@ -21,6 +21,8 @@
 ### Architecture
 - Micro-Features Architecture(Modular Architecture)
 - MVVM
+- Coordinator
+- DIContainer
 
 ### Tools
 - Tuist
@@ -101,7 +103,15 @@ Root
 ├── Projects/
 │   ├── App/              메인 앱 타겟 (앱 진입점)
 │   ├── Core/             공통 비즈니스 로직 및 유틸리티 (도메인 모델, 서비스 등)
+│   ├── DIContainer/      의존성 주입 컨테이너 (App 레이어 전용)
 │   └── DesignSystem/     UI 컴포넌트 및 스타일 (에셋, 폰트, 컬러 등)
+├── Services/
+│   ├── AirportSearch/ 
+│   │   ├── Implementation/      AirportSearch 기능 구현 (실제 서비스 구현체)
+│   │   ├── Interface/           외부에서 사용하는 인터페이스
+│   │   ├── Tests/               Implementation 테스트 코드
+│   │   └── Testing/             테스트 유틸 또는 Mock
+│   └── ...      
 ├── Features/
 │   ├── Home/
 │   │   ├── Feature/      Home 기능 구현 (실제 구현체 구현 ViewController, ViewModel 등)
@@ -111,7 +121,7 @@ Root
 │   │   └── Example/      예제 앱 및 프리뷰 코드
 │   ├── Login/
 │   ├── Search/
-│   └── …
+│   └── ...
 ```
 Flyleaf 프로젝트는 Feature 중심의 Micro-Features Architecture를 기반으로 모듈을 구성했습니다.</br>
 각 기능은 독립적인 Feature 단위로 분리되어 있으며, Feature 간 직접 의존하지 않고 Interface 모듈을 통해 의존성을 분리하는 구조를 사용하고 있습니다.</br>
@@ -119,8 +129,9 @@ Flyleaf 프로젝트는 Feature 중심의 Micro-Features Architecture를 기반�
 **전체 의존성 방향**
 
 <p align="center">
-  <img src="Docs/Images/dependency-ex.png" width="1000"/>
+  <img src="Docs/Images/dependency-ex.svg" width="1000"/>
 </p>
+
 
 
 ### 2. Coordinator
