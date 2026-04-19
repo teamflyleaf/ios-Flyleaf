@@ -45,6 +45,7 @@ public enum ServiceModule: String {
 public enum Targets {
   public static let core = "Core"
   public static let designSystem = "DesignSystem"
+  public static let diContainer = "DIContainer"
   
   public static func service(
     _ service: ServiceName,

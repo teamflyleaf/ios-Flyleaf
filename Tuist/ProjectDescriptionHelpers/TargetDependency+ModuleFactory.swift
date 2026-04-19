@@ -16,6 +16,10 @@ public extension TargetDependency {
     .project(target: Targets.designSystem, path: .relativeToRoot("Projects/DesignSystem"))
   }
   
+  static func diContainer() -> TargetDependency {
+    .project(target: Targets.diContainer, path: .relativeToRoot("Projects/DIContainer"))
+  }
+  
   static func service(
     _ name: ServiceName,
     _ module: ServiceModule
