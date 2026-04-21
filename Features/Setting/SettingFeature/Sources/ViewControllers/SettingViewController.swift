@@ -257,6 +257,10 @@ private extension SettingViewController {
     termsOfServiceButton.onTap = { [weak self] in
       self?.onRoute?(.termsOfService)
     }
+    
+    openSourceButton.onTap = { [weak self] in
+      self?.onRoute?(.openSource)
+    }
   }
   
   func reportButtonBind() {

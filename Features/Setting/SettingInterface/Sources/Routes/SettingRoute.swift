@@ -12,4 +12,5 @@ public enum SettingRoute {
   case back
   case privacyPolicy
   case termsOfService
+  case openSource
 }

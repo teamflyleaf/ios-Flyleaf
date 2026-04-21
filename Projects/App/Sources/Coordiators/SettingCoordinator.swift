@@ -18,17 +18,20 @@ final class SettingCoordinator: Coordinator {
   private let settingBuilder: SettingBuildable
   private let privacyPolicyBuilder: PrivacyPolicyBuildable
   private let termsOfServiceBuilder: TermsOfServiceBuildable
+  private let openSourceBuilder: OpenSourceBuildable
   
   init(
     navigationController: UINavigationController,
     settingBuilder: SettingBuildable,
     privacyPolicyBuilder: PrivacyPolicyBuildable,
-    termsOfServiceBuilder: TermsOfServiceBuildable
+    termsOfServiceBuilder: TermsOfServiceBuildable,
+    openSourceBuilder: OpenSourceBuildable
   ) {
     self.navigationController = navigationController
     self.settingBuilder = settingBuilder
     self.privacyPolicyBuilder = privacyPolicyBuilder
     self.termsOfServiceBuilder = termsOfServiceBuilder
+    self.openSourceBuilder = openSourceBuilder
   }
   
   func start() {
@@ -42,6 +45,9 @@ final class SettingCoordinator: Coordinator {
         
       case .termsOfService:
         self?.showTermsOfService()
+      
+      case .openSource:
+        self?.showOpenSource()
       }
     })
     
@@ -67,6 +73,19 @@ private extension SettingCoordinator {
   
   func showTermsOfService() {
     let vc = termsOfServiceBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.navigationController.popViewController(animated: true)
+        }
+      }
+    )
+
+    navigationController.pushViewController(vc, animated: true)
+  }
+  
+  func showOpenSource() {
+    let vc = openSourceBuilder.build(
       onRoute: { [weak self] route in
         switch route {
         case .back:
