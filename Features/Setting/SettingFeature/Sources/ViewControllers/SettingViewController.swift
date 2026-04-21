@@ -264,6 +264,12 @@ private extension SettingViewController {
   }
   
   func reportButtonBind() {
+    bugReportButton.onTap = {
+      UIApplication.shared.open(ReportURL.bugReport)
+    }
     
+    qnaButton.onTap = {
+      UIApplication.shared.open(ReportURL.qna)
+    }
   }
 }
