@@ -13,6 +13,7 @@ import SearchFeature
 import WishlistFeature
 import HistoryFeature
 import JourneyFeature
+import SettingFeature
 
 import AirportSearchInterface
 import AuthInterface
@@ -155,6 +156,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tooltipService: container.resolve(TooltipServicing.self)!
       )
     }
+    
+    container.register(SettingBuilder.self, scope: .transient) {
+      SettingBuilder()
+    }
 
     // MARK: - Coordinator
     // .singleton: 앱의 루트 코디네이터. 앱 생명주기 동안 하나만 존재해야 함
@@ -174,7 +179,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         registerJourneyBuilder: container.resolve(RegisterJourneyBuilder.self)!,
         jourenyBuilder: container.resolve(JourneyBuilder.self)!,
         historyBuilder: container.resolve(HistoryBuilder.self)!,
-        detailHistoryBuilder: container.resolve(DetailHistoryBuilder.self)!
+        detailHistoryBuilder: container.resolve(DetailHistoryBuilder.self)!,
+        settingBuilder: container.resolve(SettingBuilder.self)!
       )
     }
     

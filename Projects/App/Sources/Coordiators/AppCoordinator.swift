@@ -14,6 +14,7 @@ import WishlistInterface
 import HistoryInterface
 import JourneyInterface
 import ReadingJourneyInterface
+import SettingInterface
 import UIKit
 
 @MainActor
@@ -37,6 +38,7 @@ final class AppCoordinator: NSObject, Coordinator {
   private let jourenyBuilder: JourneyBuildable
   private let historyBuilder: HistoryBuildable
   private let detailHistoryBuilder: DetailHistoryBuildable
+  private let settingBuilder: SettingBuildable
   
   init(
     navigationController: UINavigationController,
@@ -53,7 +55,8 @@ final class AppCoordinator: NSObject, Coordinator {
     registerJourneyBuilder: RegisterJourneyBuildable,
     jourenyBuilder: JourneyBuildable,
     historyBuilder: HistoryBuildable,
-    detailHistoryBuilder: DetailHistoryBuildable
+    detailHistoryBuilder: DetailHistoryBuildable,
+    settingBuilder: SettingBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -70,6 +73,7 @@ final class AppCoordinator: NSObject, Coordinator {
     self.jourenyBuilder = jourenyBuilder
     self.historyBuilder = historyBuilder
     self.detailHistoryBuilder = detailHistoryBuilder
+    self.settingBuilder = settingBuilder
     
     super.init()
     
@@ -101,6 +105,8 @@ private extension AppCoordinator {
           self?.startJourneyFlow()
         case .history:
           self?.startHistoryFlow()
+        case .setting:
+          self?.startSettingFlow()
         }
       }
     )
@@ -306,6 +312,26 @@ private extension AppCoordinator {
         self?.moveToTab(.journey)
       }
     }
+    
+    return coordinator
+  }
+}
+
+// MARK: - Setting
+private extension AppCoordinator {
+  func startSettingFlow() {
+    let coordinator = makeSettingCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.start()
+  }
+  
+  func makeSettingCoordinator() -> SettingCoordinator {
+    let coordinator = SettingCoordinator(
+      navigationController: navigationController,
+      settingBuilder: settingBuilder
+    )
+    
+    coordinator.parentCoordinator = self
     
     return coordinator
   }
