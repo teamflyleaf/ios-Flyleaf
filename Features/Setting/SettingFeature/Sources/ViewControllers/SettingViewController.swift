@@ -250,7 +250,9 @@ public final class SettingViewController: BaseViewController {
 // MARK: - Private
 private extension SettingViewController {
   func infoButtonBind() {
-    
+    privacyPolicyButton.onTap = { [weak self] in
+      self?.onRoute?(.privacyPolicy)
+    }
   }
   
   func reportButtonBind() {

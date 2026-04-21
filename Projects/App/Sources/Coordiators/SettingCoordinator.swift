@@ -16,13 +16,16 @@ final class SettingCoordinator: Coordinator {
   var rootViewController: UIViewController?
   
   private let settingBuilder: SettingBuildable
+  private let privacyPolicyBuilder: PrivacyPolicyBuildable
   
   init(
     navigationController: UINavigationController,
-    settingBuilder: SettingBuildable
+    settingBuilder: SettingBuildable,
+    privacyPolicyBuilder: PrivacyPolicyBuildable
   ) {
     self.navigationController = navigationController
     self.settingBuilder = settingBuilder
+    self.privacyPolicyBuilder = privacyPolicyBuilder
   }
   
   func start() {
@@ -30,11 +33,30 @@ final class SettingCoordinator: Coordinator {
       switch route {
       case .back:
         self?.finishFlow()
+        
+      case .privacyPolicy:
+        self?.showPrivacyPolicy()
       }
     })
     
     rootViewController = settingVC
     navigationController.pushViewController(settingVC, animated: true)
+  }
+}
+
+// MARK: - Private
+private extension SettingCoordinator {
+  func showPrivacyPolicy() {
+    let vc = privacyPolicyBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.navigationController.popViewController(animated: true)
+        }
+      }
+    )
+
+    navigationController.pushViewController(vc, animated: true)
   }
 }
 

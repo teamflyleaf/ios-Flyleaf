@@ -160,6 +160,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     container.register(SettingBuilder.self, scope: .transient) {
       SettingBuilder()
     }
+    
+    container.register(PrivacyPolicyBuilder.self, scope: .transient) {
+      PrivacyPolicyBuilder()
+    }
 
     // MARK: - Coordinator
     // .singleton: 앱의 루트 코디네이터. 앱 생명주기 동안 하나만 존재해야 함
@@ -180,7 +184,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         jourenyBuilder: container.resolve(JourneyBuilder.self)!,
         historyBuilder: container.resolve(HistoryBuilder.self)!,
         detailHistoryBuilder: container.resolve(DetailHistoryBuilder.self)!,
-        settingBuilder: container.resolve(SettingBuilder.self)!
+        settingBuilder: container.resolve(SettingBuilder.self)!,
+        privacyPolicyBuilder: container.resolve(PrivacyPolicyBuilder.self)!
       )
     }
     
