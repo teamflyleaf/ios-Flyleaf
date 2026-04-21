@@ -253,6 +253,10 @@ private extension SettingViewController {
     privacyPolicyButton.onTap = { [weak self] in
       self?.onRoute?(.privacyPolicy)
     }
+    
+    termsOfServiceButton.onTap = { [weak self] in
+      self?.onRoute?(.termsOfService)
+    }
   }
   
   func reportButtonBind() {

@@ -17,15 +17,18 @@ final class SettingCoordinator: Coordinator {
   
   private let settingBuilder: SettingBuildable
   private let privacyPolicyBuilder: PrivacyPolicyBuildable
+  private let termsOfServiceBuilder: TermsOfServiceBuildable
   
   init(
     navigationController: UINavigationController,
     settingBuilder: SettingBuildable,
-    privacyPolicyBuilder: PrivacyPolicyBuildable
+    privacyPolicyBuilder: PrivacyPolicyBuildable,
+    termsOfServiceBuilder: TermsOfServiceBuildable
   ) {
     self.navigationController = navigationController
     self.settingBuilder = settingBuilder
     self.privacyPolicyBuilder = privacyPolicyBuilder
+    self.termsOfServiceBuilder = termsOfServiceBuilder
   }
   
   func start() {
@@ -36,6 +39,9 @@ final class SettingCoordinator: Coordinator {
         
       case .privacyPolicy:
         self?.showPrivacyPolicy()
+        
+      case .termsOfService:
+        self?.showTermsOfService()
       }
     })
     
@@ -48,6 +54,19 @@ final class SettingCoordinator: Coordinator {
 private extension SettingCoordinator {
   func showPrivacyPolicy() {
     let vc = privacyPolicyBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.navigationController.popViewController(animated: true)
+        }
+      }
+    )
+
+    navigationController.pushViewController(vc, animated: true)
+  }
+  
+  func showTermsOfService() {
+    let vc = termsOfServiceBuilder.build(
       onRoute: { [weak self] route in
         switch route {
         case .back:

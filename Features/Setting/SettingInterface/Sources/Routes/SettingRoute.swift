@@ -11,4 +11,5 @@ import Foundation
 public enum SettingRoute {
   case back
   case privacyPolicy
+  case termsOfService
 }
