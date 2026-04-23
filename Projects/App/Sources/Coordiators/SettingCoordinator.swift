@@ -22,6 +22,7 @@ final class SettingCoordinator: Coordinator {
   
   enum FlowEvent {
     case logout
+    case deleteAccount
   }
   
   var onFlowEvent: ((FlowEvent) -> Void)?
@@ -57,6 +58,9 @@ final class SettingCoordinator: Coordinator {
       
       case .logout:
         self?.onFlowEvent?(.logout)
+        
+      case .deleteAccount:
+        self?.onFlowEvent?(.deleteAccount)
       }
     })
     

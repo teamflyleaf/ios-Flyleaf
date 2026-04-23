@@ -349,6 +349,10 @@ private extension AppCoordinator {
       case .logout:
         self?.childCoordinators.removeAll()
         self?.showLogin()
+        
+      case .deleteAccount:
+        self?.childCoordinators.removeAll()
+        self?.showLogin()
       }
     }
     return coordinator
