@@ -40,4 +40,12 @@ public final class AuthService: AuthServicing {
       email: payload.email
     )
   }
+  
+  public func signOut() throws {
+    do {
+      try Auth.auth().signOut()
+    } catch {
+      throw AuthError.signOutFailed
+    }
+  }
 }

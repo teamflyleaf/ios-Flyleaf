@@ -13,4 +13,6 @@ public protocol AuthServicing {
   func signInWithApple(
     payload: AppleLoginPayload
   ) async throws -> AppUser
+  
+  func signOut() throws
 }
