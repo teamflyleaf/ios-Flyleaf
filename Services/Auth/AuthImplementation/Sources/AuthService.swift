@@ -12,7 +12,7 @@ import FirebaseAuth
 
 public final class AuthService: AuthServicing {
   public init() {}
-
+  
   public var isSignedIn: Bool {
     Auth.auth().currentUser != nil
   }
@@ -46,6 +46,16 @@ public final class AuthService: AuthServicing {
       try Auth.auth().signOut()
     } catch {
       throw AuthError.signOutFailed
+    }
+  }
+  
+  public func deleteAccount() async throws {
+    do {
+      try await Auth.auth().currentUser?.delete()
+    } catch let error as NSError where error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+      throw AuthError.requiresRecentLogin
+    } catch {
+      throw AuthError.deleteAccountFailed
     }
   }
 }

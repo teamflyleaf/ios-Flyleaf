@@ -15,4 +15,6 @@ public protocol AuthServicing {
   ) async throws -> AppUser
   
   func signOut() throws
+  
+  func deleteAccount() async throws
 }
