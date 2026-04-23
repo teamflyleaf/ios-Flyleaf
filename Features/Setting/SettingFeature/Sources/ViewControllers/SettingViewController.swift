@@ -14,6 +14,7 @@ import SettingInterface
 public final class SettingViewController: BaseViewController {
   public var onRoute: ((SettingRoute) -> Void)?
   
+  private var currentNonce: String?
   private let viewModel: SettingViewModel
   
   public init(
@@ -251,8 +252,25 @@ public final class SettingViewController: BaseViewController {
       self?.onRoute?(.logout)
     }
     
-    logoutButton.addTarget(self, action: #selector(didLogout), for: .touchUpInside)
+    viewModel.onDeleteAccountSuccess = { [weak self] in
+      self?.onRoute?(.deleteAccount)
+    }
     
+    viewModel.onRequiresRecentLogin = { [weak self] in
+      self?.presentDeleteAlert(
+        title: "재로그인 필요",
+        message: "보안을 위해 다시 로그인이 필요해요. 로그아웃 후 재로그인하면 탈퇴할 수 있어요.",
+        deleteTitle: "로그아웃"
+      ) { [weak self] in
+        self?.viewModel.logout()
+      }
+    }
+    
+    viewModel.onError = { [weak self] error in
+      self?.presentAlert(title: "탈퇴 실패", message: "탈퇴에 실패했어요. 다시 시도해주세요.")
+    }
+    
+    socialButtonBind()
     infoButtonBind()
     reportButtonBind()
   }
@@ -262,6 +280,21 @@ public final class SettingViewController: BaseViewController {
 private extension SettingViewController {
   @objc func didLogout() {
     viewModel.logout()
+  }
+  
+  @objc func didTapDeleteAccount() {
+    presentDeleteAlert(
+      title: "회원탈퇴",
+      message: "탈퇴하면 모든 데이터가 삭제되며 복구할 수 없어요. 정말 탈퇴하시겠어요?",
+      deleteTitle: "탈퇴"
+    ) { [weak self] in
+      self?.viewModel.deleteAccount()
+    }
+  }
+  
+  func socialButtonBind() {
+    logoutButton.addTarget(self, action: #selector(didLogout), for: .touchUpInside)
+    deleteAccountButton.addTarget(self, action: #selector(didTapDeleteAccount), for: .touchUpInside)
   }
   
   func infoButtonBind() {

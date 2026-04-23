@@ -12,6 +12,8 @@ public final class SettingViewModel {
   
   var onLogoutSuccess: (() -> Void)?
   var onError: ((Error) -> Void)?
+  var onDeleteAccountSuccess: (() -> Void)?
+  var onRequiresRecentLogin: (() -> Void)?
   
   public init(authService: AuthServicing) {
     self.authService = authService
@@ -23,6 +25,20 @@ public final class SettingViewModel {
       onLogoutSuccess?()
     } catch {
       onError?(error)
+    }
+  }
+  
+  @MainActor
+  public func deleteAccount() {
+    Task {
+      do {
+        try await authService.deleteAccount()
+        onDeleteAccountSuccess?()
+      } catch AuthError.requiresRecentLogin {
+        onRequiresRecentLogin?()  // 구분 처리
+      } catch {
+        onError?(error)
+      }
     }
   }
 }
