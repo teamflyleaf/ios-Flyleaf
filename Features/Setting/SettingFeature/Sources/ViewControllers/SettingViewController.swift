@@ -14,7 +14,12 @@ import SettingInterface
 public final class SettingViewController: BaseViewController {
   public var onRoute: ((SettingRoute) -> Void)?
   
-  public init() {
+  private let viewModel: SettingViewModel
+  
+  public init(
+    viewModel: SettingViewModel
+  ) {
+    self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -242,6 +247,12 @@ public final class SettingViewController: BaseViewController {
       self?.onRoute?(.back)
     }
     
+    viewModel.onLogoutSuccess = { [weak self] in
+      self?.onRoute?(.logout)
+    }
+    
+    logoutButton.addTarget(self, action: #selector(didLogout), for: .touchUpInside)
+    
     infoButtonBind()
     reportButtonBind()
   }
@@ -249,6 +260,10 @@ public final class SettingViewController: BaseViewController {
 
 // MARK: - Private
 private extension SettingViewController {
+  @objc func didLogout() {
+    viewModel.logout()
+  }
+  
   func infoButtonBind() {
     privacyPolicyButton.onTap = { [weak self] in
       self?.onRoute?(.privacyPolicy)

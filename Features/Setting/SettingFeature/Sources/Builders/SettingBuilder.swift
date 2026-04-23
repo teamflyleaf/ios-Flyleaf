@@ -5,17 +5,26 @@
 //  Created by 여성일 on 4/21/26.
 //
 
+import AuthInterface
 import Core
 import SettingInterface
 import UIKit
 
+
 public final class SettingBuilder: SettingBuildable {
-  public init() {}
+  private let authService: AuthServicing
+  
+  public init(
+    authService: AuthServicing
+  ) {
+    self.authService = authService
+  }
 
   public func build(
     onRoute: @escaping (SettingRoute) -> Void
   ) -> UIViewController {
-    let viewController = SettingViewController()
+    let viewModel = SettingViewModel(authService: authService)
+    let viewController = SettingViewController(viewModel: viewModel)
     
     viewController.onRoute = onRoute
     

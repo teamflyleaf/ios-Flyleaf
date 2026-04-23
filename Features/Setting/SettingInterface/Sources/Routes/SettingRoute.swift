@@ -13,4 +13,5 @@ public enum SettingRoute {
   case privacyPolicy
   case termsOfService
   case openSource
+  case logout
 }
