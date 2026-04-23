@@ -344,7 +344,13 @@ private extension AppCoordinator {
     )
     
     coordinator.parentCoordinator = self
-    
+    coordinator.onFlowEvent = { [weak self] event in
+      switch event {
+      case .logout:
+        self?.childCoordinators.removeAll()
+        self?.showLogin()
+      }
+    }
     return coordinator
   }
 }

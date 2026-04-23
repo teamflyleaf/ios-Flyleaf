@@ -158,7 +158,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     container.register(SettingBuilder.self, scope: .transient) {
-      SettingBuilder()
+      SettingBuilder(
+        authService: container.resolve(AuthServicing.self)!
+      )
     }
     
     container.register(PrivacyPolicyBuilder.self, scope: .transient) {

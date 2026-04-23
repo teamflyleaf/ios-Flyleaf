@@ -20,6 +20,12 @@ final class SettingCoordinator: Coordinator {
   private let termsOfServiceBuilder: TermsOfServiceBuildable
   private let openSourceBuilder: OpenSourceBuildable
   
+  enum FlowEvent {
+    case logout
+  }
+  
+  var onFlowEvent: ((FlowEvent) -> Void)?
+  
   init(
     navigationController: UINavigationController,
     settingBuilder: SettingBuildable,
@@ -48,6 +54,9 @@ final class SettingCoordinator: Coordinator {
       
       case .openSource:
         self?.showOpenSource()
+      
+      case .logout:
+        self?.onFlowEvent?(.logout)
       }
     })
     
