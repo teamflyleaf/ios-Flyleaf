@@ -61,6 +61,8 @@ let project = Project(
         .feature(.journey, .interface),
         .feature(.history, .feature),
         .feature(.history, .interface),
+        .feature(.setting, .feature),
+        .feature(.setting, .interface),
         .service(.auth, .interface),
         .service(.auth, .implementation),
         .service(.airportSearch, .implementation)
@@ -150,6 +152,8 @@ let project = Project(
         .feature(.journey, .interface),
         .feature(.history, .feature),
         .feature(.history, .interface),
+        .feature(.setting, .feature),
+        .feature(.setting, .interface),
         .service(.auth, .interface),
         .service(.auth, .implementation),
         .service(.airportSearch, .implementation)

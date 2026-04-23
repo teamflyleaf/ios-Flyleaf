@@ -10,7 +10,13 @@ import Foundation
 
 public protocol AuthServicing {
   var isSignedIn: Bool { get }
+  var currentUser: AppUser? { get }
+  
   func signInWithApple(
     payload: AppleLoginPayload
   ) async throws -> AppUser
+  
+  func signOut() throws
+  
+  func deleteAccount() async throws
 }

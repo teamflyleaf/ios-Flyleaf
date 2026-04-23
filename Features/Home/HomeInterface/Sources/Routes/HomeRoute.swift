@@ -12,4 +12,5 @@ public enum HomeRoute {
   case wishlist
   case journey
   case history
+  case setting
 }
