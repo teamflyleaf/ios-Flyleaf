@@ -8,6 +8,9 @@
 public enum AuthError: Error {
   case invalidToken
   case signInFailed
+  case signOutFailed
+  case deleteAccountFailed
+  case requiresRecentLogin
   case firebaseError
   case unknown
 }

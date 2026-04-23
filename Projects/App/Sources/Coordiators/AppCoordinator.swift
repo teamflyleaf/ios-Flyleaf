@@ -14,6 +14,7 @@ import WishlistInterface
 import HistoryInterface
 import JourneyInterface
 import ReadingJourneyInterface
+import SettingInterface
 import UIKit
 
 @MainActor
@@ -37,6 +38,10 @@ final class AppCoordinator: NSObject, Coordinator {
   private let jourenyBuilder: JourneyBuildable
   private let historyBuilder: HistoryBuildable
   private let detailHistoryBuilder: DetailHistoryBuildable
+  private let settingBuilder: SettingBuildable
+  private let privacyPolicyBuilder: PrivacyPolicyBuildable
+  private let termsOfServiceBuilder: TermsOfServiceBuildable
+  private let openSourceBuilder: OpenSourceBuildable
   
   init(
     navigationController: UINavigationController,
@@ -53,7 +58,11 @@ final class AppCoordinator: NSObject, Coordinator {
     registerJourneyBuilder: RegisterJourneyBuildable,
     jourenyBuilder: JourneyBuildable,
     historyBuilder: HistoryBuildable,
-    detailHistoryBuilder: DetailHistoryBuildable
+    detailHistoryBuilder: DetailHistoryBuildable,
+    settingBuilder: SettingBuildable,
+    privacyPolicyBuilder: PrivacyPolicyBuildable,
+    termsOfServiceBuilder: TermsOfServiceBuildable,
+    openSourceBuilder: OpenSourceBuildable
   ) {
     self.navigationController = navigationController
     self.authService = authService
@@ -70,6 +79,10 @@ final class AppCoordinator: NSObject, Coordinator {
     self.jourenyBuilder = jourenyBuilder
     self.historyBuilder = historyBuilder
     self.detailHistoryBuilder = detailHistoryBuilder
+    self.settingBuilder = settingBuilder
+    self.privacyPolicyBuilder = privacyPolicyBuilder
+    self.termsOfServiceBuilder = termsOfServiceBuilder
+    self.openSourceBuilder = openSourceBuilder
     
     super.init()
     
@@ -101,6 +114,8 @@ private extension AppCoordinator {
           self?.startJourneyFlow()
         case .history:
           self?.startHistoryFlow()
+        case .setting:
+          self?.startSettingFlow()
         }
       }
     )
@@ -307,6 +322,39 @@ private extension AppCoordinator {
       }
     }
     
+    return coordinator
+  }
+}
+
+// MARK: - Setting
+private extension AppCoordinator {
+  func startSettingFlow() {
+    let coordinator = makeSettingCoordinator()
+    childCoordinators.append(coordinator)
+    coordinator.start()
+  }
+  
+  func makeSettingCoordinator() -> SettingCoordinator {
+    let coordinator = SettingCoordinator(
+      navigationController: navigationController,
+      settingBuilder: settingBuilder,
+      privacyPolicyBuilder: privacyPolicyBuilder,
+      termsOfServiceBuilder: termsOfServiceBuilder,
+      openSourceBuilder: openSourceBuilder
+    )
+    
+    coordinator.parentCoordinator = self
+    coordinator.onFlowEvent = { [weak self] event in
+      switch event {
+      case .logout:
+        self?.childCoordinators.removeAll()
+        self?.showLogin()
+        
+      case .deleteAccount:
+        self?.childCoordinators.removeAll()
+        self?.showLogin()
+      }
+    }
     return coordinator
   }
 }

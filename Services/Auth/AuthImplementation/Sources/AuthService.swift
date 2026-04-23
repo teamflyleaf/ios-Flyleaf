@@ -12,9 +12,18 @@ import FirebaseAuth
 
 public final class AuthService: AuthServicing {
   public init() {}
-
+  
   public var isSignedIn: Bool {
     Auth.auth().currentUser != nil
+  }
+  
+  public var currentUser: AppUser? {
+    guard let firebaseUser = Auth.auth().currentUser else { return nil }
+    return AppUser(
+      id: firebaseUser.uid,
+      name: firebaseUser.displayName,
+      email: firebaseUser.email
+    )
   }
   
   public func signInWithApple(
@@ -39,5 +48,23 @@ public final class AuthService: AuthServicing {
       name: payload.name,
       email: payload.email
     )
+  }
+  
+  public func signOut() throws {
+    do {
+      try Auth.auth().signOut()
+    } catch {
+      throw AuthError.signOutFailed
+    }
+  }
+  
+  public func deleteAccount() async throws {
+    do {
+      try await Auth.auth().currentUser?.delete()
+    } catch let error as NSError where error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+      throw AuthError.requiresRecentLogin
+    } catch {
+      throw AuthError.deleteAccountFailed
+    }
   }
 }
