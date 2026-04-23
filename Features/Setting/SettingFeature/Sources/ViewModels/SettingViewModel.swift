@@ -15,6 +15,10 @@ public final class SettingViewModel {
   var onDeleteAccountSuccess: (() -> Void)?
   var onRequiresRecentLogin: (() -> Void)?
   
+  var currentEmail: String? {
+    authService.currentUser?.email
+  }
+  
   public init(authService: AuthServicing) {
     self.authService = authService
   }

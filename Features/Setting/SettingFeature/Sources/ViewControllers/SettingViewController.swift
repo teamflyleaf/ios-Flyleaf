@@ -42,7 +42,6 @@ public final class SettingViewController: BaseViewController {
   }
   
   private let socialEmailLabel = NeutralPaddingLabel().then {
-    $0.text = "seongil_yeo@naver.com"
     $0.font = .c2
     $0.textColor = .n0
     $0.backgroundColor = .n60
@@ -269,6 +268,8 @@ public final class SettingViewController: BaseViewController {
     viewModel.onError = { [weak self] error in
       self?.presentAlert(title: "탈퇴 실패", message: "탈퇴에 실패했어요. 다시 시도해주세요.")
     }
+    
+    socialEmailLabel.text = viewModel.currentEmail ?? "이메일 정보 없음"
     
     socialButtonBind()
     infoButtonBind()

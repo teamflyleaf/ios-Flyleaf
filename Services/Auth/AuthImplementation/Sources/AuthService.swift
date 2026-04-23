@@ -17,6 +17,15 @@ public final class AuthService: AuthServicing {
     Auth.auth().currentUser != nil
   }
   
+  public var currentUser: AppUser? {
+    guard let firebaseUser = Auth.auth().currentUser else { return nil }
+    return AppUser(
+      id: firebaseUser.uid,
+      name: firebaseUser.displayName,
+      email: firebaseUser.email
+    )
+  }
+  
   public func signInWithApple(
     payload: AppleLoginPayload
   ) async throws -> AppUser {
