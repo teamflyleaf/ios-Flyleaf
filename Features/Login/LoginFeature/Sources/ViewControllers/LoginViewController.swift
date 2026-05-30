@@ -88,6 +88,11 @@ public final class LoginViewController: BaseViewController {
     viewModel.onLoginFailure = { [weak self] message in
       self?.presentErrorAlert(message: message)
     }
+    
+    viewModel.onLoadingChanged = { [weak self] isLoading in
+      self?.signInButton.isEnabled = !isLoading
+      self?.signInButton.alpha = isLoading ? 0.5 : 1.0
+    }
   }
   
   // MARK: - Action

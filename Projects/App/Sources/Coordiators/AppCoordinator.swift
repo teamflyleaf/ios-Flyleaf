@@ -90,9 +90,26 @@ final class AppCoordinator: NSObject, Coordinator {
   }
   
   func start() {
-    routeInitialFlow()
+    // routeInitialFlow은 case 3때 활용
+    // routeInitialFlow()
+    showSplash()
   }
   
+  private func showSplash() {
+    let viewModel = SplashViewModel(authService: authService)
+    let splashVC = SplashViewController(viewModel: viewModel)
+    
+    splashVC.onRoute = { [weak self] result in
+      switch result {
+      case .needsLogin:
+        self?.showLogin()
+      }
+    }
+    
+    navigationController.setViewControllers([splashVC], animated: false)
+  }
+  
+  // routeInitialFlow은 case 3때 활용
   private func routeInitialFlow() {
     if authService.isSignedIn {
       showMainTabBar()

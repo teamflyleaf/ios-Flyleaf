@@ -17,11 +17,15 @@ public final class LoginViewModel {
   
   var onLoginSuccess: ((AppUser) -> Void)?
   var onLoginFailure: ((String) -> Void)?
+  var onLoadingChanged: ((Bool) -> Void)?
   
   @MainActor
   func handleAppleAuthorization(
     payload: AppleLoginPayload
   ) async {
+    onLoadingChanged?(true)
+    defer { onLoadingChanged?(false) }
+    
     do {
       let user = try await authService.signInWithApple(payload: payload)
       onLoginSuccess?(user)
