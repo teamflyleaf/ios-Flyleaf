@@ -103,6 +103,8 @@ final class AppCoordinator: NSObject, Coordinator {
       switch result {
       case .needsLogin:
         self?.showLogin()
+      case .readyToMain:
+        self?.showMainTabBar()
       }
     }
     

@@ -7,7 +7,6 @@
 
 enum SplashLoadingStep {
   case checkingAuth
-  case fetchingData
 }
 
 extension SplashLoadingStep {
@@ -15,8 +14,6 @@ extension SplashLoadingStep {
     switch self {
     case .checkingAuth:
       return "로그인 정보를 확인하고 있어요"
-    case .fetchingData:
-      return "여행 데이터를 불러오고 있어요"
     }
   }
 }

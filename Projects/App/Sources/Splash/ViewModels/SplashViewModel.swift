@@ -11,7 +11,9 @@ import Foundation
 final class SplashViewModel {
   private let authService: AuthServicing
   
-  init(authService: AuthServicing) {
+  init(
+    authService: AuthServicing
+  ) {
     self.authService = authService
   }
   
@@ -20,6 +22,8 @@ final class SplashViewModel {
   
   func startLoading() async {
     onStepChanged?(.checkingAuth)
+    
+    try? await Task.sleep(for: .seconds(1.5))
     
     if isFirstLaunch() {
       onCompleted?(.needsLogin)
@@ -31,7 +35,7 @@ final class SplashViewModel {
       return
     }
     
-    // 케이스 3 추후 구현
+    onCompleted?(.readyToMain)
   }
 }
 

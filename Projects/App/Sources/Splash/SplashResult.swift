@@ -7,4 +7,5 @@
 
 enum SplashResult {
   case needsLogin
+  case readyToMain
 }
