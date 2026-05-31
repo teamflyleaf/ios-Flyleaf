@@ -20,13 +20,20 @@ public final class HomeBuilder: HomeBuildable {
   }
 
   public func build(
+    preloadedJourneys: [ReadingJourney] = [],
     onRoute: @escaping (HomeRoute) -> Void
-  ) -> UIViewController {
-    let viewModel = HomeViewModel(readingJourneyService: readingJourneyService)
+  ) -> (viewController: UIViewController, refresh: () -> Void) {
+    let viewModel = HomeViewModel(
+      readingJourneyService: readingJourneyService,
+      preloadedJourneys: preloadedJourneys
+    )
     let viewController = HomeViewController(viewModel: viewModel)
-    
     viewController.onRoute = onRoute
-    
-    return viewController
+
+    let refresh: () -> Void = {
+      Task { await viewModel.refresh() }
+    }
+
+    return (viewController, refresh)
   }
 }

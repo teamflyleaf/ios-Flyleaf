@@ -37,7 +37,7 @@ public final class HomeViewController: BaseViewController {
     super.viewDidAppear(animated)
     
     Task { [weak self] in
-      await self?.viewModel.loadReadingJourneys()
+      await self?.viewModel.refresh()
     }
   }
   

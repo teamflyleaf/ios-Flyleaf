@@ -22,9 +22,11 @@ public final class HomeViewModel {
   }
   
   public init(
-    readingJourneyService: ReadingJourneyServicing
+    readingJourneyService: ReadingJourneyServicing,
+    preloadedJourneys: [ReadingJourney] = []
   ) {
     self.readingJourneyService = readingJourneyService
+    self.journeys = preloadedJourneys
   }
   
   var greetingText: String {
@@ -55,20 +57,20 @@ public final class HomeViewModel {
   }
   
   // MARK: - Public Method
-  func loadReadingJourneys() async {
-    do {
-      journeys = try await readingJourneyService.fetchReadingJourneys()
-    } catch {
-      let message = (error as? LocalizedError)?.errorDescription ?? "여행 정보를 불러오지 못했습니다."
-      onError?(message)
-    }
-  }
-  
   func calculateProgress(journey: ReadingJourney) -> Double {
     guard let currentPage = journey.currentPage, journey.book.itemPage > 0 else {
       return 0
     }
     
     return min(max(Double(currentPage) / Double(journey.book.itemPage), 0), 1)
+  }
+  
+  func refresh() async {
+    do {
+      journeys = try await readingJourneyService.fetchReadingJourneys()
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "여행 데이터를 불러오지 못했습니다."
+      onError?(message)
+    }
   }
 }

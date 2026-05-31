@@ -26,6 +26,7 @@ final class AppCoordinator: NSObject, Coordinator {
   
   private let authService: AuthServicing
   private let readingJourneyService: ReadingJourneyServicing
+  private var refreshHome: (() -> Void)?
   
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
@@ -104,7 +105,7 @@ final class AppCoordinator: NSObject, Coordinator {
       self?.showLogin()
     }
     coordinator.onReadyToMain = { [weak self] journeys in
-      self?.showMainTabBar()
+      self?.showMainTabBar(preloadedJourneys: journeys)
     }
     
     childCoordinators.append(coordinator)
@@ -114,8 +115,9 @@ final class AppCoordinator: NSObject, Coordinator {
 
 // MARK: - MainTabBar
 private extension AppCoordinator {
-  func showMainTabBar() {
-    let homeVC = homeBuilder.build(
+  func showMainTabBar(preloadedJourneys: [ReadingJourney]) {
+    let (homeVC, refresh) = homeBuilder.build(
+      preloadedJourneys: preloadedJourneys,
       onRoute: { [weak self] route in
         switch route {
         case .wishlist:
@@ -129,6 +131,8 @@ private extension AppCoordinator {
         }
       }
     )
+    
+    refreshHome = refresh
     
     let journeyVC = jourenyBuilder.build(
       onRoute: { [weak self] route in
@@ -227,7 +231,7 @@ private extension AppCoordinator {
     coordinator.parentCoordinator = self
     coordinator.onLoginCompleted = { [weak self] in
       guard let self = self else { return }
-      self.showMainTabBar()
+      self.showMainTabBar(preloadedJourneys: [])
       self.childDidFinish(coordinator)
     }
     
@@ -265,8 +269,10 @@ private extension AppCoordinator {
       switch event {
       case .moveToWishlistTab:
         self.moveToTab(.wishlist)
+        self.refreshHome?()
       case .moveToJourneyTab:
         self.moveToTab(.journey)
+        self.refreshHome?()
       }
     }
     
@@ -301,6 +307,7 @@ private extension AppCoordinator {
       switch event {
       case .moveToHistoryTab:
         self?.moveToTab(.history)
+        self?.refreshHome?()
       }
     }
     
@@ -329,6 +336,7 @@ private extension AppCoordinator {
       switch event {
       case .moveToJourneyTab:
         self?.moveToTab(.journey)
+        self?.refreshHome?()
       }
     }
     
