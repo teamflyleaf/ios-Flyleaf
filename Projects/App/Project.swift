@@ -101,7 +101,17 @@ let project = Project(
         ]
       )
     ),
-    
+    .target(
+      name: "AppTests",
+      destinations: .iOS,
+      product: .unitTests,
+      bundleId: "com.yeo.flyleaf.dev.tests",
+      sources: ["Tests/**"],
+      dependencies: [
+        .target(name: "FlyleafDev"),
+        .service(.auth, .interface)
+      ]
+    ),
     .target(
       name: "Flyleaf",
       destinations: .iOS,
