@@ -7,21 +7,26 @@
 
 import AuthInterface
 import Foundation
+import ReadingJourneyInterface
 
 final class SplashViewModel {
   private let authService: AuthServicing
+  private let readingJourneyService: ReadingJourneyServicing
   private let minimumDisplayDuration: Duration
 
   init(
     authService: AuthServicing,
+    readingJourneyService: ReadingJourneyServicing,
     minimumDisplayDuration: Duration = .seconds(1.5)
   ) {
     self.authService = authService
+    self.readingJourneyService = readingJourneyService
     self.minimumDisplayDuration = minimumDisplayDuration
   }
 
   var onStepChanged: ((SplashLoadingStep) -> Void)?
   var onCompleted: ((SplashResult) -> Void)?
+  var onError: ((String) -> Void)?
 
   func startLoading() async {
     onStepChanged?(.checkingAuth)
@@ -37,7 +42,16 @@ final class SplashViewModel {
       return
     }
 
-    onCompleted?(.readyToMain)
+    onStepChanged?(.fetchingData)
+    
+    do {
+      let journeys = try await readingJourneyService.fetchReadingJourneys()
+      onCompleted?(.readyToMain(journeys))
+    } catch {
+      let message = (error as? LocalizedError)?.errorDescription ?? "여행 데이터를 불러오지 못했습니다."
+      onError?(message)
+      onCompleted?(.readyToMain([]))
+    }
   }
 }
 
