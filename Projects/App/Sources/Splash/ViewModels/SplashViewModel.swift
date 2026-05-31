@@ -10,31 +10,33 @@ import Foundation
 
 final class SplashViewModel {
   private let authService: AuthServicing
-  
+  private let minimumDisplayDuration: Duration
+
   init(
-    authService: AuthServicing
+    authService: AuthServicing,
+    minimumDisplayDuration: Duration = .seconds(1.5)
   ) {
     self.authService = authService
+    self.minimumDisplayDuration = minimumDisplayDuration
   }
-  
+
   var onStepChanged: ((SplashLoadingStep) -> Void)?
   var onCompleted: ((SplashResult) -> Void)?
-  
+
   func startLoading() async {
     onStepChanged?(.checkingAuth)
-    
-    try? await Task.sleep(for: .seconds(1.5))
-    
+    try? await Task.sleep(for: minimumDisplayDuration)
+
     if isFirstLaunch() {
       onCompleted?(.needsLogin)
       return
     }
-    
+
     guard authService.isSignedIn else {
       onCompleted?(.needsLogin)
       return
     }
-    
+
     onCompleted?(.readyToMain)
   }
 }
