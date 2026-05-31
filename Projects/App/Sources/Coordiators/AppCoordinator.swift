@@ -25,6 +25,8 @@ final class AppCoordinator: NSObject, Coordinator {
   var rootViewController: UIViewController?
   
   private let authService: AuthServicing
+  private let readingJourneyService: ReadingJourneyServicing
+  
   private let homeBuilder: HomeBuildable
   private let loginBuilder: LoginBuildable
   private let searchBuilder: SearchBuildable
@@ -46,6 +48,7 @@ final class AppCoordinator: NSObject, Coordinator {
   init(
     navigationController: UINavigationController,
     authService: AuthServicing,
+    readingJourneyService: ReadingJourneyServicing,
     homeBuilder: HomeBuildable,
     loginBuilder: LoginBuildable,
     searchBuilder: SearchBuildable,
@@ -66,6 +69,7 @@ final class AppCoordinator: NSObject, Coordinator {
   ) {
     self.navigationController = navigationController
     self.authService = authService
+    self.readingJourneyService = readingJourneyService
     self.homeBuilder = homeBuilder
     self.loginBuilder = loginBuilder
     self.searchBuilder = searchBuilder
@@ -90,34 +94,21 @@ final class AppCoordinator: NSObject, Coordinator {
   }
   
   func start() {
-    // routeInitialFlow은 case 3때 활용
-    // routeInitialFlow()
-    showSplash()
-  }
-  
-  private func showSplash() {
-    let viewModel = SplashViewModel(authService: authService)
-    let splashVC = SplashViewController(viewModel: viewModel)
-    
-    splashVC.onRoute = { [weak self] result in
-      switch result {
-      case .needsLogin:
-        self?.showLogin()
-      case .readyToMain:
-        self?.showMainTabBar()
-      }
+    let coordinator = SplashCoordinator(
+      navigationController: navigationController,
+      authService: authService,
+      readingJourneyService: readingJourneyService
+    )
+    coordinator.parentCoordinator = self
+    coordinator.onNeedsLogin = { [weak self] in
+      self?.showLogin()
+    }
+    coordinator.onReadyToMain = { [weak self] journeys in
+      self?.showMainTabBar()
     }
     
-    navigationController.setViewControllers([splashVC], animated: false)
-  }
-  
-  // routeInitialFlow은 case 3때 활용
-  private func routeInitialFlow() {
-    if authService.isSignedIn {
-      showMainTabBar()
-    } else {
-      showLogin()
-    }
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
 }
 
