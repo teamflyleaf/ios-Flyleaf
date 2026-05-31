@@ -109,7 +109,8 @@ let project = Project(
       sources: ["Tests/**"],
       dependencies: [
         .target(name: "FlyleafDev"),
-        .service(.auth, .interface)
+        .service(.auth, .interface),
+        .service(.readingJourney, .interface)
       ]
     ),
     .target(

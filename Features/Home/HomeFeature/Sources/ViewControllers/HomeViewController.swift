@@ -36,8 +36,9 @@ public final class HomeViewController: BaseViewController {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
+    guard viewModel.journeys.isEmpty else { return }
     Task { [weak self] in
-      await self?.viewModel.loadReadingJourneys()
+      await self?.viewModel.refresh()
     }
   }
   

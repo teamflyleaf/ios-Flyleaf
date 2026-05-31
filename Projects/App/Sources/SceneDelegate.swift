@@ -181,6 +181,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       AppCoordinator(
         navigationController: navigationController,
         authService: container.resolve(AuthServicing.self)!,
+        readingJourneyService: container.resolve(ReadingJourneyServicing.self)!,
         homeBuilder: container.resolve(HomeBuilder.self)!,
         loginBuilder: container.resolve(LoginBuilder.self)!,
         searchBuilder: container.resolve(SearchBuilder.self)!,
