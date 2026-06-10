@@ -33,6 +33,7 @@ public extension UIImage {
   // MARK: - Image
   static let worldMap = DesignSystemAsset.worldMap.image.withRenderingMode(.alwaysTemplate)
   static let flyleafLogo = DesignSystemAsset.flyleafLogo.image.withRenderingMode(.alwaysTemplate)
+  static let mockUp = DesignSystemAsset.mockUp.image.withRenderingMode(.alwaysTemplate)
   
   // MARK: - Public Method
   /// UIImage의 크기를 지정한 width, height로 리사이즈하여 새로운 이미지를 반환합니다.
