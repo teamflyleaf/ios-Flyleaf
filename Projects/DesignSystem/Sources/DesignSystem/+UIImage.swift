@@ -36,9 +36,9 @@ public extension UIImage {
   
   // MARK: - Phone MockUp
   static let mockUp = DesignSystemAsset.mockUp.image.withRenderingMode(.alwaysTemplate)
-  static let searchAirportPage1 = DesignSystemAsset.searchAirportPage1.image.withRenderingMode(.alwaysTemplate)
-  static let searchAirportPage2 = DesignSystemAsset.searchAirportPage2.image.withRenderingMode(.alwaysTemplate)
-  static let searchAirportPage3 = DesignSystemAsset.searchAirportPage3.image.withRenderingMode(.alwaysTemplate)
+  static let searchAirportPage1 = DesignSystemAsset.searchAirportPage1.image.withRenderingMode(.alwaysOriginal)
+  static let searchAirportPage2 = DesignSystemAsset.searchAirportPage2.image.withRenderingMode(.alwaysOriginal)
+  static let searchAirportPage3 = DesignSystemAsset.searchAirportPage3.image.withRenderingMode(.alwaysOriginal)
   
   // MARK: - Public Method
   /// UIImage의 크기를 지정한 width, height로 리사이즈하여 새로운 이미지를 반환합니다.
