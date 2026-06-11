@@ -11,7 +11,7 @@ import DesignSystem
 import SnapKit
 import Then
 
-public final class OnboardingViewController: BaseViewController {
+public final class OnboardingPage1ViewController: BaseViewController {
   private let viewModel: OnboardingViewModel
   
   public init(viewModel: OnboardingViewModel) {
@@ -96,7 +96,7 @@ public final class OnboardingViewController: BaseViewController {
 }
 
 // MARK: - Private
-private extension OnboardingViewController {
+private extension OnboardingPage1ViewController {
   func showScript(_ label: UILabel?) {
     guard let label else { return }
     label.alpha = 0
