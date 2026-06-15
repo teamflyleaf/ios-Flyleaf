@@ -36,19 +36,19 @@ final class SplashViewModelTests: XCTestCase {
   }
 
   /*
-   최초 실행 시 needsLogin으로 라우팅되는지 검증하는 테스트
+   최초 실행 시 needsOnboarding으로 라우팅되는지 검증하는 테스트
 
    - Given: 최초 실행 상태 (hasLaunchedBefore 없음)
    - When: startLoading() 호출
-   - Then: onCompleted가 .needsLogin으로 호출되는지 확인합니다.
+   - Then: onCompleted가 .needsOnboarding으로 호출되는지 확인합니다.
    */
-  func test_startLoading_whenFirstLaunch_callsNeedsLogin() async {
+  func test_startLoading_whenFirstLaunch_callsNeedsOnboarding() async {
     var receivedResult: SplashResult?
     sut.onCompleted = { receivedResult = $0 }
 
     await sut.startLoading()
 
-    XCTAssertEqual(receivedResult, .needsLogin)
+    XCTAssertEqual(receivedResult, .needsOnboarding)
   }
 
   /*
