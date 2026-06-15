@@ -13,10 +13,9 @@ import SnapKit
 import Then
 
 public final class OnboardingPage3ViewController: BaseViewController {
-  private let viewModel: OnboardingViewModel
+  public var onCompleted: (() -> Void)?
   
-  public init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+  public init() {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -45,7 +44,7 @@ public final class OnboardingPage3ViewController: BaseViewController {
     let bundle = appBundle.url(forResource: "Onboarding_OnboardingFeature", withExtension: "bundle")
       .flatMap { Bundle(url: $0) } ?? appBundle
     let view = LottieAnimationView(name: "world_map_animation", bundle: bundle)
-    view.loopMode = .loop
+    view.loopMode = .playOnce
     view.contentMode = .scaleAspectFit
     view.animationSpeed = 1.7
     return view
@@ -63,7 +62,9 @@ public final class OnboardingPage3ViewController: BaseViewController {
       view.addSubview($0)
     }
     
-    animationView.play()
+    animationView.play { [weak self] _ in
+      self?.onCompleted?()
+    }
   }
   
   override public func setupLayout() {

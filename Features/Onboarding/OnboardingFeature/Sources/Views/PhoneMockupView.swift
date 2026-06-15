@@ -11,6 +11,8 @@ import Then
 import UIKit
 
 public class PhoneMockupView: BaseView {
+  public var onScrollCompleted: (() -> Void)?
+  
   // MARK: - UI
   private let scrollView = UIScrollView().then {
     $0.isPagingEnabled = true
@@ -88,10 +90,17 @@ public class PhoneMockupView: BaseView {
   deinit {
     autoScrollTimer?.invalidate()
   }
+}
 
-  private func scrollToNextPage() {
+// MARK: - Private
+private extension PhoneMockupView {
+  func scrollToNextPage() {
     currentPage = (currentPage + 1) % 3
     let offset = CGPoint(x: bounds.width * CGFloat(currentPage), y: 0)
     scrollView.setContentOffset(offset, animated: true)
+    
+    if currentPage == 0 {
+      onScrollCompleted?()
+    }
   }
 }

@@ -12,10 +12,9 @@ import SnapKit
 import Then
 
 public final class OnboardingPage1ViewController: BaseViewController {
-  private let viewModel: OnboardingViewModel
-  
-  public init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+  public var onCompleted: (() -> Void)?
+
+  public init() {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -88,11 +87,6 @@ public final class OnboardingPage1ViewController: BaseViewController {
       $0.centerX.centerY.equalToSuperview()
     }
   }
-  
-  // MARK: - Binding
-  public override func bind() {
-    
-  }
 }
 
 // MARK: - Private
@@ -120,6 +114,8 @@ private extension OnboardingPage1ViewController {
       self.changeColor(of: [self.script1, self.script2], to: .n50)
       self.showScript(self.script3)
     }
+    try? await Task.sleep(for: .seconds(0.5))
+    await MainActor.run { onCompleted?() }
   }
   
   func changeColor(of labels: [UILabel], to color: UIColor) {

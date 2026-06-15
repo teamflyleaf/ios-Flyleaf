@@ -12,10 +12,7 @@ import SnapKit
 import Then
 
 public class OnboardingPage4ViewController: BaseViewController {
-  private let viewModel: OnboardingViewModel
-  
-  public init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+  public init() {
     super.init(nibName: nil, bundle: nil)
   }
   

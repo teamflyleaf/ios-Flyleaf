@@ -12,10 +12,9 @@ import SnapKit
 import Then
 
 public final class OnboardingPage2ViewController: BaseViewController {
-  private let viewModel: OnboardingViewModel
+  public var onCompleted: (() -> Void)?
   
-  public init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+  public init() {
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -80,7 +79,9 @@ public final class OnboardingPage2ViewController: BaseViewController {
   
   // MARK: - Binding
   public override func bind() {
-    
+    phoneMockupView.onScrollCompleted = { [weak self] in
+      self?.onCompleted?()
+    }
   }
 }
 
