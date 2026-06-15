@@ -49,6 +49,8 @@ let project = Project(
         .core(),
         .designSystem(),
         .diContainer(),
+        .feature(.onboarding, .feature),
+        .feature(.onboarding, .interface),
         .feature(.home, .feature),
         .feature(.home, .interface),
         .feature(.login, .feature),
@@ -65,7 +67,8 @@ let project = Project(
         .feature(.setting, .interface),
         .service(.auth, .interface),
         .service(.auth, .implementation),
-        .service(.airportSearch, .implementation)
+        .service(.airportSearch, .implementation),
+        .lottie()
       ],
       settings: .settings(
         base: [
@@ -151,6 +154,8 @@ let project = Project(
         .core(),
         .designSystem(),
         .diContainer(),
+        .feature(.onboarding, .feature),
+        .feature(.onboarding, .interface),
         .feature(.home, .feature),
         .feature(.home, .interface),
         .feature(.login, .feature),
@@ -167,7 +172,8 @@ let project = Project(
         .feature(.setting, .interface),
         .service(.auth, .interface),
         .service(.auth, .implementation),
-        .service(.airportSearch, .implementation)
+        .service(.airportSearch, .implementation),
+        .lottie()
       ],
       settings: .settings(
         base: [
