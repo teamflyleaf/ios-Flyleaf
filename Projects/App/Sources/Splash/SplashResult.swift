@@ -8,6 +8,7 @@
 import ReadingJourneyInterface
 
 enum SplashResult: Equatable {
+  case needsOnboarding
   case needsLogin
   case readyToMain([ReadingJourney])
 }

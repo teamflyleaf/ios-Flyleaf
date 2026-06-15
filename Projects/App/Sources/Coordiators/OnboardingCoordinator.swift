@@ -66,6 +66,9 @@ private extension OnboardingCoordinator {
   
   func showPage4() {
     let vc = OnboardingPage4ViewController()
+    vc.onCompleted = { [weak self] in
+      self?.onCompleted?()
+    }
     trainsition(vc)
   }
 }

@@ -77,7 +77,7 @@ public class PhoneMockupView: BaseView {
 
   // MARK: - Auto Scroll
   public func startAutoScroll() {
-    autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 2.5, repeats: true) { [weak self] _ in
+    autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
       self?.scrollToNextPage()
     }
   }

@@ -46,7 +46,7 @@ public final class OnboardingPage3ViewController: BaseViewController {
     let view = LottieAnimationView(name: "world_map_animation", bundle: bundle)
     view.loopMode = .playOnce
     view.contentMode = .scaleAspectFit
-    view.animationSpeed = 1.7
+    view.animationSpeed = 2.5
     return view
   }()
   

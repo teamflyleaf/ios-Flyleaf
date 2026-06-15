@@ -12,6 +12,8 @@ import SnapKit
 import Then
 
 public class OnboardingPage4ViewController: BaseViewController {
+  public var onCompleted: (() -> Void)?
+  
   public init() {
     super.init(nibName: nil, bundle: nil)
   }
@@ -122,6 +124,11 @@ public class OnboardingPage4ViewController: BaseViewController {
       $0.height.equalTo(52)
     }
   }
+  
+  // MARK: - Bind
+  public override func bind() {
+    startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+  }
 }
 
 // MARK: - Private
@@ -184,5 +191,9 @@ private extension OnboardingPage4ViewController {
       self.startButton.isHidden = false
       self.startButton.alpha = 1
     }
+  }
+  
+  @objc func startButtonTapped() {
+    onCompleted?()
   }
 }

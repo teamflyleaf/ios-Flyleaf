@@ -114,7 +114,7 @@ private extension OnboardingPage1ViewController {
       self.changeColor(of: [self.script1, self.script2], to: .n50)
       self.showScript(self.script3)
     }
-    try? await Task.sleep(for: .seconds(0.5))
+    try? await Task.sleep(for: .seconds(1))
     await MainActor.run { onCompleted?() }
   }
   
