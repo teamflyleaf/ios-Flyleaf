@@ -78,15 +78,10 @@ public final class OnboardingPage3ViewController: BaseViewController {
     }
     
     animationView.snp.makeConstraints {
-      $0.top.equalTo(subtitleLabel.snp.bottom).offset(60)
+      $0.centerY.equalToSuperview()
       $0.horizontalEdges.equalToSuperview()
       $0.height.equalTo(200)
     }
-  }
-  
-  // MARK: - Binding
-  public override func bind() {
-    
   }
 }
 
