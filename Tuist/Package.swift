@@ -8,7 +8,8 @@ import PackageDescription
         productTypes: [
           "SnapKit": .framework,
           "Then": .framework,
-          "Kingfisher": .framework
+          "Kingfisher": .framework,
+          "Lottie": .framework
         ]
     )
 #endif
@@ -19,6 +20,7 @@ let package = Package(
       .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.1"),
       .package(url: "https://github.com/devxoul/Then", from: "3.0.0"),
       .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.10.0"),
-      .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.8.0")
+      .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.8.0"),
+      .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.2")
     ]
 )

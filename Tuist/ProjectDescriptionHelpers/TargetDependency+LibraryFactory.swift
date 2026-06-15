@@ -20,6 +20,10 @@ public extension TargetDependency {
     .external(name: Libraries.kingfisher)
   }
 
+  static func lottie() -> TargetDependency {
+    .external(name: Libraries.lottie)
+  }
+  
   static func firebaseCore() -> TargetDependency {
     .external(name: Libraries.firebaseCore)
   }

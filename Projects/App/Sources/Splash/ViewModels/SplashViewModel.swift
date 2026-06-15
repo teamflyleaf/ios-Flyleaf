@@ -32,8 +32,10 @@ final class SplashViewModel {
     onStepChanged?(.checkingAuth)
     try? await Task.sleep(for: minimumDisplayDuration)
 
-    if isFirstLaunch() {
-      onCompleted?(.needsLogin)
+    let firstLaunch = isFirstLaunch()
+
+    if firstLaunch {
+      onCompleted?(.needsOnboarding)
       return
     }
 
@@ -43,7 +45,7 @@ final class SplashViewModel {
     }
 
     onStepChanged?(.fetchingData)
-    
+
     do {
       let journeys = try await readingJourneyService.fetchReadingJourneys()
       onCompleted?(.readyToMain(journeys))
@@ -65,4 +67,15 @@ private extension SplashViewModel {
     UserDefaults.standard.set(true, forKey: key)
     return true
   }
+  
+  // 테스트용 메소드
+//  func isFirstLaunch() -> Bool {
+//    let key = "hasLaunchedBefore"
+//    UserDefaults.standard.set(false, forKey: key)  // 테스트용
+//    if UserDefaults.standard.bool(forKey: key) {
+//      return false
+//    }
+//    UserDefaults.standard.set(true, forKey: key)
+//    return true
+//  }
 }

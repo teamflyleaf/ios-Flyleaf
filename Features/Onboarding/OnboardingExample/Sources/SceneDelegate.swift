@@ -21,7 +21,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = scene as? UIWindowScene else { return }
     
     let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = OnboardingRootViewController()
+    window.rootViewController = OnboardingPage1ViewController()
     window.makeKeyAndVisible()
     
     self.window = window

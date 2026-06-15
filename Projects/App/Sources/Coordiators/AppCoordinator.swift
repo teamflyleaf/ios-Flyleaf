@@ -101,6 +101,9 @@ final class AppCoordinator: NSObject, Coordinator {
       readingJourneyService: readingJourneyService
     )
     coordinator.parentCoordinator = self
+    coordinator.onNeedsOnboarding = { [weak self] in
+      self?.showOnboarding()
+    }
     coordinator.onNeedsLogin = { [weak self] in
       self?.showLogin()
     }
@@ -218,6 +221,23 @@ extension AppCoordinator: UINavigationControllerDelegate {
         poppedViewController: poppedViewController
       )
     }
+  }
+}
+
+// MARK: - Onboarding
+private extension AppCoordinator {
+  func showOnboarding() {
+    let coordinator = OnboardingCoordinator(
+      navigationController: navigationController
+    )
+    coordinator.parentCoordinator = self
+    coordinator.onCompleted = { [weak self] in
+      guard let self else { return }
+      self.showLogin()
+      self.childDidFinish(coordinator)
+    }
+    childCoordinators.append(coordinator)
+    coordinator.start()
   }
 }
 
