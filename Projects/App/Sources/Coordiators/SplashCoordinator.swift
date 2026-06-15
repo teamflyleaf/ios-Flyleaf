@@ -19,6 +19,7 @@ final class SplashCoordinator: Coordinator {
   private let authService: AuthServicing
   private let readingJourneyService: ReadingJourneyServicing
   
+  var onNeedsOnboarding: (() -> Void)?
   var onNeedsLogin: (() -> Void)?
   var onReadyToMain: (([ReadingJourney]) -> Void)?
   
@@ -42,6 +43,8 @@ final class SplashCoordinator: Coordinator {
     
     splashVC.onRoute = { [weak self] result in
       switch result {
+      case .needsOnboarding:
+        self?.onNeedsOnboarding?()
       case .needsLogin:
         self?.onNeedsLogin?()
       case .readyToMain(let journeys):

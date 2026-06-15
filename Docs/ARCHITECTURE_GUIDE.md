@@ -360,6 +360,13 @@ HomeBuilder
 ```
 즉, Builder는 Feature를 실행 가능한 형태로 완성해서 외부에 전달하는 역할을 합니다.
 
+### 예외 케이스
+
+Builder가 필요 없는 경우
+
+- 외부 서비스 의존성이 없는 Feature는 Builder 없이 Coordinator가 직접 VC를  생성합니다.
+- 현재 Splash, Onboarding이 이에 해당하며, ViewModel이나 Service 주입이 필요하지 않기 때문입니다.
+
 ---
 
 ## 8. Coordinator
@@ -511,11 +518,18 @@ SceneDelegate
  ↓ DIContainer로 의존성 구성 (Service 생성 및 Builder에 주입)
 AppCoordinator
  ↓
-Feature (View / ViewModel)
- ↓
-ServiceInterface  ←  ServiceImplementation (App에서 주입)
- ↓
-Core (Domain Model)
+SplashCoordinator
+ ├── (최초 실행) → OnboardingCoordinator → (시작하기 버튼)
+ ├── (재방문 + 로그아웃) ─────────────────────────────────┐
+ │                                                    ↓
+ │                                              LoginCoordinator
+ └── (재방문 + 로그인) → MainTabBar
+                              ↓
+                    Feature (View / ViewModel)
+                              ↓
+          ServiceInterface ← ServiceImplementation (App에서 주입)
+                              ↓
+                       Core (Domain Model)
 ```
 
 ### 사용자 이벤트 흐름

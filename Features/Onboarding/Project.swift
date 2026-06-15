@@ -11,7 +11,12 @@ import ProjectDescriptionHelpers
 let project = Project(
   name: "Onboarding",
   targets: [
-    .microFeature(.onboarding),
+    .microFeature(
+      .onboarding,
+      dependencies: [
+        .lottie()
+      ]
+    ),
     .microInterface(.onboarding),
     .microTests(.onboarding),
     .microTesting(.onboarding),
