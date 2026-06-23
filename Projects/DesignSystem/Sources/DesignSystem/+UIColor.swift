@@ -33,4 +33,10 @@ public extension UIColor {
   // MARK: - Key
   /// #FF4E69
   static let key0: UIColor = DesignSystemAsset.key0.color
+  
+  // MARK: - Line
+  /// L: #212121 90% / D: #B0B0B0 50%
+  static let l0: UIColor = DesignSystemAsset.l0.color
+  /// L: #212121 90% / D: #B0B0B0 50%
+  static let l1: UIColor = DesignSystemAsset.l1.color
 }
