@@ -12,4 +12,6 @@ import Foundation
 /// - `darkNolabels`: CartoDB에서 제공하는 Dark Matter 스타일의 지도 타일 URL
 enum MapTile {
   static let darkNolabels = "https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png"
+  
+  static let lightNolabels = "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"
 }

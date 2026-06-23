@@ -18,13 +18,10 @@ final class AirportAnnotationView: MKAnnotationView {
   static let identifier = "AirportAnnotationView"
   
   // MARK: - UI
-  private let iconImageView = UIImageView().then {
-    $0.tintColor = .black
-  }
+  private let iconImageView = UIImageView()
   
   private let codeLabel = UILabel().then {
     $0.font = .b3_sb
-    $0.textColor = .n70
   }
   
   override init(
@@ -34,6 +31,13 @@ final class AirportAnnotationView: MKAnnotationView {
     super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
     configureUI()
     setupLayout()
+    applyStyle()
+    
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.applyStyle()
+    }
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -43,6 +47,7 @@ final class AirportAnnotationView: MKAnnotationView {
   override func prepareForReuse() {
     super.prepareForReuse()
     codeLabel.text = nil
+    iconImageView.image = nil
   }
   
   // MARK: - Public Method
@@ -56,9 +61,7 @@ final class AirportAnnotationView: MKAnnotationView {
 private extension AirportAnnotationView {
   func configureUI() {
     frame = CGRect(x: 0, y: 0, width: 48, height: 22)
-    backgroundColor = .key0
     layer.borderWidth = 2
-    layer.borderColor = UIColor.n70.cgColor
     layer.cornerRadius = 4
     layer.masksToBounds = true
     
@@ -80,5 +83,15 @@ private extension AirportAnnotationView {
       $0.trailing.equalToSuperview().inset(6)
       $0.centerY.equalToSuperview()
     }
+  }
+  
+  func applyStyle() {
+    backgroundColor = .key0
+    
+    iconImageView.tintColor = .n70
+    codeLabel.textColor = .n70
+    
+    // CGColor는 Dynamic Color가 자동으로 갱신되지 않으므로 다시 적용
+    layer.borderColor = UIColor.n70.cgColor
   }
 }
