@@ -35,7 +35,7 @@ final class RegisterHistoryBookView: BaseView {
   private let headerSubTitleLabel = UILabel().then {
     $0.font = .b1_m
     $0.text = "다 읽은 책을 추가해보세요"
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let bookSectionTitleLabel = UILabel().then {
@@ -82,7 +82,7 @@ final class RegisterHistoryBookView: BaseView {
   private let textField = NeutralTextField().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.isHidden = true
   }
@@ -241,7 +241,7 @@ private extension RegisterHistoryBookView {
       self?.onRegisterBookSearchTap?()
     }
     
-    textField.setPlaceholder("이 책은 어땠나요?", color: .n20)
+    textField.setPlaceholder("이 책은 어땠나요?", color: .gray0)
     
     startDateField.onDateChanged = { [weak self] date in
       self?.onStartDateChanged?(date)
