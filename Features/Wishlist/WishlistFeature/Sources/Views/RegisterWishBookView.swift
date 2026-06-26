@@ -26,7 +26,7 @@ final class RegisterWishBookView: BaseView {
   private let headerSubTitleLabel = UILabel().then {
     $0.font = .b1_m
     $0.text = "읽고 싶은 책을 찾아보세요"
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let bookSectionTitleLabel = UILabel().then {
@@ -47,7 +47,7 @@ final class RegisterWishBookView: BaseView {
   private let textField = NeutralTextField().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.isHidden = true
   }
@@ -151,7 +151,7 @@ private extension RegisterWishBookView {
       self?.onRegisterBookSearchTap?()
     }
     
-    textField.setPlaceholder("왜 이 책을 읽고 싶나요?", color: .n20)
+    textField.setPlaceholder("왜 이 책을 읽고 싶나요?", color: .gray0)
   }
   
   @objc func textDidChange(_ textField: UITextField) {
