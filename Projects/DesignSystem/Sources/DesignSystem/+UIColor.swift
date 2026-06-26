@@ -9,34 +9,36 @@ import UIKit
 
 public extension UIColor {
   // MARK: - Neutral
-  /// #FAFAFB
+  /// L: #1C1C1E / D: #FAFAFB
   static let n0: UIColor = DesignSystemAsset.n0.color
-  /// #ECECED
+  /// L: #B0B0B5 / D: #5C5C62
   static let n10: UIColor = DesignSystemAsset.n10.color
-  /// #B0B0B0
+  /// L: #F8F9FA / D: #212121
   static let n20: UIColor = DesignSystemAsset.n20.color
-  /// #9B9BA2
+  /// L: #D1D5DB / D: #333333
   static let n30: UIColor = DesignSystemAsset.n30.color
-  /// #3A3A3A
+  /// L: #212121 / D: #212121
   static let n40: UIColor = DesignSystemAsset.n40.color
-  /// #333333
+  /// L: #FFFFFF / D: #000000
   static let n50: UIColor = DesignSystemAsset.n50.color
-  /// #212121
-  static let n60: UIColor = DesignSystemAsset.n60.color
-  /// #000000
-  static let n70: UIColor = DesignSystemAsset.n70.color
   
   // MARK: - Background
-  /// #1A1A1D
+  /// L: #FDFCF8 / D: #1A1A1D
   static let bg0: UIColor = DesignSystemAsset.bg0.color
   
   // MARK: - Key
-  /// #FF4E69
+  /// L: #FF4E69 / D: #FF4E69
   static let key0: UIColor = DesignSystemAsset.key0.color
   
   // MARK: - Line
-  /// L: #212121 90% / D: #B0B0B0 50%
+  /// L: #1C1C1E 70% / D: #FAFAFB 70%
   static let l0: UIColor = DesignSystemAsset.l0.color
-  /// L: #212121 90% / D: #B0B0B0 50%
+  /// L: #E0E0E0 / D: #2A2A2E
   static let l1: UIColor = DesignSystemAsset.l1.color
+  /// L: #D1D5DB / D: #3A3A3A
+  static let l2: UIColor = DesignSystemAsset.l2.color
+  
+  // MARK: - Gray
+  /// L: #B0B0B0 / D: #B0B0B0
+  static let gray0: UIColor = DesignSystemAsset.gray0.color
 }
