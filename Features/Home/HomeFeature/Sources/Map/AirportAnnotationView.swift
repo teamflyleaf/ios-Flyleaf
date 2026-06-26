@@ -88,10 +88,10 @@ private extension AirportAnnotationView {
   func applyStyle() {
     backgroundColor = .key0
     
-    iconImageView.tintColor = .n70
-    codeLabel.textColor = .n70
+    iconImageView.tintColor = .n0
+    codeLabel.textColor = .n0
     
     // CGColor는 Dynamic Color가 자동으로 갱신되지 않으므로 다시 적용
-    layer.borderColor = UIColor.n70.cgColor
+    layer.borderColor = UIColor.n0.cgColor
   }
 }

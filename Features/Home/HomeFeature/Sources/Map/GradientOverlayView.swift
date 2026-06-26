@@ -42,17 +42,17 @@ private extension GradientOverlayView {
   func configureGradient() {
     if traitCollection.userInterfaceStyle == .dark {
       gradientLayer.colors = [
-        UIColor.n70.withAlphaComponent(0.85).cgColor,
-        UIColor.n70.withAlphaComponent(0.05).cgColor,
-        UIColor.n70.withAlphaComponent(0).cgColor
+        UIColor.n50.withAlphaComponent(0.85).cgColor,
+        UIColor.n50.withAlphaComponent(0.05).cgColor,
+        UIColor.n50.withAlphaComponent(0).cgColor
       ]
       
       gradientLayer.locations = [0.20, 0.50, 1.0]
     } else {
       gradientLayer.colors = [
-        UIColor.n70.withAlphaComponent(0.65).cgColor,
-        UIColor.n70.withAlphaComponent(0.10).cgColor,
-        UIColor.n70.withAlphaComponent(0).cgColor
+        UIColor.n50.withAlphaComponent(0.65).cgColor,
+        UIColor.n50.withAlphaComponent(0.10).cgColor,
+        UIColor.n50.withAlphaComponent(0).cgColor
       ]
       
       gradientLayer.locations = [0.10, 0.35, 1.0]

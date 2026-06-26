@@ -162,7 +162,7 @@ extension HomeViewController: MKMapViewDelegate {
   ) -> MKOverlayRenderer {
     if let polyline = overlay as? MKPolyline {
       let renderer = MKPolylineRenderer(polyline: polyline)
-      renderer.strokeColor = .l1
+      renderer.strokeColor = .l0
       renderer.lineWidth = 0.5
       renderer.lineCap = .round
       renderer.lineJoin = .round
