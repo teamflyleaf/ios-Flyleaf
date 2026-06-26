@@ -51,7 +51,7 @@ public final class ReviewWriteViewController: BaseViewController {
   }
   
   private let contentContainerView = UIView().then {
-    $0.backgroundColor = .n20.withAlphaComponent(0.6)
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
   }
