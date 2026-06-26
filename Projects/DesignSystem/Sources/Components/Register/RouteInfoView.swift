@@ -51,7 +51,7 @@ public final class RouteInfoView: BaseView {
   }
   
   private let departureCityLabel = UILabel().then {
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.font = .b2_m
     $0.numberOfLines = 1
   }
@@ -81,7 +81,7 @@ public final class RouteInfoView: BaseView {
   }
   
   private let arrivalCityLabel = UILabel().then {
-    $0.textColor = .n20
+    $0.textColor = .gray0 
     $0.font = .b2_m
     $0.numberOfLines = 1
   }

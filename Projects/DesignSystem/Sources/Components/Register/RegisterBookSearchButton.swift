@@ -78,7 +78,7 @@ public final class RegisterBookSearchButton: BaseView {
   
   private let titleLabel = UILabel().then {
     $0.font = .c2
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let bookTitleLabel = UILabel().then {
@@ -89,7 +89,7 @@ public final class RegisterBookSearchButton: BaseView {
   
   private let authorLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.numberOfLines = 1
   }
   
@@ -102,7 +102,7 @@ public final class RegisterBookSearchButton: BaseView {
   
   private let chevron = UIImageView().then {
     $0.image = .right
-    $0.tintColor = .n20
+    $0.tintColor = .gray0
   }
   
   public override func configureUI() {
@@ -125,7 +125,7 @@ public final class RegisterBookSearchButton: BaseView {
       textStackView.addArrangedSubview($0)
     }
     
-    backgroundColor = .n60
+    backgroundColor = .n20
     layer.cornerRadius = 16
     
     contentButton.addTarget(self, action: #selector(didTap), for: .touchUpInside)

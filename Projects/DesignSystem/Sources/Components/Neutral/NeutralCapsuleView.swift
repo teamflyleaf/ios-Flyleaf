@@ -51,7 +51,7 @@ public final class NeutralCapsuleView: BaseView {
   }
   
   public override func configureUI() {
-    backgroundColor = .n50
+    backgroundColor = .n30
     layer.cornerRadius = 12
     clipsToBounds = true
     

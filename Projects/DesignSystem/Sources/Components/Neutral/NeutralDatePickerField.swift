@@ -31,7 +31,7 @@ public final class NeutralDatePickerField: UIControl {
   private let textField = NeutralTextField().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.tintColor = .clear
   }
@@ -53,7 +53,7 @@ public final class NeutralDatePickerField: UIControl {
   
   public init(placeholder: String) {
     super.init(frame: .zero)
-    textField.setPlaceholder(placeholder, color: .n20)
+    textField.setPlaceholder(placeholder, color: .gray0)
     configureUI()
     setupLayout()
     bind()

@@ -55,10 +55,10 @@ public final class NeutralPagePickerField: UIControl {
   private let textField = NeutralTextField().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
     $0.layer.cornerRadius = 16
     $0.tintColor = .clear
     $0.clearButtonMode = .never
+    $0.backgroundColor = .n20
   }
   
   private let pickerView = UIPickerView()
@@ -181,7 +181,7 @@ private extension NeutralPagePickerField {
   }
   
   func updatePlaceholder() {
-    textField.setPlaceholder("0 / \(maxPage)", color: .n20)
+    textField.setPlaceholder("0 / \(maxPage)", color: .gray0)
   }
   
   @objc func didTap() {

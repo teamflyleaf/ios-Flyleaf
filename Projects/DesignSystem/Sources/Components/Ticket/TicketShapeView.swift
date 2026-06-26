@@ -52,7 +52,7 @@ final class TicketShapeView: BaseView {
   private let worldMap = UIImageView().then {
     $0.image = .worldMap
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .n20
+    $0.tintColor = .gray0
   }
   
   init(mode: Mode = .full) {
@@ -73,14 +73,20 @@ final class TicketShapeView: BaseView {
     layer.mask = shapeMaskLayer
     layer.addSublayer(dashedLineLayer)
     
-    backgroundColor = .n60
+    backgroundColor = .n20
     
-    dashedLineLayer.strokeColor = UIColor.n0.withAlphaComponent(0.5).cgColor
+    dashedLineLayer.strokeColor = UIColor.l0.cgColor
     dashedLineLayer.lineWidth = 1
     dashedLineLayer.lineDashPattern = [2, 3]
     dashedLineLayer.fillColor = UIColor.clear.cgColor
     
     addSubview(worldMap)
+    
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.dashedLineLayer.strokeColor = UIColor.l0.cgColor
+    }
   }
   
   override func setupLayout() {

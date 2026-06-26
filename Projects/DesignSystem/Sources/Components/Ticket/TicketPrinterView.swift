@@ -98,7 +98,7 @@ public final class TicketPrinterView: BaseView {
   
   // MARK: - UI
   private let slotView = UIView().then {
-    $0.backgroundColor = .n50
+    $0.backgroundColor = .n20
     $0.layer.borderWidth = 2
     $0.layer.borderColor = UIColor.n0.cgColor
     $0.layer.cornerRadius = 4
@@ -130,6 +130,12 @@ public final class TicketPrinterView: BaseView {
     // 프린트 완료 전까지 찢기는 제스처 비활성화
     panGesture.isEnabled = false
     revealContainerView.addGestureRecognizer(panGesture)
+    
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.slotView.layer.borderColor = UIColor.n0.cgColor
+    }
   }
   
   public override func setupLayout() {
