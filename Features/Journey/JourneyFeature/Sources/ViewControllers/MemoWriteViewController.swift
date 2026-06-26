@@ -59,7 +59,7 @@ public final class MemoWriteViewController: BaseViewController {
   }
   
   private let contentContainerView = UIView().then {
-    $0.backgroundColor = .n50.withAlphaComponent(0.6)
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
   }
@@ -75,7 +75,7 @@ public final class MemoWriteViewController: BaseViewController {
   private let placeholderLabel = UILabel().then {
     $0.text = "인상 깊은 문장이나 생각을 남겨보세요"
     $0.font = .c2
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.numberOfLines = 1
   }
   
@@ -171,7 +171,7 @@ private extension MemoWriteViewController {
     
     pagePickerField.configure(
       maxPage: book.itemPage,
-      backgroundColor: .n50.withAlphaComponent(0.6)
+      backgroundColor: .n20
     )
     
     if let existingMemo {

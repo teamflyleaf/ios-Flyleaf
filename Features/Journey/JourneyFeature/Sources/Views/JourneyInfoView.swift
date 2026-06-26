@@ -27,7 +27,7 @@ final class JourneyInfoView: BaseView {
   
   private let startDateLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
   }
   
@@ -39,7 +39,7 @@ final class JourneyInfoView: BaseView {
   
   private let currentPageLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.isUserInteractionEnabled = true
   }
@@ -60,7 +60,7 @@ final class JourneyInfoView: BaseView {
   
   private let distanceLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
   }
   
@@ -72,7 +72,7 @@ final class JourneyInfoView: BaseView {
   
   private let remainingDistanceLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
   }
   

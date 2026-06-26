@@ -55,7 +55,7 @@ extension MemoTableViewCell {
 private extension MemoTableViewCell {
   func configureUI() {
     selectionStyle = .none
-    backgroundColor = .n60
+    backgroundColor = .n20
     
     [
       contentLabel,
