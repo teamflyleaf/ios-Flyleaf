@@ -44,7 +44,7 @@ public final class SettingViewController: BaseViewController {
   private let socialEmailLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n50
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 1

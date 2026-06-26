@@ -32,7 +32,7 @@ final class RecentSearchesCapsuleButton: BaseView {
 
   private let deleteButton = UIButton().then {
     $0.setImage(.xmark, for: .normal)
-    $0.tintColor = .n20
+    $0.tintColor = .gray0
   }
 
   override func configureUI() {
@@ -47,6 +47,12 @@ final class RecentSearchesCapsuleButton: BaseView {
     
     contentButton.addTarget(self, action: #selector(didTapCapsule), for: .touchUpInside)
     deleteButton.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+    
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.layer.borderColor = UIColor.n0.cgColor
+    }
   }
   
   override func setupLayout() {
