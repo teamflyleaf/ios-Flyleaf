@@ -46,11 +46,11 @@ public final class DotDividerView: BaseView {
   }
   
   /// - Parameters:
-  ///   - lineColor: 중앙 라인의 색상 (기본값: 연한 n0)
+  ///   - lineColor: 중앙 라인의 색상 (기본값: n0)
   ///   - dotColor: 좌우 점의 색상 (기본값: n0)
   ///   - weight: 중앙 라인의 두께
   public init(
-    lineColor: UIColor = .n0.withAlphaComponent(0.1),
+    lineColor: UIColor = .n0,
     dotColor: UIColor = .n0,
     weight: CGFloat = 1
   ) {

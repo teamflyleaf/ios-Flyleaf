@@ -40,19 +40,19 @@ public final class NeutralProgressView: BaseView {
   }
   
   private let bookStepView = UIView().then {
-    $0.backgroundColor = .n50
+    $0.backgroundColor = .n30
     $0.layer.cornerRadius = 2
     $0.clipsToBounds = true
   }
   
   private let routeStepView = UIView().then {
-    $0.backgroundColor = .n50
+    $0.backgroundColor = .n30
     $0.layer.cornerRadius = 2
     $0.clipsToBounds = true
   }
   
   private let checkStepView = UIView().then {
-    $0.backgroundColor = .n50
+    $0.backgroundColor = .n30
     $0.layer.cornerRadius = 2
     $0.clipsToBounds = true
   }
@@ -88,13 +88,13 @@ public final class NeutralProgressView: BaseView {
       switch step {
       case .book:
         self.bookStepView.backgroundColor = .key0
-        self.routeStepView.backgroundColor = .n50
-        self.checkStepView.backgroundColor = .n50
+        self.routeStepView.backgroundColor = .n30
+        self.checkStepView.backgroundColor = .n30
     
       case .route:
         self.bookStepView.backgroundColor = .key0
         self.routeStepView.backgroundColor = .key0
-        self.checkStepView.backgroundColor = .n50
+        self.checkStepView.backgroundColor = .n30
         
       case .check:
         self.bookStepView.backgroundColor = .key0

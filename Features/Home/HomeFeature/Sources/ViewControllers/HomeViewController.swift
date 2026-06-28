@@ -86,6 +86,12 @@ public final class HomeViewController: BaseViewController {
       view.addSubview($0)
     }
     
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.applyMapTileTheme()
+    }
+    
     setupMapView()
     configureAddMenu()
   }
@@ -156,7 +162,7 @@ extension HomeViewController: MKMapViewDelegate {
   ) -> MKOverlayRenderer {
     if let polyline = overlay as? MKPolyline {
       let renderer = MKPolylineRenderer(polyline: polyline)
-      renderer.strokeColor = .n0.withAlphaComponent(0.5)
+      renderer.strokeColor = .l0
       renderer.lineWidth = 0.5
       renderer.lineCap = .round
       renderer.lineJoin = .round
@@ -271,6 +277,24 @@ private extension HomeViewController {
     
     greetingLabel.text = viewModel.greetingText
   }
+  
+  private func applyMapTileTheme() {
+    mapView.removeOverlays(
+      mapView.overlays.compactMap { $0 as? MKTileOverlay }
+    )
+    
+    let urlTemplate = traitCollection.userInterfaceStyle == .dark ? MapTile.darkNolabels : MapTile.lightNolabels
+    
+    let tileOverlay = CachedMapTileOverlay(urlTemplate: urlTemplate)
+    tileOverlay.canReplaceMapContent = true
+    
+    mapView.addOverlay(tileOverlay, level: .aboveRoads)
+    
+    let polylines = mapView.overlays.compactMap { $0 as? MKPolyline }
+
+    mapView.removeOverlays(polylines)
+    mapView.addOverlays(polylines)
+  }
 }
 
 // MARK: - MapView
@@ -285,10 +309,8 @@ private extension HomeViewController {
   func setupMapView() {
     mapView.delegate = self
     mapView.addSubview(gradientOverlayView)
-    
-    let tileOverlay = CachedMapTileOverlay(urlTemplate: MapTile.darkNolabels)
-    tileOverlay.canReplaceMapContent = true
-    mapView.addOverlay(tileOverlay, level: .aboveRoads)
+
+    applyMapTileTheme()
   }
   
   /// 현재 여행 목록을 기반으로 공항 어노테이션, 비행 경로, 비행기 어노테이션을 지도에 렌더링합니다.

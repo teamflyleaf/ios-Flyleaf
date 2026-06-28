@@ -17,6 +17,10 @@ import UIKit
 ///   - `draw(_:)`를 사용하여 Core Graphics로 직접 렌더링합니다.
 ///   - 뷰의 width에 맞춰 패턴이 반복됩니다.
 final class BarcodeView: BaseView {
+  override func configureUI() {
+    self.backgroundColor = .clear
+  }
+  
   override func draw(_ rect: CGRect) {
     // Core Graphics Context 불러오기
     guard let ctx = UIGraphicsGetCurrentContext() else { return }

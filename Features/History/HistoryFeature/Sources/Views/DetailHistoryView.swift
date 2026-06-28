@@ -34,7 +34,7 @@ final class DetailHistoryView: BaseView {
   private let descriptionLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0
@@ -49,7 +49,7 @@ final class DetailHistoryView: BaseView {
   private let isbn13Label = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0
@@ -80,7 +80,7 @@ final class DetailHistoryView: BaseView {
   private let reviewLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0
@@ -186,7 +186,7 @@ final class DetailHistoryView: BaseView {
       destination: journey.arrivalAirport
     )
     
-    descriptionLabel.text = journey.book.description
+    descriptionLabel.text = journey.book.description.isEmpty ? "-" : journey.book.description
     isbn13Label.text = journey.book.isbn13
     if let startedAt = journey.startedAt {
       startDateField.setDate(startedAt)

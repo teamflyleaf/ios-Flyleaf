@@ -70,7 +70,7 @@ public final class WishTicketView: BaseView {
 
   private let reasonLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
 
   private let bookInfoStackView = UIStackView().then {

@@ -42,7 +42,7 @@ final class BookSearchResultCell: UICollectionViewCell {
   
   private let authorLabel = UILabel().then {
     $0.font = .b2_m
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.numberOfLines = 1
   }
@@ -71,7 +71,7 @@ private extension BookSearchResultCell {
       addSubview($0)
     }
     
-    backgroundColor = .n60
+    backgroundColor = .n20
     layer.cornerRadius = 12
   }
   

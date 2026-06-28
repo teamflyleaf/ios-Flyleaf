@@ -96,6 +96,12 @@ public final class JourneyProgressButton: BaseView {
     layer.addSublayer(progressLayer)
     
     setupProgressLayerStyle()
+    
+    registerForTraitChanges(
+      [UITraitUserInterfaceStyle.self]
+    ) { (self: Self, _) in
+      self.updateTrackLayerColor()
+    }
   }
   
   public override func setupLayout() {
@@ -149,7 +155,7 @@ public final class JourneyProgressButton: BaseView {
 private extension JourneyProgressButton {
   func setupProgressLayerStyle() {
     trackLayer.fillColor = UIColor.clear.cgColor
-    trackLayer.strokeColor = UIColor.n40.cgColor
+    trackLayer.strokeColor = UIColor.n30.cgColor
     trackLayer.lineWidth = 3
     trackLayer.lineCap = .round
     
@@ -208,5 +214,9 @@ private extension JourneyProgressButton {
     } else {
       changes()
     }
+  }
+  
+  func updateTrackLayerColor() {
+    trackLayer.strokeColor = UIColor.n30.cgColor
   }
 }

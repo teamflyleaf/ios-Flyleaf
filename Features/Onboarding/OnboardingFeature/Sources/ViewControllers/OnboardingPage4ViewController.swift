@@ -33,7 +33,7 @@ public class OnboardingPage4ViewController: BaseViewController {
   private let subtitleLabel = UILabel().then {
     $0.text = "읽은 책들은 항공편처럼 쌓이고,\n당신만의 독서 지도가 완성됩니다"
     $0.font = .c1
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.numberOfLines = 0
   }

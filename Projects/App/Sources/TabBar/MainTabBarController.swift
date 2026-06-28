@@ -45,7 +45,7 @@ private extension MainTabBarController {
     appearance.configureWithOpaqueBackground()
     
     // 배경색
-    appearance.backgroundColor = .n50
+    //appearance.backgroundColor = .n50
     
     // 선택 상태
     appearance.stackedLayoutAppearance.selected.iconColor = .key0
@@ -54,9 +54,9 @@ private extension MainTabBarController {
     ]
     
     // 기본 상태
-    appearance.stackedLayoutAppearance.normal.iconColor = .n20
+    appearance.stackedLayoutAppearance.normal.iconColor = .n10
     appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-      .foregroundColor: UIColor.n20
+      .foregroundColor: UIColor.n10
     ]
     
     tabBar.standardAppearance = appearance

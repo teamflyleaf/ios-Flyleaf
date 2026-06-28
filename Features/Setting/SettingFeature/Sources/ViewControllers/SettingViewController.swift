@@ -44,7 +44,7 @@ public final class SettingViewController: BaseViewController {
   private let socialEmailLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 1
@@ -58,6 +58,16 @@ public final class SettingViewController: BaseViewController {
     $0.distribution = .fillEqually
     $0.spacing = 6
   }
+  
+  private let settingSectionDividerView = DividerView()
+  
+  private let settingTitleLabel = UILabel().then {
+    $0.text = "설정"
+    $0.font = .b1_sb
+    $0.textColor = .n0
+  }
+
+  private let selectionThemeButton = SettingInfoButton(title: "시스템 테마 설정")
   
   private let infoSectionDividerView = DividerView()
   
@@ -125,6 +135,9 @@ public final class SettingViewController: BaseViewController {
       socialTitleLabel,
       socialEmailLabel,
       socialButtonStackView,
+      settingSectionDividerView,
+      settingTitleLabel,
+      selectionThemeButton,
       infoSectionDividerView,
       infoTitleLabel,
       appVersionStackView,
@@ -203,20 +216,30 @@ public final class SettingViewController: BaseViewController {
       $0.horizontalEdges.equalToSuperview().inset(20)
     }
     
-    infoSectionDividerView.snp.makeConstraints {
+    settingSectionDividerView.snp.makeConstraints {
       $0.top.equalTo(socialButtonStackView.snp.bottom).offset(22)
       $0.horizontalEdges.equalToSuperview().inset(20)
     }
     
-    infoTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(infoSectionDividerView.snp.bottom).offset(22)
+    settingTitleLabel.snp.makeConstraints {
+      $0.top.equalTo(settingSectionDividerView.snp.bottom).offset(22)
       $0.leading.equalToSuperview().offset(20)
     }
     
-    appVersionStackView.snp.makeConstraints {
-      $0.top.equalTo(infoTitleLabel.snp.bottom).offset(14)
+    selectionThemeButton.snp.makeConstraints {
+      $0.top.equalTo(settingTitleLabel.snp.bottom).offset(16)
       $0.horizontalEdges.equalToSuperview().inset(20)
       $0.height.equalTo(30)
+    }
+    
+    infoSectionDividerView.snp.makeConstraints {
+      $0.top.equalTo(selectionThemeButton.snp.bottom).offset(22)
+      $0.horizontalEdges.equalToSuperview().inset(20)
+    }
+    
+    appVersionStackView.snp.makeConstraints {
+      $0.top.equalTo(infoSectionDividerView.snp.bottom).offset(22)
+      $0.horizontalEdges.equalToSuperview().inset(20)
     }
     
     infoStackView.snp.makeConstraints {
@@ -271,6 +294,7 @@ public final class SettingViewController: BaseViewController {
     
     socialEmailLabel.text = viewModel.currentEmail ?? "이메일 정보 없음"
     
+    settingButtonBind()
     socialButtonBind()
     infoButtonBind()
     reportButtonBind()
@@ -290,6 +314,12 @@ private extension SettingViewController {
       deleteTitle: "탈퇴"
     ) { [weak self] in
       self?.viewModel.deleteAccount()
+    }
+  }
+  
+  func settingButtonBind() {
+    selectionThemeButton.onTap = { [weak self] in
+      self?.onRoute?(.themeSelection)
     }
   }
   

@@ -106,12 +106,12 @@ private extension OnboardingPage1ViewController {
     DispatchQueue.main.async { self.showScript(self.script1) }
     try? await Task.sleep(for: .seconds(1))
     DispatchQueue.main.async {
-      self.changeColor(of: [self.script1], to: .n50)
+      self.changeColor(of: [self.script1], to: .n30)
       self.showScript(self.script2)
     }
     try? await Task.sleep(for: .seconds(1))
     DispatchQueue.main.async {
-      self.changeColor(of: [self.script1, self.script2], to: .n50)
+      self.changeColor(of: [self.script1, self.script2], to: .n30)
       self.showScript(self.script3)
     }
     try? await Task.sleep(for: .seconds(1))

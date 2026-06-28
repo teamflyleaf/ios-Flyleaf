@@ -15,4 +15,5 @@ public enum SettingRoute {
   case openSource
   case logout
   case deleteAccount
+  case themeSelection
 }

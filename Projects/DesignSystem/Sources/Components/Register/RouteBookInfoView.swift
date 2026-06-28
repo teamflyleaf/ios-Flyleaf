@@ -48,7 +48,7 @@ public final class RouteBookInfoView: BaseView {
   
   private let autherLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.numberOfLines = 1
     $0.textAlignment = .center
   }

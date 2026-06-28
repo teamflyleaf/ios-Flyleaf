@@ -28,7 +28,7 @@ final class SplashViewController: BaseViewController {
   private let logoImage = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.image = .flyleafLogo
-    $0.tintColor = .n10
+    $0.tintColor = .n0
   }
   
   private let loadingStepDisplayLabel = UILabel().then {
