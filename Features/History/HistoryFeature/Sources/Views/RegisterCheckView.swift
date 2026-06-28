@@ -31,7 +31,7 @@ final class RegisterCheckView: BaseView {
   private let headerSubTitleLabel = UILabel().then {
     $0.font = .b1_m
     $0.text = "책과 여행 경로를 확인해주세요"
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let routeBookInfoView = RouteBookInfoView()
@@ -45,7 +45,7 @@ final class RegisterCheckView: BaseView {
   private let startDayLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0
@@ -60,7 +60,7 @@ final class RegisterCheckView: BaseView {
   private let finishDayLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0
@@ -75,7 +75,7 @@ final class RegisterCheckView: BaseView {
   private let reviewLabel = NeutralPaddingLabel().then {
     $0.font = .c2
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 16
     $0.clipsToBounds = true
     $0.numberOfLines = 0

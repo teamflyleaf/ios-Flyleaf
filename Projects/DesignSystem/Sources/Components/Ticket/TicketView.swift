@@ -31,7 +31,7 @@ public final class TicketView: BaseView {
     $0.font = .c3
     $0.textColor = .key0
     $0.textAlignment = .center
-    $0.backgroundColor = .n50
+    $0.backgroundColor = .n30
     $0.layer.cornerRadius = 12
     $0.clipsToBounds = true
   }

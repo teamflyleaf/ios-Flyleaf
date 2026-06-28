@@ -36,7 +36,7 @@ public final class LoginViewController: BaseViewController {
     $0.text = "독서 여행 기록을 저장하고\n언제든 이어서 읽을 수 있어요"
     $0.numberOfLines = 2
     $0.font = .b1_sb
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let signInButton = ASAuthorizationAppleIDButton().then {

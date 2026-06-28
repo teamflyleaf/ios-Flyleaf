@@ -21,7 +21,7 @@ final class SearchAirportResultView: BaseView {
   // MARK: - UI
   private let resultCountLabel = UILabel().then {
     $0.font = .b2_m
-    $0.textColor = .n20
+    $0.textColor = .n0
     $0.numberOfLines = 1
   }
   

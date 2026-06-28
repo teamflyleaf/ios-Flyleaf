@@ -34,7 +34,7 @@ public final class SearchHeader: BaseView {
   public let searchTextField = NeutralTextField().then {
     $0.font = .b1_m
     $0.textColor = .n0
-    $0.backgroundColor = .n60
+    $0.backgroundColor = .n20
     $0.layer.cornerRadius = 12
     $0.clipsToBounds = true
     $0.returnKeyType = .search
@@ -66,7 +66,7 @@ public final class SearchHeader: BaseView {
   
   // MARK: - Public Method
   public func setPlaceholder(_ text: String) {
-    searchTextField.setPlaceholder(text, color: .n20)
+    searchTextField.setPlaceholder(text, color: .gray0)
   }
 }
 

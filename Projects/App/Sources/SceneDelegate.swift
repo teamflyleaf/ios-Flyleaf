@@ -30,6 +30,7 @@ import SearchHistoryImplementation
 import TooltipImplementation
 
 import DIContainer
+import DesignSystem
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
@@ -174,6 +175,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     container.register(OpenSourceBuilder.self, scope: .transient) {
       OpenSourceBuilder()
     }
+    
+    container.register(ThemeSelectionBuilder.self, scope: .transient) {
+      ThemeSelectionBuilder()
+    }
 
     // MARK: - Coordinator
     // .singleton: 앱의 루트 코디네이터. 앱 생명주기 동안 하나만 존재해야 함
@@ -198,6 +203,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         settingBuilder: container.resolve(SettingBuilder.self)!,
         privacyPolicyBuilder: container.resolve(PrivacyPolicyBuilder.self)!,
         termsOfServiceBuilder: container.resolve(TermsOfServiceBuilder.self)!,
+        themeSelectionBuilder: container.resolve(ThemeSelectionBuilder.self)!,
         openSourceBuilder: container.resolve(OpenSourceBuilder.self)!
       )
     }
@@ -209,6 +215,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window.rootViewController = navigationController
     window.makeKeyAndVisible()
 
+    ThemeManager.apply(window: window)
     self.window = window
     self.appCoordinator = coordinator
 

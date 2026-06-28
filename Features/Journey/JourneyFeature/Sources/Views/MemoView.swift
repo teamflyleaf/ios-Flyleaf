@@ -34,7 +34,7 @@ final class MemoView: BaseView {
   private let emptyLabel = UILabel().then {
     $0.text = "아직 메모가 비어있어요\n인상 깊은 문장이나 생각을 남겨보세요"
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.numberOfLines = 0
     $0.textAlignment = .center
   }

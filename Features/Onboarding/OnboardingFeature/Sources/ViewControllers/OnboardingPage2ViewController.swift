@@ -33,7 +33,7 @@ public final class OnboardingPage2ViewController: BaseViewController {
   private let subtitleLabel = UILabel().then {
     $0.text = "독서 여정을 등록할 때\n출발 공항과 도착 공항을 선택하세요"
     $0.font = .c1
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.numberOfLines = 0
   }

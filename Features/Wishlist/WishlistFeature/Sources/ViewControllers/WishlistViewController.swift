@@ -79,7 +79,7 @@ public final class WishlistViewController: BaseViewController {
   private let emptyDescriptionLabel = UILabel().then {
     $0.text = "읽고 싶은 책을 예약하면 이곳에 쌓여요"
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .center
     $0.numberOfLines = 0
   }

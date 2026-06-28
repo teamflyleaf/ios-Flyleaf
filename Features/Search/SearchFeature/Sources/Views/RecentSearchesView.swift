@@ -25,7 +25,7 @@ final class RecentSearchesView: BaseView {
   
   private let deleteButton = UIButton().then {
     $0.setTitle("전체삭제", for: .normal)
-    $0.setTitleColor(.n20, for: .normal)
+    $0.setTitleColor(.gray0, for: .normal)
     $0.titleLabel?.font = .b2_m
   }
   

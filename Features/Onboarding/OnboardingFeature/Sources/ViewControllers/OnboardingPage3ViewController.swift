@@ -34,7 +34,7 @@ public final class OnboardingPage3ViewController: BaseViewController {
   private let subtitleLabel = UILabel().then {
     $0.text = "독서가 진행될수록\n여정도 함께 채워집니다."
     $0.font = .c1
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.numberOfLines = 0
   }

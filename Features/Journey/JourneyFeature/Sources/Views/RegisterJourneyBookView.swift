@@ -27,7 +27,7 @@ final class RegisterJourneyBookView: BaseView {
   private let headerSubTitleLabel = UILabel().then {
     $0.font = .b1_m
     $0.text = "읽고 있는 책을 찾아보세요"
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let bookSectionTitleLabel = UILabel().then {

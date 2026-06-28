@@ -30,7 +30,7 @@ final class SelectRouteView: BaseView {
   private let headerSubTitleLabel = UILabel().then {
     $0.font = .b1_m
     $0.text = "출발지와 목적지를 선택해주세요"
-    $0.textColor = .n20
+    $0.textColor = .gray0
   }
   
   private let departureSectionTitleLabel = UILabel().then {

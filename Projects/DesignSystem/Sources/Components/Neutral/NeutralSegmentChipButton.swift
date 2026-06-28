@@ -58,7 +58,7 @@ public final class NeutralSegmentChipButton: BaseView {
   
   private let titleLabel = UILabel().then {
     $0.font = .b2_sb
-    $0.textColor = .n60
+    $0.textColor = .n0
     $0.numberOfLines = 1
     $0.lineBreakMode = .byTruncatingTail
   }
@@ -83,8 +83,7 @@ public final class NeutralSegmentChipButton: BaseView {
     ].forEach {
       stackView.addArrangedSubview($0)
     }
-    
-    backgroundColor = .n60
+
     layer.cornerRadius = 18
     clipsToBounds = true
     
@@ -124,9 +123,9 @@ public final class NeutralSegmentChipButton: BaseView {
 
     switch state {
     case .normal:
-      backgroundColor = .n50
-      iconImageView.tintColor = .n20
-      titleLabel.textColor = .n20
+      backgroundColor = .n30
+      iconImageView.tintColor = .gray0
+      titleLabel.textColor = .gray0
       titleLabel.isHidden = true
 
     case .selected:

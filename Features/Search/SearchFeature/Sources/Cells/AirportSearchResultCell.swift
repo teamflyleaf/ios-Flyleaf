@@ -46,7 +46,7 @@ final class AirportSearchResultCell: UICollectionViewCell {
   
   private let airportLabel = UILabel().then {
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .left
     $0.numberOfLines = 1
   }
@@ -87,7 +87,7 @@ private extension AirportSearchResultCell {
       textStackView.addArrangedSubview($0)
     }
     
-    backgroundColor = .n60
+    backgroundColor = .n20
     layer.cornerRadius = 12
   }
   

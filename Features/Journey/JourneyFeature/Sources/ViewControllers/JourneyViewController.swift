@@ -129,7 +129,7 @@ public final class JourneyViewController: BaseViewController {
   private let emptyDescriptionLabel = UILabel().then {
     $0.text = "새로운 독서 여행을 시작해보세요"
     $0.font = .c3
-    $0.textColor = .n20
+    $0.textColor = .gray0
     $0.textAlignment = .center
     $0.numberOfLines = 0
   }

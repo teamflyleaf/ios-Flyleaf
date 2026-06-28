@@ -29,10 +29,10 @@ public final class DividerView: BaseView {
   private let weight: CGFloat
   
   /// - Parameters:
-  ///   - color: 디바이더의 색상 (기본값: `.n0` + 투명도 10%)
+  ///   - color: 디바이더의 색상 (기본값: `.l1`)
   ///   - weight: 디바이더의 두께 (기본값: `1`)
   public init(
-    color: UIColor = .n0.withAlphaComponent(0.1),
+    color: UIColor = .l1,
     weight: CGFloat = 1
   ) {
     self.color = color
