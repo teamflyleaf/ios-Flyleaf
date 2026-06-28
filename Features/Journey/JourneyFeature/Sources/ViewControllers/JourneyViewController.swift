@@ -520,6 +520,8 @@ private extension JourneyViewController {
         journeyId: selectedJourney.id,
         currentPage: page
       )
+      
+      self?.onRoute?(.journeyDataChanged)
     }
   }
   
