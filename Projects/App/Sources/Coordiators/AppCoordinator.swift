@@ -145,6 +145,8 @@ private extension AppCoordinator {
         switch route {
         case .addJourney:
           self?.startJourneyFlow()
+        case .journeyDataChanged:
+          self?.refreshHome?()
         }
       }
     )

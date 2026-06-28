@@ -367,6 +367,7 @@ extension JourneyViewController: UICollectionViewDataSource {
       self?.presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
         Task {
           await self?.viewModel.deleteJourney(journeyId: journey.id)
+          self?.onRoute?(.journeyDataChanged)
         }
       }
     }
@@ -415,6 +416,7 @@ private extension JourneyViewController {
     presentDeleteAlert(message: "이 여행을 삭제할까요?") { [weak self] in
       Task {
         await self?.viewModel.deleteJourney(journeyId: journey.id)
+        self?.onRoute?(.journeyDataChanged)
       }
     }
   }
@@ -676,6 +678,8 @@ private extension JourneyViewController {
           journeyId: selectedJourney.id,
           review: review
         )
+        
+        self?.onRoute?(.journeyDataChanged)
       }
     }
     
