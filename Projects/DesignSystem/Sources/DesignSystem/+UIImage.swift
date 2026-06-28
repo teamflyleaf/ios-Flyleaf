@@ -20,6 +20,7 @@ public extension UIImage {
   static let openBook = DesignSystemAsset.openBook.image.withRenderingMode(.alwaysTemplate)
   static let trash = DesignSystemAsset.trash.image.withRenderingMode(.alwaysTemplate)
   static let settings = DesignSystemAsset.settings.image.withRenderingMode(.alwaysTemplate)
+  static let checkmark = DesignSystemAsset.checkmark.image.withRenderingMode(.alwaysTemplate)
   
   // MARK: - Chevron
   static let chevronLeft = DesignSystemAsset.chevronLeft.image.withRenderingMode(.alwaysTemplate)
