@@ -9,4 +9,5 @@ import Foundation
 
 public enum JourneyRoute {
   case addJourney
+  case journeyDataChanged
 }

@@ -151,6 +151,7 @@ public final class HomeViewController: BaseViewController {
     
     settingButton.addTarget(self, action: #selector(didSetting), for: .touchUpInside)
     updateSummaryUI()
+    renderJourneys()
   }
 }
 
