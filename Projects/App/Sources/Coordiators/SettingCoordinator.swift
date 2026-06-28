@@ -19,6 +19,7 @@ final class SettingCoordinator: Coordinator {
   private let privacyPolicyBuilder: PrivacyPolicyBuildable
   private let termsOfServiceBuilder: TermsOfServiceBuildable
   private let openSourceBuilder: OpenSourceBuildable
+  private let themeSelectionBuilder: ThemeSelectionBuildable
   
   enum FlowEvent {
     case logout
@@ -32,13 +33,15 @@ final class SettingCoordinator: Coordinator {
     settingBuilder: SettingBuildable,
     privacyPolicyBuilder: PrivacyPolicyBuildable,
     termsOfServiceBuilder: TermsOfServiceBuildable,
-    openSourceBuilder: OpenSourceBuildable
+    openSourceBuilder: OpenSourceBuildable,
+    themeSelectionBuilder: ThemeSelectionBuildable
   ) {
     self.navigationController = navigationController
     self.settingBuilder = settingBuilder
     self.privacyPolicyBuilder = privacyPolicyBuilder
     self.termsOfServiceBuilder = termsOfServiceBuilder
     self.openSourceBuilder = openSourceBuilder
+    self.themeSelectionBuilder = themeSelectionBuilder
   }
   
   func start() {
@@ -61,6 +64,9 @@ final class SettingCoordinator: Coordinator {
         
       case .deleteAccount:
         self?.onFlowEvent?(.deleteAccount)
+        
+      case .themeSelection:
+        self?.showThemeSelection()
       }
     })
     
@@ -107,6 +113,19 @@ private extension SettingCoordinator {
       }
     )
 
+    navigationController.pushViewController(vc, animated: true)
+  }
+  
+  func showThemeSelection() {
+    let vc = themeSelectionBuilder.build(
+      onRoute: { [weak self] route in
+        switch route {
+        case .back:
+          self?.navigationController.popViewController(animated: true)
+        }
+      }
+    )
+    
     navigationController.pushViewController(vc, animated: true)
   }
 }

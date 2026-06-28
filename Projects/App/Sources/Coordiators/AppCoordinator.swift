@@ -44,6 +44,7 @@ final class AppCoordinator: NSObject, Coordinator {
   private let settingBuilder: SettingBuildable
   private let privacyPolicyBuilder: PrivacyPolicyBuildable
   private let termsOfServiceBuilder: TermsOfServiceBuildable
+  private let themeSelectionBuilder: ThemeSelectionBuildable
   private let openSourceBuilder: OpenSourceBuildable
   
   init(
@@ -66,6 +67,7 @@ final class AppCoordinator: NSObject, Coordinator {
     settingBuilder: SettingBuildable,
     privacyPolicyBuilder: PrivacyPolicyBuildable,
     termsOfServiceBuilder: TermsOfServiceBuildable,
+    themeSelectionBuilder: ThemeSelectionBuildable,
     openSourceBuilder: OpenSourceBuildable
   ) {
     self.navigationController = navigationController
@@ -87,6 +89,7 @@ final class AppCoordinator: NSObject, Coordinator {
     self.settingBuilder = settingBuilder
     self.privacyPolicyBuilder = privacyPolicyBuilder
     self.termsOfServiceBuilder = termsOfServiceBuilder
+    self.themeSelectionBuilder = themeSelectionBuilder
     self.openSourceBuilder = openSourceBuilder
     
     super.init()
@@ -378,7 +381,8 @@ private extension AppCoordinator {
       settingBuilder: settingBuilder,
       privacyPolicyBuilder: privacyPolicyBuilder,
       termsOfServiceBuilder: termsOfServiceBuilder,
-      openSourceBuilder: openSourceBuilder
+      openSourceBuilder: openSourceBuilder,
+      themeSelectionBuilder: themeSelectionBuilder
     )
     
     coordinator.parentCoordinator = self
