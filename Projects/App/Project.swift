@@ -23,6 +23,7 @@ let project = Project(
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
         "CFBundleDisplayName": "Flyleaf Dev",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
+        "CARTO_API_KEY": "$(CARTO_API_KEY)",
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "UIApplicationSceneManifest": [
@@ -127,6 +128,7 @@ let project = Project(
         "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
         "CFBundleDisplayName": "Flyleaf",
         "ALADIN_TTB_KEY": "$(ALADIN_TTB_KEY)",
+        "CARTO_API_KEY": "$(CARTO_API_KEY)",
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "UIApplicationSceneManifest": [
