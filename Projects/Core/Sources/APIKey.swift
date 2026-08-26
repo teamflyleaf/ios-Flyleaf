@@ -17,4 +17,14 @@ public enum APIKey {
 
     return key
   }
+
+  public static var carto: String {
+    guard let key = Bundle.main.object(
+      forInfoDictionaryKey: "CARTO_API_KEY"
+    ) as? String else {
+      fatalError("CARTO_API_KEY not found in Info.plist")
+    }
+
+    return key
+  }
 }
