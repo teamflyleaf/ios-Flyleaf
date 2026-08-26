@@ -84,7 +84,7 @@ public final class SettingViewController: BaseViewController {
   }
   
   private let appVersionLabel = UILabel().then {
-    $0.text = "1.4.0"
+    $0.text = "1.4.1"
     $0.font = .b2_sb
     $0.textColor = .n0
   }

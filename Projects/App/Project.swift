@@ -188,8 +188,8 @@ let project = Project(
               "CODE_SIGN_IDENTITY": "Apple Development: Seongil Yeo (SP9DA93H4W)",
               "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
               "TARGETED_DEVICE_FAMILY": "1",
-              "MARKETING_VERSION": "1.4.0",
-              "CURRENT_PROJECT_VERSION": "3"
+              "MARKETING_VERSION": "1.4.1",
+              "CURRENT_PROJECT_VERSION": "4"
             ],
             xcconfig: "../../Configs/ProdDebug.xcconfig"
           ),
@@ -201,8 +201,8 @@ let project = Project(
               "CODE_SIGN_IDENTITY": "Apple Distribution: Seongil Yeo (X67DB976UU)",
               "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
               "TARGETED_DEVICE_FAMILY": "1",
-              "MARKETING_VERSION": "1.4.0",
-              "CURRENT_PROJECT_VERSION": "3"
+              "MARKETING_VERSION": "1.4.1",
+              "CURRENT_PROJECT_VERSION": "4"
             ],
             xcconfig: "../../Configs/ProdRelease.xcconfig"
           )
