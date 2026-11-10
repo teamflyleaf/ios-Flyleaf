@@ -9,7 +9,7 @@ import Core
 import Foundation
 import BookSearchInterface
 
-/// 알라딘 Open API를 이용해 도서 검색 및 상세 조회 기능을 제공하는 서비스입니다.
+/// YES24 Open API를 이용해 도서 검색 및 상세 조회 기능을 제공하는 서비스입니다.
 ///
 /// 검색 API(`ItemSearch`)를 통해 도서 목록을 조회하고,
 /// 상세 API(`ItemLookUp`)를 통해 선택한 도서의 상세 정보를 조회합니다.
@@ -21,7 +21,7 @@ import BookSearchInterface
 /// ```
 ///
 /// - Note:
-///   - API 키는 기본적으로 `APIKey.aladin` 값을 사용합니다.
+///   - API 키는 기본적으로 `APIKey.yes24` 값을 사용합니다.
 ///   - 테스트 환경에서는 `apiKey`를 직접 주입하여 `Bundle.main` 의존 없이 사용할 수 있습니다.
 public final class BookSearchService: BookSearchServicing {
   private let session: URLSession
@@ -29,7 +29,7 @@ public final class BookSearchService: BookSearchServicing {
   
   public init(
     session: URLSession = .shared,
-    apiKey: String = APIKey.aladin
+    apiKey: String = APIKey.yes24
   ) {
     self.session = session
     self.apiKey = apiKey
