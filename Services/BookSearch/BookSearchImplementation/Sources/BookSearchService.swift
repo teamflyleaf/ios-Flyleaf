@@ -11,8 +11,8 @@ import BookSearchInterface
 
 /// YES24 Open API를 이용해 도서 검색 및 상세 조회 기능을 제공하는 서비스입니다.
 ///
-/// 검색 API(`ItemSearch`)를 통해 도서 목록을 조회하고,
-/// 상세 API(`ItemLookUp`)를 통해 선택한 도서의 상세 정보를 조회합니다.
+/// 검색 API(`goods/itemList`)를 통해 도서 목록을 조회하고,
+/// 상세 API(`goods/itemDetail`)를 통해 선택한 도서의 상세 정보를 조회합니다.
 ///
 /// ```swift
 /// let service = BookSearchService()
@@ -49,34 +49,34 @@ public final class BookSearchService: BookSearchServicing {
   ///   - `DecodingError`: 응답 JSON을 DTO로 디코딩하지 못한 경우
   ///
   /// - Important:
-  ///   - 이 메서드는 알라딘 `ItemSearch` API를 사용합니다.
+  ///   - 이 메서드는 Yes24 `goods/itemList` API를 사용합니다.
   ///   - 반환되는 모델은 검색 결과 전용(`BookSearchItem`)이며,
   ///     페이지 수(`itemPage`) 같은 상세 정보는 포함되지 않을 수 있습니다.
   public func searchBooks(
     query: String,
     start: Int
   ) async throws -> BookSearchPage {
-    guard var components = URLComponents(string: "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx") else {
+    guard var components = URLComponents(string: "https://apis.yes24.com/v1/goods/itemList") else {
       throw BookSearchError.invalidURL
     }
     
     components.queryItems = [
-      .init(name: "ttbkey", value: apiKey),
-      .init(name: "Query", value: query),
-      .init(name: "QueryType", value: "Keyword"),
-      .init(name: "MaxResults", value: "10"),
-      .init(name: "start", value: "\(start)"),
-      .init(name: "SearchTarget", value: "Book"),
-      .init(name: "output", value: "js"),
-      .init(name: "Version", value: "20131101"),
-      .init(name: "Cover", value: "Big")
+      .init(name: "query", value: query),
+      .init(name: "category", value: "BOOK"),
+      .init(name: "sort", value: "DEFAULT"),
+      .init(name: "page", value: "\(start)"),
+      .init(name: "pageSize", value: "10"),
+      .init(name: "detail", value: "N")
     ]
     
     guard let url = components.url else {
       throw BookSearchError.invalidURL
     }
     
-    let (data, response) = try await session.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
+    
+    let (data, response) = try await session.data(for: request)
     
     guard let httpResponse = response as? HTTPURLResponse else {
       throw BookSearchError.invalidResponse
@@ -86,7 +86,7 @@ public final class BookSearchService: BookSearchServicing {
       throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
     }
     
-    let dto = try JSONDecoder().decode(AladinSearchResponseDTO.self, from: data)
+    let dto = try JSONDecoder().decode(Yes24SearchResponseDTO.self, from: data)
     return dto.toModel()
   }
   
