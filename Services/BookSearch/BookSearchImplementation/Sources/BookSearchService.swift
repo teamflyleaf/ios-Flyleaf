@@ -83,6 +83,10 @@ public final class BookSearchService: BookSearchServicing {
     }
     
     guard 200..<300 ~= httpResponse.statusCode else {
+      let error = try? JSONDecoder().decode(Yes24ErrorResponseDTO.self, from: data)
+      if error?.errorCode == "SEARCH_001" {
+        return BookSearchPage(items: [], totalResults: 0, startIndex: start, itemsPerPage: 10)
+      }
       throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
     }
     
@@ -104,29 +108,28 @@ public final class BookSearchService: BookSearchServicing {
   ///   - `DecodingError`: 응답 JSON을 DTO로 디코딩하지 못한 경우
   ///
   /// - Important:
-  ///   - 이 메서드는 알라딘 `ItemLookUp` API를 사용합니다.
+  ///   - 이 메서드는 Yes24 `goods/itemDetail` API를 사용합니다.
   public func fetchBookDetail(
     isbn13: String
   ) async throws -> BookInfo {
-    guard var components = URLComponents(string: "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx") else {
+    guard var components = URLComponents(string: "https://apis.yes24.com/v1/goods/itemDetail") else {
       throw BookSearchError.invalidURL
     }
     
     components.queryItems = [
-      .init(name: "ttbkey", value: apiKey),
-      .init(name: "ItemIdType", value: "ISBN"),
-      .init(name: "ItemId", value: isbn13),
-      .init(name: "output", value: "js"),
-      .init(name: "Version", value: "20131101"),
-      .init(name: "OptResult", value: "ebookList,usedList,reviewList"),
-      .init(name: "Cover", value: "Big")
+      .init(name: "searchType", value: "ISBN13"),
+      .init(name: "query", value: isbn13),
+      .init(name: "detail", value: "Y")
     ]
     
     guard let url = components.url else {
       throw BookSearchError.invalidURL
     }
     
-    let (data, response) = try await session.data(from: url)
+    var request = URLRequest(url: url)
+    request.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
+    
+    let (data, response) = try await session.data(for: request)
     
     guard let httpResponse = response as? HTTPURLResponse else {
       throw BookSearchError.invalidResponse
@@ -136,7 +139,7 @@ public final class BookSearchService: BookSearchServicing {
       throw BookSearchError.httpError(statusCode: httpResponse.statusCode)
     }
     
-    let dto = try JSONDecoder().decode(AladinBookDetailResponseDTO.self, from: data)
+    let dto = try JSONDecoder().decode(Yes24BookDetailResponseDTO.self, from: data)
     return try dto.toModel()
   }
 }
