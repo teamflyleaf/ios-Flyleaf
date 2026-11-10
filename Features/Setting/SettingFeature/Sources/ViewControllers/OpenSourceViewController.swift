@@ -31,7 +31,7 @@ public final class OpenSourceViewController: BaseViewController {
     $0.spacing = 16
   }
   
-  private let aladinAPIButton = SettingInfoButton(title: "AladinAPI")
+  private let yes24APIButton = SettingInfoButton(title: "YES24API")
   private let firebaseButton = SettingInfoButton(title: "Firebase")
   private let kingfisherButton = SettingInfoButton(title: "Kingfisher")
   private let snapkitButton = SettingInfoButton(title: "SnapKit")
@@ -49,7 +49,7 @@ public final class OpenSourceViewController: BaseViewController {
     }
     
     [
-      aladinAPIButton,
+      yes24APIButton,
       firebaseButton,
       kingfisherButton,
       snapkitButton,
@@ -90,8 +90,8 @@ public final class OpenSourceViewController: BaseViewController {
 // MARK: - Private
 private extension OpenSourceViewController {
   func buttonBind() {
-    aladinAPIButton.onTap = {
-      UIApplication.shared.open(OpenSourceURL.aladin)
+    yes24APIButton.onTap = {
+      UIApplication.shared.open(OpenSourceURL.yes24)
     }
     
     firebaseButton.onTap = {
