@@ -8,11 +8,11 @@
 import Foundation
 
 public enum APIKey {
-  public static var aladin: String {
+  public static var yes24: String {
     guard let key = Bundle.main.object(
-      forInfoDictionaryKey: "ALADIN_TTB_KEY"
+      forInfoDictionaryKey: "YES24_API_KEY"
     ) as? String else {
-      fatalError("ALADIN_TTB_KEY not found in Info.plist")
+      fatalError("YES24_API_KEY not found in Info.plist")
     }
 
     return key

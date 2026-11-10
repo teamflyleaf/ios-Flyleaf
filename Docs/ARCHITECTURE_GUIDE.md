@@ -277,7 +277,7 @@ Service 자체의 동작을 검증하는 테스트 코드가 위치합니다.
 |---|---|---|
 | Auth | Firebase Auth 기반 인증 | singleton |
 | ReadingJourney | Firestore 기반 독서 기록 관리 | singleton |
-| BookSearch | 알라딘 API 기반 도서 검색 | transient |
+| BookSearch | YES24 API 기반 도서 검색 | transient |
 | AirportSearch | 번들 JSON 기반 공항 검색 | singleton |
 | SearchHistory | UserDefaults 기반 검색 기록 관리 | singleton |
 | Tooltip | UserDefaults 기반 툴팁 상태 관리 | singleton |

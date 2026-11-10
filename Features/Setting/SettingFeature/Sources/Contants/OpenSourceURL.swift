@@ -8,7 +8,7 @@
 import Foundation
 
 enum OpenSourceURL {
-  static let aladin = URL(string: "https://blog.aladin.co.kr/openapi/popup/5353304")!
+  static let yes24 = URL(string: "https://developers.yes24.com/")!
   static let firebase = URL(string: "https://firebase.google.com/")!
   static let kingfisher = URL(string: "https://github.com/onevcat/Kingfisher")!
   static let snapkit = URL(string: "https://github.com/snapkit/snapkit")!
