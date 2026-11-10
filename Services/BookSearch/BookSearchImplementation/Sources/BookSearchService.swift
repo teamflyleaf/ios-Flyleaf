@@ -49,7 +49,7 @@ public final class BookSearchService: BookSearchServicing {
   ///   - `DecodingError`: 응답 JSON을 DTO로 디코딩하지 못한 경우
   ///
   /// - Important:
-  ///   - 이 메서드는 Yes24 `goods/itemList` API를 사용합니다.
+  ///   - 이 메서드는 YES24 `goods/itemList` API를 사용합니다.
   ///   - 반환되는 모델은 검색 결과 전용(`BookSearchItem`)이며,
   ///     페이지 수(`itemPage`) 같은 상세 정보는 포함되지 않을 수 있습니다.
   public func searchBooks(
@@ -108,7 +108,7 @@ public final class BookSearchService: BookSearchServicing {
   ///   - `DecodingError`: 응답 JSON을 DTO로 디코딩하지 못한 경우
   ///
   /// - Important:
-  ///   - 이 메서드는 Yes24 `goods/itemDetail` API를 사용합니다.
+  ///   - 이 메서드는 YES24 `goods/itemDetail` API를 사용합니다.
   public func fetchBookDetail(
     isbn13: String
   ) async throws -> BookInfo {
