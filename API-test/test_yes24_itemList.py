@@ -74,7 +74,8 @@ def test_get_itemList_empty(headers):
     body = response.json()
 
     # 검색 결과가 없을 때 404를 정상적으로 반환하는지
-    assert response.status_code == 404
+    statusCode = response.status_code
+    assert statusCode == 404, f"상태 코드가 정상적이지 않음, statusCode={statusCode!r}"
 
     # 검색 결과가 없을 때 데이터가 null인지
     data = body["data"]
