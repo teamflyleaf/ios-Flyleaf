@@ -155,3 +155,7 @@ Config/Secrets/
 *.p12
 *.cer
 *.mobileprovision
+
+### Python ###
+__pycache__/
+*.pyc
