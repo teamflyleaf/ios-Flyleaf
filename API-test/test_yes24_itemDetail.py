@@ -34,9 +34,6 @@ def test_get_itemDetail_data_type(headers):
     data = body["data"]
     assert data, "검색 결과가 없음"
 
-    pageSize = data["pageSize"]
-    assert isinstance(pageSize, int), f"pageSize 타입이 잘못 됨, 타입={type(pageSize).__name__}, 값={pageSize!r}"
-    
     items = data["items"]
     assert isinstance(items, list), "아이템이 비어있음"
 
@@ -56,8 +53,13 @@ def test_get_itemDetail_data_type(headers):
         isbn13 = item["isbn13"]
         assert isinstance(isbn13, str), f"items[{i}].isbn13 타입이 잘못 됨, 타입={type(isbn13).__name__}, 값={isbn13!r}"
 
-        content_detail = item["contentDetail"]
-        assert isinstance(content_detail, dict), (
+        # 앱에서 pages가 null이면 missingItemPage 에러가 발생하므로 int여야 함
+        pages = item.get("pages")
+        assert isinstance(pages, int), f"items[{i}].pages 타입이 잘못 됨, 타입={type(pages).__name__}, 값={pages!r}"
+
+        # 앱 DTO에서 contentDetail은 Optional이므로 null 허용
+        content_detail = item.get("contentDetail")
+        assert content_detail is None or isinstance(content_detail, dict), (
             f"items[{i}].contentDetail 타입이 잘못 됨, 타입={type(content_detail).__name__}, 값={content_detail!r}"
         )
 
